@@ -35,8 +35,8 @@ export interface VimeoResult extends MediaResult {
 export interface SpotifyResult extends MediaResult {
   provider: 'spotify'
   thumbnail: string
-  artist: string
-  duration: number
+  artist?: string
+  duration?: number
   album?: string
   isrc?: string
 }

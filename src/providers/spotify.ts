@@ -26,11 +26,11 @@ const OEMBED_URL = 'https://open.spotify.com/oembed'
 const buildTrackUrl = (id: string): string => `https://open.spotify.com/track/${id}`
 
 /** Parse "Artist - Title" from oEmbed title */
-const parseTitle = (title: string): { artist: string; title: string } => {
+const parseTitle = (title: string): { artist: string | undefined; title: string } => {
   const match = title.match(/^(.+?)\s*[-–—]\s*(.+)$/)
   return match
     ? { artist: match[1].trim(), title: match[2].trim() }
-    : { artist: '', title: title.trim() }
+    : { artist: undefined, title: title.trim() }
 }
 
 /** Fetch Spotify track metadata via oEmbed */
@@ -61,7 +61,7 @@ export const get = async (id: string): Promise<SpotifyResult> => {
     title: parsed.title,
     thumbnail: payload.thumbnail_url,
     artist: parsed.artist,
-    duration: 0, // oEmbed doesn't provide duration
+    // duration not available via oEmbed
     payload,
   }
 }
