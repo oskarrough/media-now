@@ -25,6 +25,10 @@
 - `ProviderError` for network/rate limit errors
 - Empty array for no search results
 
+## Test Data
+
+- Get YouTube URLs via `r4 tracks --help`
+
 ## Out of Scope
 
 - Video duration (requires scraping)

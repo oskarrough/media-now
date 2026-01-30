@@ -4,6 +4,9 @@
   "workspaces": {
     "": {
       "name": "media-now",
+      "dependencies": {
+        "spotifly": "^0.1.1",
+      },
       "devDependencies": {
         "typescript": "^5.7.3",
         "vitest": "^3.0.0",
@@ -184,6 +187,8 @@
     "siginfo": ["siginfo@2.0.0", "", {}, "sha512-ybx0WO1/8bSBLEWXZvEd7gMW3Sn3JFlW3TvX1nREbDLRNQNaeNN8WK0meBwPdAaOI7TtRRRJn/Es1zhrrCHu7g=="],
 
     "source-map-js": ["source-map-js@1.2.1", "", {}, "sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA=="],
+
+    "spotifly": ["spotifly@0.1.1", "", {}, "sha512-dg6dQcwkEA0qp9DUwp2LPlhbZyobLkv5EEWXkrIET3YLGcUrHJx1lHNCMQwCFInK05Tm40l65LBt5+bwnKLIZQ=="],
 
     "stackback": ["stackback@0.0.2", "", {}, "sha512-1XMJE5fQo1jGH6Y/7ebnwPOBEkIEnT4QF32d5R1+VXdXveM0IBMJt8zfaxX1P3QhVwrYe+576+jkANtSS2mBbw=="],
 

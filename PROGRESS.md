@@ -2,7 +2,7 @@
 
 ## Current Work
 
-(none)
+BLOCKED: 06-spotify - 2026-01-30 - see QUESTIONS.md
 
 ## Completed
 
