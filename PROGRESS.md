@@ -2,8 +2,9 @@
 
 ## Current Work
 
-CLAIMED: 01-types (src/types.ts) - 2026-01-30
+(none)
 
 ## Completed
 
 - 00-project-setup - 2026-01-30
+- 01-types - 2026-01-30

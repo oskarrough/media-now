@@ -14,6 +14,7 @@
 - Use `"type": "module"` for ESM
 - Exports field should point to `./dist/index.js` (built output)
 - tsconfig should enable `"strict": true`, `"moduleResolution": "bundler"`
+- Use `@typescript/native-preview` (tsgo) instead of regular typescript
 - This is the foundation - keep it minimal
 
 ## Out of Scope
