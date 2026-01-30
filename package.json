@@ -1,7 +1,13 @@
 {
   "name": "media-now",
   "type": "module",
-  "exports": "./dist/index.js",
+  "exports": {
+    ".": "./dist/index.js",
+    "./providers": "./dist/providers/index.js",
+    "./providers/*": "./dist/providers/*.js",
+    "./parse-title": "./dist/parse-title.js",
+    "./discover": "./dist/discover.js"
+  },
   "scripts": {
     "build": "tsgo",
     "test": "vitest run",

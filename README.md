@@ -1,107 +1,46 @@
 # Media Now
 
-A JavaScript library for extracting media metadata from YouTube, Vimeo, Spotify, Discogs, MusicBrainz, and SoundCloud. No API keys needed.
+Fetch media metadata from YouTube, Vimeo, Spotify, Discogs, MusicBrainz, and SoundCloud. No API keys.
 
 ![The Burning of the Library at Alexandria in 391 AD. Ambrose Dudley](http://i.imgur.com/2fvkbVem.jpg)
 
 ```typescript
 import { getMedia, parseUrl } from 'media-now'
 
-// Parse a URL to identify provider and id
+const media = await getMedia('https://www.youtube.com/watch?v=dQw4w9WgXcQ')
+// { provider: 'youtube', id: '...', url: '...', title: '...', thumbnail: '...', author: '...', payload: {...} }
+
 parseUrl('https://vimeo.com/123456789')  // { provider: 'vimeo', id: '123456789' }
 parseUrl('https://example.com')          // null
-
-// Fetch full metadata from the provider
-const media = await getMedia('https://www.youtube.com/watch?v=dQw4w9WgXcQ')
-media.provider   // "youtube"
-media.title      // "Rick Astley - Never Gonna Give You Up"
-media.thumbnail  // "https://i.ytimg.com/..."
 ```
 
-## Response Format
-
-All results include `provider`, `id`, `url`, `title`, and `payload` (raw API response).
-
-| Provider | Extra fields |
-|----------|--------------|
-| YouTube | `thumbnail` `author` `duration?` |
-| Vimeo | `thumbnail` `author` `duration` |
-| Spotify | `thumbnail` `artist?` `duration?` `album?` `isrc?` |
-| Discogs | `year?` `genres[]` `styles[]` `artists[]` `labels[]` |
-| MusicBrainz | `artist` `releases[]` |
-| SoundCloud | `thumbnail?` `author` `description?` |
-
-`?` = optional, `[]` = array, `duration` in seconds
-
-## Error Handling
+## API
 
 ```typescript
-import { getMedia, MediaNotFoundError, ProviderError } from 'media-now'
-
-try {
-  await getMedia(url)
-} catch (e) {
-  if (e instanceof MediaNotFoundError) {
-    // Media doesn't exist (404)
-  }
-  if (e instanceof ProviderError) {
-    // Rate limit, network error, unsupported URL, etc.
-  }
-}
-```
-
-## Individual Providers
-
-Fetch by ID when you already know the provider.
-
-```typescript
-import { youtube } from 'media-now/providers/youtube'
-import { vimeo } from 'media-now/providers/vimeo'
-import { spotify } from 'media-now/providers/spotify'
-import { discogs } from 'media-now/providers/discogs'
-import { musicbrainz } from 'media-now/providers/musicbrainz'
-import { soundcloud } from 'media-now/providers/soundcloud'
-```
-
-| Provider | Methods |
-|----------|---------|
-| youtube | `fetch(id)` `search(query)` |
-| vimeo | `fetch(id)` |
-| spotify | `fetch(id)` |
-| discogs | `fetch(id)` `fetchMaster(id)` |
-| musicbrainz | `search(query)` `fetchRecording(id)` `fetchRelease(id)` |
-| soundcloud | `fetch(id)` — id is `username/track` |
-
-## Utilities
-
-```typescript
+import { youtube, vimeo, spotify, discogs, musicbrainz, soundcloud } from 'media-now/providers'
 import { parseTitle, cleanTitle } from 'media-now/parse-title'
 import { discoverDiscogsUrl } from 'media-now/discover'
 ```
 
-| Function | Description |
-|----------|-------------|
-| `parseTitle(str)` | Split `"Artist - Title"` into `{ artist, title, original }` |
-| `cleanTitle(str)` | Strip noise like `(Official Video)`, `[HD]`, `feat. X` |
-| `discoverDiscogsUrl(title)` | Find Discogs URL via MusicBrainz lookup |
+| | |
+|-|-|
+| `getMedia(url)` | Fetch metadata from any supported URL |
+| `parseUrl(url)` | Extract `{ provider, id }` from URL |
+| `youtube.fetch(id)` | → `thumbnail` `author` `duration?` |
+| `youtube.search(query)` | Search videos |
+| `vimeo.fetch(id)` | → `thumbnail` `author` `duration` |
+| `spotify.fetch(id)` | → `thumbnail` `artist?` `duration?` `album?` `isrc?` |
+| `discogs.fetch(id)` | → `year?` `genres[]` `styles[]` `artists[]` `labels[]` |
+| `discogs.fetchMaster(id)` | Fetch master release |
+| `musicbrainz.search(query)` | Search recordings |
+| `musicbrainz.fetchRecording(id)` | → `artist` `releases[]` |
+| `musicbrainz.fetchRelease(id)` | Fetch release details |
+| `soundcloud.fetch(id)` | → `thumbnail?` `author` `description?` (id = `user/track`) |
+| `parseTitle(str)` | Split `"Artist - Title"` → `{ artist, title, original }` |
+| `cleanTitle(str)` | Strip `(Official Video)`, `[HD]`, `feat. X` |
+| `discoverDiscogsUrl(title)` | Find Discogs URL via MusicBrainz |
 
-## Types
-
-```typescript
-import type {
-  Provider,
-  ParsedUrl,
-  MediaResult,
-  YouTubeResult,
-  VimeoResult,
-  SpotifyResult,
-  DiscogsResult,
-  MusicBrainzResult,
-  SoundCloudResult,
-  SearchResult,
-  ParsedTitle,
-} from 'media-now'
-```
+All results include `provider`, `id`, `url`, `title`, `payload`. `?` = optional, `[]` = array, `duration` in seconds.
 
 ## Prior Work
 
