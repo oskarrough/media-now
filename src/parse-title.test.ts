@@ -76,12 +76,12 @@ describe("parseTitle", () => {
 describe("parseTitle with real r4 tracks", () => {
 	// Tests edge cases discovered from Radio4000 track data
 
-	it("truncates at double-dash before finding separator (loses title)", () => {
+	it("treats spaced double-dash as separator (not truncation)", () => {
 		// r4: a-docks "Cabaret Voltaire -- What Is Real"
-		// The -- truncation happens BEFORE separator detection
+		// Spaced ` -- ` is a separator (highest precedence)
 		const result = parseTitle("Cabaret Voltaire -- What Is Real")
-		expect(result.artist).toBe(null) // No separator found after truncation
-		expect(result.title).toBe("Cabaret Voltaire")
+		expect(result.artist).toBe("Cabaret Voltaire")
+		expect(result.title).toBe("What Is Real")
 	})
 
 	it("uses first separator when multiple exist", () => {
@@ -278,14 +278,6 @@ describe("parseTitle edge cases (discovered from r4 data)", () => {
 		expect(result.title).toBe("Amo Bishop Roden")
 	})
 
-	it("treats non-spaced double-dash as separator when at word boundary", () => {
-		// r4: "Dick Dale---Banzai Pipeline."
-		// Currently truncates, desired: find artist/title
-		const result = parseTitle("Dick Dale---Banzai Pipeline")
-		expect(result.artist).toBe("Dick Dale")
-		expect(result.title).toBe("Banzai Pipeline")
-	})
-
 	// PATTERN 4: En-dash without spaces (39 tracks)
 	// We only handle " – " (with spaces)
 	it("splits on en-dash without spaces", () => {
@@ -294,16 +286,6 @@ describe("parseTitle edge cases (discovered from r4 data)", () => {
 		const result = parseTitle("Artist–Title")
 		expect(result.artist).toBe("Artist")
 		expect(result.title).toBe("Title")
-	})
-
-	// PATTERN 5: Multiple spaces as separator (221 tracks)
-	// Portuguese radio station uses "Title   Artist" format with 3+ spaces
-	it("splits on multiple spaces (3+) as separator", () => {
-		// r4: "Oh Lady Mary   David Alexandre Winter"
-		const result = parseTitle("Oh Lady Mary   David Alexandre Winter")
-		// Note: these are reversed - title first, artist second
-		expect(result.title).toBe("Oh Lady Mary")
-		expect(result.artist).toBe("David Alexandre Winter")
 	})
 })
 

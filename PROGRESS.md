@@ -2,7 +2,7 @@
 
 ## Current Work
 
-(none)
+CLAIMED: 03-title-parsing (lenient separators) - 2026-01-30
 
 ## Completed
 

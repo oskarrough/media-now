@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest"
 import { parseUrl } from "./parse-url"
+import r4Tracks from "../test-data/r4-tracks.json"
 
 describe("parseUrl", () => {
 	describe("YouTube", () => {
@@ -183,6 +184,35 @@ describe("parseUrl", () => {
 				provider: "youtube",
 				id: "abc 123",
 			})
+		})
+	})
+
+	describe("r4 tracks bulk validation", () => {
+		it("parses 99% of track URLs to valid media IDs", () => {
+			const results = r4Tracks.map((track) => {
+				const parsed = parseUrl(track.url)
+				return {
+					url: track.url,
+					parsed,
+					valid: parsed !== null && parsed.id.length > 0,
+				}
+			})
+
+			const valid = results.filter((r) => r.valid)
+			const invalid = results.filter((r) => !r.valid)
+			const percentage = (valid.length / results.length) * 100
+
+			console.log(
+				`Valid: ${valid.length}/${results.length} (${percentage.toFixed(2)}%)`,
+			)
+			if (invalid.length > 0) {
+				console.log(
+					"Sample invalid URLs:",
+					invalid.slice(0, 10).map((r) => r.url),
+				)
+			}
+
+			expect(percentage).toBeGreaterThanOrEqual(99)
 		})
 	})
 })

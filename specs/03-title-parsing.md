@@ -1,47 +1,44 @@
 # Title Parsing
 
-> Pure functions to parse and clean track titles for search queries.
+> Parse track titles to extract artist and title. Goal: maximize extraction rate from real r4 data.
 
 **Requires:** 00-project-setup
 
 ## Requirements
 
-- [ ] Create `src/parse-title.ts`
 - [ ] `parseTitle(title)` → `{ artist: string | null, title: string, original: string }`
 - [ ] `cleanTitle(title)` → `string` (cleaned for search)
-- [ ] Add lenient separator support (see Parsing Rules v2)
 
-## Parsing Rules
+## Separators (in precedence order)
 
-Split on separators (in order of precedence):
+### Primary: dash + spaces (regex)
 
-### Primary separators (strict)
-1. ` -- ` (double-dash WITH spaces → separator, not truncation)
-2. ` - ` (hyphen with spaces)
-3. ` – ` (en-dash with spaces)
-4. ` — ` (em-dash with spaces)
-5. `: ` (colon with space)
-6. ` | ` (pipe with spaces)
-7. ` by ` (case insensitive)
+Pattern: `\s+[-–—]+\s+` — matches any dash-like chars with spaces on both sides.
 
-### Lenient separators (fallback)
-If no primary separator found, try these (typo tolerance):
-8. `- ` (hyphen-space, no leading space)
-9. ` -` (space-hyphen, no trailing space)
-10. `–` (en-dash, no spaces)
-11. `—` (em-dash, no spaces)
+Covers: ` - `, ` -- `, ` – `, ` — `, `  -  `, etc.
 
-First part = artist, second part = title. If no separator found, return `artist: null`.
+### Secondary
 
-## Cleaning Rules (applied in order)
+1. `: ` (colon with space)
+2. ` | ` (pipe with spaces)
+3. ` by ` (case insensitive, reversed: "Title by Artist")
 
-1. Remove everything after `//`, `\\`, `||` (album info, etc.)
-2. Remove everything after non-spaced `--` (but NOT ` -- ` which is a separator)
-3. Remove trailing parentheticals: `(feat. X)`, `(Official Video)`, etc.
-4. Remove trailing brackets: `[Remix]`, `[HD]`, etc.
-5. Remove feat/featuring info: `feat.`, `ft.`, `featuring`, `with`
-6. Remove remix/edit suffixes: `remix`, `edit`, `version`, `mix`, `dub`
-7. Trim whitespace
+### Lenient fallbacks (typo tolerance)
+
+4. Dash with space on one side: `- ` or ` -`
+5. En/em-dash without spaces: `–` or `—` (not hyphen — used in compound words)
+
+Split on FIRST match. Left = artist, right = title (cleaned).
+
+## Cleaning Rules
+
+Applied to get a clean search string:
+
+1. Truncate at `//`, `\\`, `||`, `--`
+2. Remove trailing `(...)` and `[...]`
+3. Remove `feat.`, `ft.`, `featuring`, `with` + everything after
+4. Remove trailing `remix`, `edit`, `version`, `mix`, `dub`
+5. Trim and collapse whitespace
 
 ## Examples
 
@@ -49,21 +46,24 @@ First part = artist, second part = title. If no separator found, return `artist:
 parseTitle('Daft Punk - Get Lucky (feat. Pharrell)')
 // → { artist: 'Daft Punk', title: 'Get Lucky', original: '...' }
 
-cleanTitle('Daft Punk - Get Lucky (feat. Pharrell) [Official Video]')
-// → 'Daft Punk - Get Lucky'
+parseTitle('Seu Jorge- Tive Razao')  // typo: missing space
+// → { artist: 'Seu Jorge', title: 'Tive Razao', original: '...' }
+
+parseTitle('Def Leppard — Animal')  // em-dash
+// → { artist: 'Def Leppard', title: 'Animal', original: '...' }
+
+cleanTitle('Title -- 2024 (Official)')
+// → 'Title'
 ```
-
-## Implementation Notes
-
-- These are pure sync functions
-- Preserve original in output for debugging
-- Cleaning should be aggressive for search purposes
-- Consider edge cases like multiple separators
-- **Double-dash logic:** Check for ` -- ` (spaced) as separator BEFORE truncating at non-spaced `--`. This handles both "Artist -- Title" (separator) and "Title -- 2024" (truncation) correctly.
-- **Lenient matching:** Only try lenient separators (`- `, ` -`, bare dashes) if strict separators fail. This avoids false positives on hyphenated words.
 
 ## Out of Scope
 
-- Language-specific parsing
-- Fuzzy matching
-- Multiple-space separators (e.g., `Title   Artist`) — too unreliable, often reversed order
+Investigated and rejected (2026-01-30):
+
+- **Multiple-space separators** (~400 tracks) - reversed order "Title   Artist", unreliable
+- **Tilde ` ~ `** (~111 tracks) - inconsistent order (~30-40% reversed), some non-music entries
+- **Underscore ` _ `** (18 tracks) - too few to justify complexity
+- **Asterisk ` * `** (7 tracks) - too few to justify complexity
+- **Slash ` / `** (~87 tracks) - too noisy, conflicts with other uses
+
+**Truly unparseable**: ~7,066 tracks (17.9%) are just song titles without artist info or artist+title concatenated without any delimiter. Would require ML/fuzzy matching.
