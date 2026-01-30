@@ -6,6 +6,7 @@
 
 ## Completed
 
+- 12-provider-tests - 2026-01-31
 - 14-rename-get-to-fetch - 2026-01-31
 
 - 00-project-setup (Biome setup) - 2026-01-30

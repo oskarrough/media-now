@@ -5,6 +5,7 @@
   "scripts": {
     "build": "tsgo",
     "test": "vitest run",
+    "test:integration": "bun run scripts/test-providers.ts",
     "lint": "biome check src/",
     "format": "biome format --write src/"
   },
