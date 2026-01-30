@@ -60,24 +60,18 @@ After `00-project-setup`, coders can work on:
 
 ### Test Coverage
 
-**100% test coverage required** for all source files with runtime logic.
+#### Unit tests (100% coverage):
+- **Pure functions** (`parse-url.ts`, `parse-title.ts`) - Direct unit tests
 
-#### What to test:
-- **Pure functions** (parse-url, parse-title, etc.) - Direct unit tests
-- **Provider modules** (youtube, vimeo, spotify, etc.) - Unit tests with mocked `fetch`
-- **Entry points** (get-media, discover) - Unit tests with mocked `fetch`
+#### Integration tests (manual, not in CI):
+- **Provider modules** - Test against real APIs via `bun run test:integration`
+- **Entry points** (`get-media.ts`, `discover.ts`) - Included in integration tests
 
 #### Exempt from coverage:
-- **Type-only files** (`types.ts`, `errors.ts`) - No runtime logic to test
+- **Type-only files** (`types.ts`, `errors.ts`) - No runtime logic
+- **Network code** (providers, get-media, discover) - Covered by integration tests
 
-#### Testing network code:
-Mock `fetch` at the module level. Test:
-- Successful responses (happy path)
-- Error responses (4xx, 5xx)
-- Malformed/unexpected response shapes
-- Network failures
-
-Verify before completing any spec:
+Verify pure function coverage:
 ```sh
 bun test --coverage
 ```

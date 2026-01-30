@@ -17,10 +17,11 @@ How to use this file:
 
 **Question:** Should we add unit tests with mocked fetch, update coverage requirements to exclude network code, or add integration tests against real APIs?
 
-**Decision:** Option 1 - Unit tests with mocked `fetch` for all providers and entry points.
+**Decision:** Integration tests + trust TypeScript for network code.
 
-- Mocked tests are fast, deterministic, CI-friendly
-- Can test edge cases (errors, malformed responses)
-- Type-only files (`errors.ts`, `types.ts`) are exempt - no runtime logic
+- Mocked fetch is high-maintenance and drifts from real APIs
+- Providers are thin wrappers — TypeScript provides type safety
+- Pure functions (`parse-url`, `parse-title`) already have unit tests
+- Integration test script for manual verification against real APIs
 
-**Action:** Updated `specs/README.md` with clarified testing requirements. Coder should create a new spec or add tests to existing provider specs.
+**Action:** Updated `specs/README.md` and `specs/12-provider-tests.md` with new approach.

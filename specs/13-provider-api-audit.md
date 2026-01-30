@@ -139,7 +139,7 @@ Complex nested structure — `payload` not included in SearchResult.
 }
 ```
 
-### soundcloud.get → OEmbedResponse
+### soundcloud.fetch → OEmbedResponse
 ```ts
 {
   title: string
@@ -181,16 +181,16 @@ Run each provider method against real APIs and verify:
 
 ### Per-Provider Validation
 
-- [ ] **youtube.get** - Verify YouTubeResult + payload fields
+- [ ] **youtube.fetch** - Verify YouTubeResult + payload fields
 - [ ] **youtube.search** - Verify SearchResult[] fields
-- [ ] **vimeo.get** - Verify VimeoResult + payload fields
-- [ ] **spotify.get** - Verify SpotifyResult + payload fields
-- [ ] **discogs.get** - Verify DiscogsResult + payload fields (check for undocumented fields)
-- [ ] **discogs.getMaster** - Verify DiscogsResult + payload fields
+- [ ] **vimeo.fetch** - Verify VimeoResult + payload fields
+- [ ] **spotify.fetch** - Verify SpotifyResult + payload fields
+- [ ] **discogs.fetch** - Verify DiscogsResult + payload fields (check for undocumented fields)
+- [ ] **discogs.fetchMaster** - Verify DiscogsResult + payload fields
 - [ ] **musicbrainz.search** - Verify MusicBrainzResult[] + payload fields
-- [ ] **musicbrainz.getRecording** - Verify MusicBrainzResult + payload fields
-- [ ] **musicbrainz.getRelease** - Verify MusicBrainzRelease + payload fields
-- [ ] **soundcloud.get** - Verify SoundCloudResult + payload fields
+- [ ] **musicbrainz.fetchRecording** - Verify MusicBrainzResult + payload fields
+- [ ] **musicbrainz.fetchRelease** - Verify MusicBrainzRelease + payload fields
+- [ ] **soundcloud.fetch** - Verify SoundCloudResult + payload fields
 
 ### Payload Documentation Task
 

@@ -1,36 +1,56 @@
 # Provider Tests
 
-> Add unit tests with mocked fetch for all provider modules and entry points
+> Integration tests for providers — run manually against real APIs
+
+## Background
+
+Mocked fetch tests are high-maintenance and can drift from real API behavior. Since providers are thin wrappers around fetch, we trust TypeScript for type safety and use integration tests for verification.
+
+## What's Already Tested
+
+- `parse-url.ts` ✅ unit tests
+- `parse-title.ts` ✅ unit tests
 
 ## Requirements
 
-- All provider modules have test coverage for:
-  - Successful API responses (happy path)
-  - Error responses (4xx, 5xx status codes)
-  - Malformed/unexpected response shapes
-  - Network failures (fetch throws)
-- Entry points (`get-media.ts`, `discover.ts`) have test coverage
-- `bun test --coverage` shows 100% for all files with runtime logic
+Create an integration test script that:
+- Calls each provider method with known IDs
+- Logs results for manual inspection
+- Validates response shapes match TypeScript types
+- **Not run in CI** — manual verification only
 
-## Implementation Notes
+## Implementation
 
-- Mock `fetch` globally or per-test using Bun's built-in mocking
-- Create fixture files for realistic API response shapes if helpful
-- Test each provider independently
-- Order doesn't matter - all providers can be tested in parallel
+- [ ] Create `scripts/test-providers.ts` (or `test/integration.ts`)
+- [ ] Add test cases for each provider:
+  - `youtube.fetch("dQw4w9WgXcQ")` — Rick Astley
+  - `vimeo.fetch("76979871")` — known video
+  - `spotify.fetch("4cOdK2wGLETKBW3PvgPWqT")` — known track
+  - `discogs.fetch("1")` — first release
+  - `discogs.fetchMaster("1")` — first master
+  - `musicbrainz.search("Bohemian Rhapsody")`
+  - `musicbrainz.fetchRecording("...")` — known UUID
+  - `soundcloud.fetch("forss/flickermood")` — known track
+- [ ] Add npm script: `"test:integration": "bun run scripts/test-providers.ts"`
+- [ ] Log payload shapes for documentation
 
-## Files to Test
+## Future: Record/Replay (Optional)
 
-- [ ] `src/providers/youtube.ts`
-- [ ] `src/providers/vimeo.ts`
-- [ ] `src/providers/spotify.ts`
-- [ ] `src/providers/discogs.ts`
-- [ ] `src/providers/musicbrainz.ts`
-- [ ] `src/providers/soundcloud.ts`
-- [ ] `src/get-media.ts`
-- [ ] `src/discover.ts`
+If we want faster CI tests later, consider:
+- Record real API responses to `fixtures/` directory
+- Replay in tests using custom fetch wrapper or `msw`
+- Re-record when APIs change
+
+Not required now — add when/if needed.
 
 ## Out of Scope
 
-- Integration tests against real APIs (nice-to-have, not required)
-- Testing `types.ts` or `errors.ts` (type-only, no runtime logic)
+- Mocked fetch unit tests
+- Running integration tests in CI
+- 100% coverage for provider files
+
+## Coverage Update
+
+Update `specs/README.md` to clarify:
+- 100% coverage for **pure functions** (parse-url, parse-title)
+- Integration tests for **network code** (not counted in coverage)
