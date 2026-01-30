@@ -4,7 +4,7 @@
 
 import { MediaNotFoundError, ProviderError } from "../errors"
 import { parseTitle } from "../parse-title"
-import type { MusicBrainzResult } from "../types"
+import type { MusicBrainzRelease, MusicBrainzResult } from "../types"
 
 /** MusicBrainz recording search result */
 interface MBRecordingSearchResult {
@@ -170,15 +170,6 @@ export const fetchRecording = async (id: string): Promise<MusicBrainzResult> => 
 		releases: extractReleases(payload.releases),
 		payload,
 	}
-}
-
-/** Release with URL relationships */
-export interface MusicBrainzRelease {
-	id: string
-	title: string
-	url: string
-	relations: { type: string; url: string }[]
-	payload: MBReleaseResponse
 }
 
 /**

@@ -64,6 +64,16 @@ export interface MusicBrainzResult extends MediaResult {
 	releases: string[]
 }
 
+/** MusicBrainz release with URL relationships */
+export interface MusicBrainzRelease {
+	id: string
+	title: string
+	url: string
+	relations: { type: string; url: string }[]
+	/** Raw API response */
+	payload: unknown
+}
+
 /** SoundCloud media result */
 export interface SoundCloudResult extends MediaResult {
 	provider: "soundcloud"

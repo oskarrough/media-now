@@ -2,7 +2,7 @@
 
 ## Current Work
 
-(none)
+CLAIMED: 13-provider-api-audit (MusicBrainzRelease export) - 2026-01-31
 
 ## Completed
 
