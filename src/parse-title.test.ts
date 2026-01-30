@@ -285,7 +285,6 @@ describe("parseTitle edge cases (discovered from r4 data)", () => {
 
 describe("parseTitle bulk test", () => {
 	it(`parses all ${tracks.length} tracks without throwing`, () => {
-
 		const results = tracks.map((track) => {
 			const result = parseTitle(track.title)
 			return {
@@ -303,10 +302,7 @@ describe("parseTitle bulk test", () => {
 	})
 
 	it("extracts artist from majority of tracks (sanity check)", () => {
-
-		const withArtist = tracks.filter(
-			(t) => parseTitle(t.title).artist !== null,
-		)
+		const withArtist = tracks.filter((t) => parseTitle(t.title).artist !== null)
 		const percentage = (withArtist.length / tracks.length) * 100
 
 		console.log(
