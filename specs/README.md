@@ -11,12 +11,12 @@
        │                       │
        └──────────┬────────────┘
                   │
-    ┌─────┬─────┬─┴───┬─────────┐
-    ↓     ↓     ↓     ↓         ↓
-   04    05    06    07        08
-youtube vimeo spotify discogs musicbrainz
-    │     │     │     │         │
-    └─────┴─────┴─────┴────┬────┘
+    ┌─────┬─────┬─┴───┬─────────┬────────┐
+    ↓     ↓     ↓     ↓         ↓        ↓
+   04    05    06    07        08       11
+youtube vimeo spotify discogs musicbrainz soundcloud
+    │     │     │     │         │        │
+    └─────┴─────┴─────┴────┬────┴────────┘
                            ↓
                  09-discovery-chain
                            ↓
@@ -34,14 +34,15 @@ youtube vimeo spotify discogs musicbrainz
 7. [06-spotify](./06-spotify.md) ← (parallel, requires: 01)
 8. [07-discogs](./07-discogs.md) ← (parallel, requires: 01)
 9. [08-musicbrainz](./08-musicbrainz.md) ← (parallel, requires: 01, 03)
-10. [09-discovery-chain](./09-discovery-chain.md) ← requires: 03, 07, 08
-11. [10-entry-point](./10-entry-point.md) ← requires: all above
+10. [11-soundcloud](./11-soundcloud.md) ← (parallel, requires: 01)
+11. [09-discovery-chain](./09-discovery-chain.md) ← requires: 03, 07, 08
+12. [10-entry-point](./10-entry-point.md) ← requires: all above
 
 ## Parallel Work
 
 After `00-project-setup`, coders can work on:
 - **Wave 1:** 01, 02, 03 (types, url-parsing, title-parsing)
-- **Wave 2:** 04, 05, 06, 07 (youtube, vimeo, spotify, discogs) + 08 if 03 is done
+- **Wave 2:** 04, 05, 06, 07, 11 (youtube, vimeo, spotify, discogs, soundcloud) + 08 if 03 is done
 - **Wave 3:** 09 (discovery-chain)
 - **Wave 4:** 10 (entry-point)
 

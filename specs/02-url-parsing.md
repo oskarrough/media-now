@@ -11,6 +11,7 @@
 - [ ] Vimeo URL patterns: `vimeo.com/{id}`, `/video/{id}`, player embeds
 - [ ] Spotify URL patterns: `open.spotify.com/track/{id}` only (reject playlist/album URLs)
 - [ ] Discogs URL patterns: `discogs.com/release/{id}`, `discogs.com/master/{id}`, with or without slug/locale
+- [ ] SoundCloud URL patterns: `soundcloud.com/{user}/{track}` → ID is `{user}/{track}`
 
 ## Edge Cases to Handle
 

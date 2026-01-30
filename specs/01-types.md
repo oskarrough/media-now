@@ -11,13 +11,14 @@
 
 ## Types to Define
 
-- `Provider` - union: `'youtube' | 'vimeo' | 'spotify' | 'discogs' | 'musicbrainz'`
+- `Provider` - union: `'youtube' | 'vimeo' | 'spotify' | 'discogs' | 'musicbrainz' | 'soundcloud'`
 - `MediaResult` - base interface with: provider, id, url, title, payload (raw API response)
 - `YouTubeResult` - extends MediaResult: thumbnail, author, duration?
 - `VimeoResult` - extends MediaResult: thumbnail, author, duration
 - `SpotifyResult` - extends MediaResult: thumbnail, artist, duration, album?, isrc?
 - `DiscogsResult` - extends MediaResult: year?, genres[], styles[], artists[], labels[]
 - `MusicBrainzResult` - extends MediaResult: artist, releases[]
+- `SoundCloudResult` - extends MediaResult: thumbnail, author
 - `SearchResult` - provider, id, title, thumbnail?, url
 - `ParsedTitle` - artist (nullable), title, original
 

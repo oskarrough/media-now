@@ -1,14 +1,8 @@
 import { describe, expect, it } from "vitest"
 import { cleanTitle, parseTitle } from "./parse-title"
 
-// Load r4 tracks for bulk testing
-let r4Tracks: Array<{ title: string }> = []
-const r4TracksFile = Bun.file(
-	new URL("../test-data/r4-tracks.json", import.meta.url),
-)
-if (await r4TracksFile.exists()) {
-	r4Tracks = await r4TracksFile.json()
-}
+// Load tracks for bulk testing
+import tracks from "../test-data/tracks.json"
 
 describe("parseTitle", () => {
 	it("splits on hyphen with spaces", () => {
@@ -289,14 +283,10 @@ describe("parseTitle edge cases (discovered from r4 data)", () => {
 	})
 })
 
-describe("parseTitle bulk test with r4 tracks", () => {
-	it(`parses all ${r4Tracks.length} r4 tracks without throwing`, () => {
-		if (r4Tracks.length === 0) {
-			console.warn("No r4 tracks loaded - run scripts/fetch-r4-tracks.sh first")
-			return
-		}
+describe("parseTitle bulk test", () => {
+	it(`parses all ${tracks.length} tracks without throwing`, () => {
 
-		const results = r4Tracks.map((track) => {
+		const results = tracks.map((track) => {
 			const result = parseTitle(track.title)
 			return {
 				input: track.title,
@@ -313,15 +303,14 @@ describe("parseTitle bulk test with r4 tracks", () => {
 	})
 
 	it("extracts artist from majority of tracks (sanity check)", () => {
-		if (r4Tracks.length === 0) return
 
-		const withArtist = r4Tracks.filter(
+		const withArtist = tracks.filter(
 			(t) => parseTitle(t.title).artist !== null,
 		)
-		const percentage = (withArtist.length / r4Tracks.length) * 100
+		const percentage = (withArtist.length / tracks.length) * 100
 
 		console.log(
-			`Artist extracted: ${withArtist.length}/${r4Tracks.length} (${percentage.toFixed(1)}%)`,
+			`Artist extracted: ${withArtist.length}/${tracks.length} (${percentage.toFixed(1)}%)`,
 		)
 
 		// Expect at least 50% of tracks to have artist - title format

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 import { parseUrl } from "./parse-url"
-import r4Tracks from "../test-data/r4-tracks.json"
+import tracks from "../test-data/tracks.json"
 
 describe("parseUrl", () => {
 	describe("YouTube", () => {
@@ -203,11 +203,11 @@ describe("parseUrl", () => {
 		})
 	})
 
-	describe("r4 tracks bulk validation", () => {
+	describe("bulk validation", () => {
 		// 97% achievable with current providers (YouTube, Vimeo, Spotify, Discogs)
 		// SoundCloud (~2.2%) not implemented - would need new spec
 		it("parses 97% of track URLs to valid media IDs", () => {
-			const results = r4Tracks.map((track) => {
+			const results = tracks.map((track) => {
 				const parsed = parseUrl(track.url)
 				return {
 					url: track.url,
