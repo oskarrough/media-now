@@ -14,3 +14,4 @@ BLOCKED: 06-spotify - 2026-01-30 - see QUESTIONS.md
 - 05-vimeo - 2026-01-30
 - 07-discogs - 2026-01-30
 - 08-musicbrainz - 2026-01-30
+- 09-discovery-chain - 2026-01-30
