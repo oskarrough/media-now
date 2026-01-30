@@ -22,7 +22,8 @@ export const parseUrl = (url: string): ParsedUrl | null => {
 			parseYouTube(parsed) ??
 			parseVimeo(parsed) ??
 			parseSpotify(parsed) ??
-			parseDiscogs(parsed)
+			parseDiscogs(parsed) ??
+			parseSoundCloud(parsed)
 		)
 	} catch {
 		return null
@@ -112,4 +113,46 @@ const parseDiscogs = (url: URL): ParsedUrl | null => {
 	if (match?.[2]) return { provider: "discogs", id: match[2] }
 
 	return null
+}
+
+/**
+ * Parse SoundCloud URLs
+ * Pattern: soundcloud.com/{username}/{track-slug}
+ * Rejects playlists/sets, profiles (no second segment), and other non-track URLs
+ */
+const parseSoundCloud = (url: URL): ParsedUrl | null => {
+	const host = url.hostname.replace(/^www\./, "")
+
+	if (host !== "soundcloud.com") return null
+
+	// Split pathname: /{username}/{track-slug}
+	const segments = url.pathname.slice(1).split("/").filter(Boolean)
+
+	// Need exactly 2 segments: username and track-slug
+	if (segments.length !== 2) return null
+
+	const [username, trackSlug] = segments
+
+	// Reject reserved paths and non-track resources
+	const reserved = [
+		"discover",
+		"stream",
+		"upload",
+		"you",
+		"search",
+		"charts",
+		"messages",
+		"settings",
+		"notifications",
+		"people",
+		"terms-of-use",
+		"pages",
+	]
+	if (reserved.includes(username)) return null
+
+	// Reject playlists/sets (username/sets/...)
+	if (trackSlug === "sets") return null
+
+	// The ID is username/track-slug
+	return { provider: "soundcloud", id: `${username}/${trackSlug}` }
 }

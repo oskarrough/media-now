@@ -5,6 +5,7 @@
 import { ProviderError } from "./errors"
 import { parseUrl } from "./parse-url"
 import { discogs } from "./providers/discogs"
+import { soundcloud } from "./providers/soundcloud"
 import { spotify } from "./providers/spotify"
 import { vimeo } from "./providers/vimeo"
 import { youtube } from "./providers/youtube"
@@ -20,6 +21,7 @@ const providers: Record<
 	spotify: spotify.get,
 	discogs: discogs.get,
 	musicbrainz: null, // MusicBrainz is lookup-only, not URL-based
+	soundcloud: soundcloud.get,
 }
 
 /**

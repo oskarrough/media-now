@@ -9,6 +9,7 @@ export type Provider =
 	| "spotify"
 	| "discogs"
 	| "musicbrainz"
+	| "soundcloud"
 
 /** Base interface for all media results */
 export interface MediaResult {
@@ -61,6 +62,14 @@ export interface MusicBrainzResult extends MediaResult {
 	provider: "musicbrainz"
 	artist: string
 	releases: string[]
+}
+
+/** SoundCloud media result */
+export interface SoundCloudResult extends MediaResult {
+	provider: "soundcloud"
+	thumbnail?: string
+	author: string
+	description?: string
 }
 
 /** Search result from any provider */
