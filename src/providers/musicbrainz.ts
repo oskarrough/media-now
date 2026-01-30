@@ -2,116 +2,123 @@
  * MusicBrainz provider - search recordings and fetch release data
  */
 
-import type { MusicBrainzResult } from '../types'
-import { MediaNotFoundError, ProviderError } from '../errors'
-import { parseTitle } from '../parse-title'
+import { MediaNotFoundError, ProviderError } from "../errors"
+import { parseTitle } from "../parse-title"
+import type { MusicBrainzResult } from "../types"
 
 /** MusicBrainz recording search result */
 interface MBRecordingSearchResult {
-  id: string
-  title: string
-  'artist-credit'?: { name: string; artist: { id: string; name: string } }[]
-  releases?: { id: string; title: string }[]
+	id: string
+	title: string
+	"artist-credit"?: { name: string; artist: { id: string; name: string } }[]
+	releases?: { id: string; title: string }[]
 }
 
 /** MusicBrainz recording API response */
 interface MBRecordingResponse {
-  id: string
-  title: string
-  'artist-credit'?: { name: string; artist: { id: string; name: string } }[]
-  releases?: { id: string; title: string }[]
+	id: string
+	title: string
+	"artist-credit"?: { name: string; artist: { id: string; name: string } }[]
+	releases?: { id: string; title: string }[]
 }
 
 /** MusicBrainz release API response */
 interface MBReleaseResponse {
-  id: string
-  title: string
-  relations?: { type: string; url?: { resource: string } }[]
+	id: string
+	title: string
+	relations?: { type: string; url?: { resource: string } }[]
 }
 
 /** MusicBrainz search response */
 interface MBSearchResponse {
-  recordings: MBRecordingSearchResult[]
+	recordings: MBRecordingSearchResult[]
 }
 
-const API_BASE = 'https://musicbrainz.org/ws/2'
-const USER_AGENT = 'media-now/1.0.0 (https://github.com/radio4000/media-now)'
+const API_BASE = "https://musicbrainz.org/ws/2"
+const USER_AGENT = "media-now/1.0.0 (https://github.com/radio4000/media-now)"
 
 /** Track last request time for rate limiting */
 let lastRequestTime = 0
 const MIN_REQUEST_INTERVAL = 1000 // 1 second between requests
 
 /** Build MusicBrainz recording URL from ID */
-const buildRecordingUrl = (id: string): string => `https://musicbrainz.org/recording/${id}`
+const buildRecordingUrl = (id: string): string =>
+	`https://musicbrainz.org/recording/${id}`
 
 /** Build MusicBrainz release URL from ID */
-const buildReleaseUrl = (id: string): string => `https://musicbrainz.org/release/${id}`
+const buildReleaseUrl = (id: string): string =>
+	`https://musicbrainz.org/release/${id}`
 
 /** Wait for rate limit if needed */
 const waitForRateLimit = async (): Promise<void> => {
-  const now = Date.now()
-  const elapsed = now - lastRequestTime
-  if (elapsed < MIN_REQUEST_INTERVAL && lastRequestTime > 0) {
-    await new Promise((resolve) => setTimeout(resolve, MIN_REQUEST_INTERVAL - elapsed))
-  }
-  lastRequestTime = Date.now()
+	const now = Date.now()
+	const elapsed = now - lastRequestTime
+	if (elapsed < MIN_REQUEST_INTERVAL && lastRequestTime > 0) {
+		await new Promise((resolve) =>
+			setTimeout(resolve, MIN_REQUEST_INTERVAL - elapsed),
+		)
+	}
+	lastRequestTime = Date.now()
 }
 
 /** Make request to MusicBrainz API with required headers and rate limiting */
 const fetchMusicBrainz = async (endpoint: string): Promise<Response> => {
-  await waitForRateLimit()
+	await waitForRateLimit()
 
-  const response = await fetch(`${API_BASE}${endpoint}`, {
-    headers: {
-      'User-Agent': USER_AGENT,
-      Accept: 'application/json',
-    },
-  }).catch((error) => {
-    throw new ProviderError('musicbrainz', `Network error: ${error.message}`)
-  })
+	const response = await fetch(`${API_BASE}${endpoint}`, {
+		headers: {
+			"User-Agent": USER_AGENT,
+			Accept: "application/json",
+		},
+	}).catch((error) => {
+		throw new ProviderError("musicbrainz", `Network error: ${error.message}`)
+	})
 
-  if (response.status === 404) {
-    const idMatch = endpoint.match(/[a-f0-9-]{36}/i)
-    throw new MediaNotFoundError('musicbrainz', idMatch?.[0] ?? 'unknown')
-  }
+	if (response.status === 404) {
+		const idMatch = endpoint.match(/[a-f0-9-]{36}/i)
+		throw new MediaNotFoundError("musicbrainz", idMatch?.[0] ?? "unknown")
+	}
 
-  if (response.status === 503) {
-    throw new ProviderError('musicbrainz', 'Rate limit exceeded')
-  }
+	if (response.status === 503) {
+		throw new ProviderError("musicbrainz", "Rate limit exceeded")
+	}
 
-  if (!response.ok) {
-    throw new ProviderError('musicbrainz', `HTTP ${response.status}: ${response.statusText}`)
-  }
+	if (!response.ok) {
+		throw new ProviderError(
+			"musicbrainz",
+			`HTTP ${response.status}: ${response.statusText}`,
+		)
+	}
 
-  return response
+	return response
 }
 
 /** Extract primary artist name from artist-credit */
 const extractArtist = (artistCredit?: { name: string }[]): string =>
-  artistCredit?.[0]?.name ?? ''
+	artistCredit?.[0]?.name ?? ""
 
 /** Extract release titles from releases array */
 const extractReleases = (releases?: { title: string }[]): string[] =>
-  releases?.map((r) => r.title) ?? []
+	releases?.map((r) => r.title) ?? []
 
 /** Build search query from parsed title */
 const buildSearchQueries = (input: string): string[] => {
-  const parsed = parseTitle(input)
-  const queries: string[] = []
+	const parsed = parseTitle(input)
+	const queries: string[] = []
 
-  if (parsed.artist) {
-    // 1. Exact artist and recording
-    queries.push(`artist:"${parsed.artist}" AND recording:"${parsed.title}"`)
-    // 2. Fuzzy artist and recording
-    queries.push(`artist:${parsed.artist} AND recording:${parsed.title}`)
-  }
+	if (parsed.artist) {
+		// 1. Exact artist and recording
+		queries.push(`artist:"${parsed.artist}" AND recording:"${parsed.title}"`)
+		// 2. Fuzzy artist and recording
+		queries.push(`artist:${parsed.artist} AND recording:${parsed.title}`)
+	}
 
-  // 3. Title only, exact
-  queries.push(`recording:"${parsed.title}"`)
-  // 4. Title only, fuzzy
-  queries.push(`recording:${parsed.title}`)
+	// 3. Title only, exact
+	queries.push(`recording:"${parsed.title}"`)
+	// 4. Title only, fuzzy
+	queries.push(`recording:${parsed.title}`)
 
-  return queries
+	return queries
 }
 
 /**
@@ -119,27 +126,29 @@ const buildSearchQueries = (input: string): string[] => {
  * Tries queries in order of specificity, returns first non-empty result
  */
 export const search = async (title: string): Promise<MusicBrainzResult[]> => {
-  const queries = buildSearchQueries(title)
+	const queries = buildSearchQueries(title)
 
-  for (const query of queries) {
-    const encoded = encodeURIComponent(query)
-    const response = await fetchMusicBrainz(`/recording?query=${encoded}&fmt=json&limit=5`)
-    const data = (await response.json()) as MBSearchResponse
+	for (const query of queries) {
+		const encoded = encodeURIComponent(query)
+		const response = await fetchMusicBrainz(
+			`/recording?query=${encoded}&fmt=json&limit=5`,
+		)
+		const data = (await response.json()) as MBSearchResponse
 
-    if (data.recordings && data.recordings.length > 0) {
-      return data.recordings.map((rec) => ({
-        provider: 'musicbrainz' as const,
-        id: rec.id,
-        url: buildRecordingUrl(rec.id),
-        title: rec.title,
-        artist: extractArtist(rec['artist-credit']),
-        releases: extractReleases(rec.releases),
-        payload: rec,
-      }))
-    }
-  }
+		if (data.recordings && data.recordings.length > 0) {
+			return data.recordings.map((rec) => ({
+				provider: "musicbrainz" as const,
+				id: rec.id,
+				url: buildRecordingUrl(rec.id),
+				title: rec.title,
+				artist: extractArtist(rec["artist-credit"]),
+				releases: extractReleases(rec.releases),
+				payload: rec,
+			}))
+		}
+	}
 
-  return []
+	return []
 }
 
 /**
@@ -147,27 +156,29 @@ export const search = async (title: string): Promise<MusicBrainzResult[]> => {
  * Includes release data
  */
 export const getRecording = async (id: string): Promise<MusicBrainzResult> => {
-  const response = await fetchMusicBrainz(`/recording/${id}?inc=releases&fmt=json`)
-  const payload = (await response.json()) as MBRecordingResponse
+	const response = await fetchMusicBrainz(
+		`/recording/${id}?inc=releases&fmt=json`,
+	)
+	const payload = (await response.json()) as MBRecordingResponse
 
-  return {
-    provider: 'musicbrainz',
-    id,
-    url: buildRecordingUrl(id),
-    title: payload.title,
-    artist: extractArtist(payload['artist-credit']),
-    releases: extractReleases(payload.releases),
-    payload,
-  }
+	return {
+		provider: "musicbrainz",
+		id,
+		url: buildRecordingUrl(id),
+		title: payload.title,
+		artist: extractArtist(payload["artist-credit"]),
+		releases: extractReleases(payload.releases),
+		payload,
+	}
 }
 
 /** Release with URL relationships */
 export interface MusicBrainzRelease {
-  id: string
-  title: string
-  url: string
-  relations: { type: string; url: string }[]
-  payload: MBReleaseResponse
+	id: string
+	title: string
+	url: string
+	relations: { type: string; url: string }[]
+	payload: MBReleaseResponse
 }
 
 /**
@@ -175,24 +186,26 @@ export interface MusicBrainzRelease {
  * Includes URL relationships (useful for finding Discogs links)
  */
 export const getRelease = async (id: string): Promise<MusicBrainzRelease> => {
-  const response = await fetchMusicBrainz(`/release/${id}?inc=url-rels&fmt=json`)
-  const payload = (await response.json()) as MBReleaseResponse
+	const response = await fetchMusicBrainz(
+		`/release/${id}?inc=url-rels&fmt=json`,
+	)
+	const payload = (await response.json()) as MBReleaseResponse
 
-  const relations =
-    payload.relations
-      ?.filter((r) => r.url?.resource)
-      .map((r) => ({
-        type: r.type,
-        url: r.url!.resource,
-      })) ?? []
+	const relations =
+		payload.relations
+			?.filter((r) => r.url?.resource)
+			.map((r) => ({
+				type: r.type,
+				url: r.url?.resource ?? "",
+			})) ?? []
 
-  return {
-    id,
-    title: payload.title,
-    url: buildReleaseUrl(id),
-    relations,
-    payload,
-  }
+	return {
+		id,
+		title: payload.title,
+		url: buildReleaseUrl(id),
+		relations,
+		payload,
+	}
 }
 
 export const musicbrainz = { search, getRecording, getRelease }

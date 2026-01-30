@@ -4,9 +4,12 @@
   "exports": "./dist/index.js",
   "scripts": {
     "build": "tsc",
-    "test": "vitest run"
+    "test": "vitest run",
+    "lint": "biome check src/",
+    "format": "biome format --write src/"
   },
   "devDependencies": {
+    "@biomejs/biome": "^2.3.13",
     "typescript": "^5.7.3",
     "vitest": "^3.0.0"
   },

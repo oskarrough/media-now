@@ -2,7 +2,7 @@
  * media-now - Media metadata extraction library
  */
 
-export * from './types'
-export * from './errors'
-export { parseUrl, type ParsedUrl } from './parse-url'
-export { getMedia } from './get-media'
+export * from "./errors"
+export { getMedia } from "./get-media"
+export { type ParsedUrl, parseUrl } from "./parse-url"
+export * from "./types"

@@ -2,21 +2,24 @@
  * Main entry point - route URLs to appropriate providers
  */
 
-import type { MediaResult, Provider } from './types'
-import { ProviderError } from './errors'
-import { parseUrl } from './parse-url'
-import { youtube } from './providers/youtube'
-import { vimeo } from './providers/vimeo'
-import { spotify } from './providers/spotify'
-import { discogs } from './providers/discogs'
+import { ProviderError } from "./errors"
+import { parseUrl } from "./parse-url"
+import { discogs } from "./providers/discogs"
+import { spotify } from "./providers/spotify"
+import { vimeo } from "./providers/vimeo"
+import { youtube } from "./providers/youtube"
+import type { MediaResult, Provider } from "./types"
 
 /** Provider handlers mapped by name */
-const providers: Record<Provider, ((id: string) => Promise<MediaResult>) | null> = {
-  youtube: youtube.get,
-  vimeo: vimeo.get,
-  spotify: spotify.get,
-  discogs: discogs.get,
-  musicbrainz: null, // MusicBrainz is lookup-only, not URL-based
+const providers: Record<
+	Provider,
+	((id: string) => Promise<MediaResult>) | null
+> = {
+	youtube: youtube.get,
+	vimeo: vimeo.get,
+	spotify: spotify.get,
+	discogs: discogs.get,
+	musicbrainz: null, // MusicBrainz is lookup-only, not URL-based
 }
 
 /**
@@ -27,17 +30,20 @@ const providers: Record<Provider, ((id: string) => Promise<MediaResult>) | null>
  * @throws MediaNotFoundError if media doesn't exist
  */
 export const getMedia = async (url: string): Promise<MediaResult> => {
-  const parsed = parseUrl(url)
+	const parsed = parseUrl(url)
 
-  if (!parsed) {
-    throw new ProviderError('unknown' as Provider, 'Unrecognized URL')
-  }
+	if (!parsed) {
+		throw new ProviderError("unknown" as Provider, "Unrecognized URL")
+	}
 
-  const handler = providers[parsed.provider]
+	const handler = providers[parsed.provider]
 
-  if (!handler) {
-    throw new ProviderError(parsed.provider, 'Provider does not support URL fetching')
-  }
+	if (!handler) {
+		throw new ProviderError(
+			parsed.provider,
+			"Provider does not support URL fetching",
+		)
+	}
 
-  return handler(parsed.id)
+	return handler(parsed.id)
 }
