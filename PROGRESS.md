@@ -12,3 +12,4 @@ BLOCKED: 06-spotify - 2026-01-30 - see QUESTIONS.md
 - 03-title-parsing - 2026-01-30
 - 04-youtube - 2026-01-30
 - 05-vimeo - 2026-01-30
+- 07-discogs - 2026-01-30
