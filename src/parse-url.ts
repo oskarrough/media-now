@@ -100,6 +100,7 @@ const parseVimeo = (url: URL): ParsedUrl | null => {
 /**
  * Parse Spotify URLs
  * Pattern: open.spotify.com/track/{id} only (reject playlist/album)
+ * Handles optional locale prefix: /intl-{code}/track/{id}
  */
 const parseSpotify = (url: URL): ParsedUrl | null => {
 	const host = url.hostname.replace(/^www\./, "")
@@ -107,7 +108,8 @@ const parseSpotify = (url: URL): ParsedUrl | null => {
 	if (host !== "open.spotify.com") return null
 
 	// Only track URLs - reject playlist, album, artist, etc.
-	const match = url.pathname.match(/^\/track\/([a-zA-Z0-9]+)/)
+	// Optional intl-{locale} prefix (e.g., /intl-pt/track/{id})
+	const match = url.pathname.match(/^(?:\/intl-[a-z]+)?\/track\/([a-zA-Z0-9]+)/)
 	if (match?.[1]) return { provider: "spotify", id: match[1] }
 
 	return null

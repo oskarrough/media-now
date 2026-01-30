@@ -166,6 +166,17 @@ describe("parseUrl", () => {
 			})
 		})
 
+		it("parses internationalized track URLs", () => {
+			expect(
+				parseUrl(
+					"https://open.spotify.com/intl-pt/track/0hHDMvLvoJh8gYbJIi182A?si=592e44e1c4fa40e6",
+				),
+			).toEqual({
+				provider: "spotify",
+				id: "0hHDMvLvoJh8gYbJIi182A",
+			})
+		})
+
 		it("rejects playlist URLs", () => {
 			expect(parseUrl("https://open.spotify.com/playlist/abc123")).toBeNull()
 		})
