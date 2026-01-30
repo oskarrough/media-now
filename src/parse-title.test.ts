@@ -224,6 +224,89 @@ describe("cleanTitle", () => {
 	})
 })
 
+/**
+ * Edge cases discovered from r4 dataset analysis (scripts/analyze-patterns.ts)
+ * These are currently FAILING tests documenting patterns we want to support.
+ * Stats from 39545 tracks:
+ * - 514 tracks: hyphen with space on one side ("Artist- Title")
+ * - 221 tracks: multiple spaces as separator ("Title   Artist")
+ * - 67 tracks: double-dash used as separator, but truncated
+ * - 39 tracks: en-dash without spaces ("Artist‎–Title")
+ * - 219 tracks: em-dash not handled ("Artist—Title")
+ */
+describe("parseTitle edge cases (discovered from r4 data)", () => {
+	// PATTERN 1: Em-dash — (219 tracks)
+	// Currently not handled at all
+	it("splits on em-dash with spaces", () => {
+		// r4: "Def Leppard — Animal"
+		const result = parseTitle("Def Leppard — Animal")
+		expect(result.artist).toBe("Def Leppard")
+		expect(result.title).toBe("Animal")
+	})
+
+	it("splits on em-dash without spaces", () => {
+		// r4: "Galapagoose—Don't Break the Spell"
+		const result = parseTitle("Galapagoose—Don't Break the Spell")
+		expect(result.artist).toBe("Galapagoose")
+		expect(result.title).toBe("Don't Break the Spell")
+	})
+
+	// PATTERN 2: Hyphen with space on one side (514 tracks)
+	// Typos/inconsistent formatting
+	it("splits on hyphen-space (Artist- Title)", () => {
+		// r4: "Seu Jorge- Tive Razao"
+		const result = parseTitle("Seu Jorge- Tive Razao")
+		expect(result.artist).toBe("Seu Jorge")
+		expect(result.title).toBe("Tive Razao")
+	})
+
+	it("splits on space-hyphen (Artist -Title)", () => {
+		// r4: "Ray Hildebrand -Turn It Over To Jesus (1967)"
+		const result = parseTitle("Ray Hildebrand -Turn It Over To Jesus")
+		expect(result.artist).toBe("Ray Hildebrand")
+		expect(result.title).toBe("Turn It Over To Jesus")
+	})
+
+	// PATTERN 3: Double-dash as separator (67 tracks)
+	// Currently truncates before separator detection, losing the title
+	it("treats spaced double-dash as separator, not truncation", () => {
+		// r4: "Boards Of Canada -- Amo Bishop Roden"
+		// Currently: truncates at --, result is just "Boards Of Canada"
+		// Desired: split on " -- " as a separator
+		const result = parseTitle("Boards Of Canada -- Amo Bishop Roden")
+		expect(result.artist).toBe("Boards Of Canada")
+		expect(result.title).toBe("Amo Bishop Roden")
+	})
+
+	it("treats non-spaced double-dash as separator when at word boundary", () => {
+		// r4: "Dick Dale---Banzai Pipeline."
+		// Currently truncates, desired: find artist/title
+		const result = parseTitle("Dick Dale---Banzai Pipeline")
+		expect(result.artist).toBe("Dick Dale")
+		expect(result.title).toBe("Banzai Pipeline")
+	})
+
+	// PATTERN 4: En-dash without spaces (39 tracks)
+	// We only handle " – " (with spaces)
+	it("splits on en-dash without spaces", () => {
+		// r4: "Boney M. ‎– Kalimba De Luna" (note: has invisible char before –)
+		// Simpler test case:
+		const result = parseTitle("Artist–Title")
+		expect(result.artist).toBe("Artist")
+		expect(result.title).toBe("Title")
+	})
+
+	// PATTERN 5: Multiple spaces as separator (221 tracks)
+	// Portuguese radio station uses "Title   Artist" format with 3+ spaces
+	it("splits on multiple spaces (3+) as separator", () => {
+		// r4: "Oh Lady Mary   David Alexandre Winter"
+		const result = parseTitle("Oh Lady Mary   David Alexandre Winter")
+		// Note: these are reversed - title first, artist second
+		expect(result.title).toBe("Oh Lady Mary")
+		expect(result.artist).toBe("David Alexandre Winter")
+	})
+})
+
 describe("parseTitle bulk test with r4 tracks", () => {
 	it(`parses all ${r4Tracks.length} r4 tracks without throwing`, () => {
 		if (r4Tracks.length === 0) {
