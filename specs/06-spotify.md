@@ -1,22 +1,29 @@
 # Spotify Provider
 
-> Fetch Spotify track/playlist metadata without API key.
+> Fetch Spotify track metadata via oEmbed (no API key required).
 
 **Requires:** 01-types
-**Priority:** Low - if blocked, use `test.todo()` and move on
+**Priority:** Low
 
 ## Requirements
 
-- [ ] Create `src/providers/spotify.ts`
-- [ ] `spotify.get(id)` → `SpotifyResult` - track metadata only
+- [ ] Create `src/providers/spotify.ts` using oEmbed API only
+- [ ] `spotify.get(id)` → `SpotifyResult` - track metadata from oEmbed
+- [ ] Update `SpotifyResult` type: make `artist` and `duration` optional
 
 ## Implementation Notes
 
-Use keyless access via one of:
-- [spotifly](https://www.npmjs.com/package/spotifly) - unofficial API wrapper
-- Spotify oEmbed API (`https://open.spotify.com/oembed`) - limited but reliable
+**Use oEmbed only** (`https://open.spotify.com/oembed?url=...`)
 
-If spotifly doesn't work (broken, can't verify docs), oEmbed is acceptable. oEmbed returns less data (no duration) but is stable.
+oEmbed provides:
+- `title` (track name)
+- `thumbnail_url`
+
+oEmbed does NOT provide (these become optional):
+- `artist` - not available without API credentials
+- `duration` - not available without API credentials
+
+Do NOT use spotifly - it's broken (requires auth cookie now).
 
 ## Error Handling
 
