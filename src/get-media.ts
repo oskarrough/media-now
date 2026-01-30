@@ -1,0 +1,43 @@
+/**
+ * Main entry point - route URLs to appropriate providers
+ */
+
+import type { MediaResult, Provider } from './types'
+import { ProviderError } from './errors'
+import { parseUrl } from './parse-url'
+import { youtube } from './providers/youtube'
+import { vimeo } from './providers/vimeo'
+import { spotify } from './providers/spotify'
+import { discogs } from './providers/discogs'
+
+/** Provider handlers mapped by name */
+const providers: Record<Provider, ((id: string) => Promise<MediaResult>) | null> = {
+  youtube: youtube.get,
+  vimeo: vimeo.get,
+  spotify: spotify.get,
+  discogs: discogs.get,
+  musicbrainz: null, // MusicBrainz is lookup-only, not URL-based
+}
+
+/**
+ * Fetch media metadata from a URL
+ * @param url - Media URL (YouTube, Vimeo, Spotify, or Discogs)
+ * @returns Promise resolving to provider-specific MediaResult
+ * @throws ProviderError if URL is not recognized
+ * @throws MediaNotFoundError if media doesn't exist
+ */
+export const getMedia = async (url: string): Promise<MediaResult> => {
+  const parsed = parseUrl(url)
+
+  if (!parsed) {
+    throw new ProviderError('unknown' as Provider, 'Unrecognized URL')
+  }
+
+  const handler = providers[parsed.provider]
+
+  if (!handler) {
+    throw new ProviderError(parsed.provider, 'Provider does not support URL fetching')
+  }
+
+  return handler(parsed.id)
+}

@@ -3,6 +3,7 @@
 ## Current Work
 
 BLOCKED: 06-spotify - 2026-01-30 - see QUESTIONS.md
+CLAIMED: 10-entry-point (task 1: Create src/get-media.ts) - 2026-01-30
 
 ## Completed
 
