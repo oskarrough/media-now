@@ -2,7 +2,7 @@
 
 ## Current Work
 
-(none)
+CLAIMED: 01-types (src/types.ts) - 2026-01-30
 
 ## Completed
 
