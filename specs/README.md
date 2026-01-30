@@ -37,6 +37,9 @@ youtube vimeo spotify discogs musicbrainz soundcloud
 10. [11-soundcloud](./11-soundcloud.md) ← (parallel, requires: 01)
 11. [09-discovery-chain](./09-discovery-chain.md) ← requires: 03, 07, 08
 12. [10-entry-point](./10-entry-point.md) ← requires: all above
+13. [12-provider-tests](./12-provider-tests.md) ← requires: all providers implemented
+14. [13-provider-api-audit](./13-provider-api-audit.md) ← requires: 14
+15. [14-rename-get-to-fetch](./14-rename-get-to-fetch.md) ← do this first (spec violation fix)
 
 ## Parallel Work
 
@@ -57,11 +60,24 @@ After `00-project-setup`, coders can work on:
 
 ### Test Coverage
 
-**100% test coverage required** for all source files.
+**100% test coverage required** for all source files with runtime logic.
+
+#### What to test:
+- **Pure functions** (parse-url, parse-title, etc.) - Direct unit tests
+- **Provider modules** (youtube, vimeo, spotify, etc.) - Unit tests with mocked `fetch`
+- **Entry points** (get-media, discover) - Unit tests with mocked `fetch`
+
+#### Exempt from coverage:
+- **Type-only files** (`types.ts`, `errors.ts`) - No runtime logic to test
+
+#### Testing network code:
+Mock `fetch` at the module level. Test:
+- Successful responses (happy path)
+- Error responses (4xx, 5xx)
+- Malformed/unexpected response shapes
+- Network failures
 
 Verify before completing any spec:
 ```sh
 bun test --coverage
 ```
-
-All files in `src/` must show 100% coverage. No exceptions.
