@@ -7,7 +7,18 @@ How to use this file:
 - Keep this file clean - resolved decisions belong in specs/
 -->
 
-(No open questions)
+### Spec 13 Validation Tasks (2026-01-31)
+
+The unchecked items in `specs/13-provider-api-audit.md` are manual API validation tasks, not implementation tasks. They require:
+- Calling each provider against real APIs
+- Inspecting response shapes against documented interfaces
+- Deciding whether to export payload types or keep as `unknown`
+
+**Suggestion:** Consider running `bun run test:integration` and reviewing the output to check these off, or remove them from the spec if they're considered documentation-only guidance.
+
+---
+
+(No other open questions)
 
 ---
 
