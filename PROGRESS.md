@@ -20,3 +20,4 @@
 - 10-entry-point - 2026-01-30
 - 03-title-parsing (lenient separators) - 2026-01-30
 - 11-soundcloud - 2026-01-30
+- 10-entry-point (getMedia accepts string | ParsedUrl) - 2026-01-30

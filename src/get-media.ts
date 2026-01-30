@@ -3,7 +3,7 @@
  */
 
 import { ProviderError } from "./errors"
-import { parseUrl } from "./parse-url"
+import { type ParsedUrl, parseUrl } from "./parse-url"
 import { discogs } from "./providers/discogs"
 import { soundcloud } from "./providers/soundcloud"
 import { spotify } from "./providers/spotify"
@@ -25,14 +25,16 @@ const providers: Record<
 }
 
 /**
- * Fetch media metadata from a URL
- * @param url - Media URL (YouTube, Vimeo, Spotify, or Discogs)
+ * Fetch media metadata from a URL or parsed reference
+ * @param input - Media URL string or ParsedUrl object
  * @returns Promise resolving to provider-specific MediaResult
  * @throws ProviderError if URL is not recognized
  * @throws MediaNotFoundError if media doesn't exist
  */
-export const getMedia = async (url: string): Promise<MediaResult> => {
-	const parsed = parseUrl(url)
+export const getMedia = async (
+	input: string | ParsedUrl,
+): Promise<MediaResult> => {
+	const parsed = typeof input === "string" ? parseUrl(input) : input
 
 	if (!parsed) {
 		throw new ProviderError("unknown" as Provider, "Unrecognized URL")
