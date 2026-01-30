@@ -8,6 +8,7 @@
 - [ ] Create tsconfig.json targeting ES2022, ESM output, strict mode
 - [ ] Create vitest.config.ts
 - [ ] Create src/index.ts with placeholder export
+- [ ] Setup Biome for linting/formatting (no semicolons)
 
 ## Implementation Notes
 
@@ -16,6 +17,25 @@
 - tsconfig should enable `"strict": true`, `"moduleResolution": "bundler"`
 - Use `@typescript/native-preview` (tsgo) instead of regular typescript
 - This is the foundation - keep it minimal
+
+### Biome Setup
+
+Install: `bun add -d @biomejs/biome`
+
+Config (`biome.jsonc`):
+```jsonc
+{
+  "javascript": {
+    "formatter": {
+      "semicolons": "asNeeded"
+    }
+  },
+  "linter": { "enabled": true },
+  "formatter": { "enabled": true, "indentStyle": "tab" }
+}
+```
+
+Add scripts: `"lint": "biome check src/"`, `"format": "biome format --write src/"`
 
 ## Out of Scope
 

@@ -51,3 +51,16 @@ After `00-project-setup`, coders can work on:
 - Checkboxes represent individual commits
 - Coders track progress in PROGRESS.md (not here)
 - Questions from coders go in QUESTIONS.md at project root
+
+## Standards (applies to ALL specs)
+
+### Test Coverage
+
+**100% test coverage required** for all source files.
+
+Verify before completing any spec:
+```sh
+bun test --coverage
+```
+
+All files in `src/` must show 100% coverage. No exceptions.
