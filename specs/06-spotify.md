@@ -3,6 +3,7 @@
 > Fetch Spotify track/playlist metadata without API key.
 
 **Requires:** 01-types
+**Priority:** Low - if blocked, use `test.todo()` and move on
 
 ## Requirements
 
@@ -11,7 +12,11 @@
 
 ## Implementation Notes
 
-Uses [spotifly](https://www.npmjs.com/package/spotifly) library for keyless access. Verify this package is maintained and working before implementation—unofficial API packages can break.
+Use keyless access via one of:
+- [spotifly](https://www.npmjs.com/package/spotifly) - unofficial API wrapper
+- Spotify oEmbed API (`https://open.spotify.com/oembed`) - limited but reliable
+
+If spotifly doesn't work (broken, can't verify docs), oEmbed is acceptable. oEmbed returns less data (no duration) but is stable.
 
 ## Error Handling
 
