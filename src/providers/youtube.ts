@@ -54,10 +54,10 @@ const buildVideoUrl = (id: string): string =>
 	`https://www.youtube.com/watch?v=${id}`
 
 /** Fetch YouTube video metadata via oEmbed */
-export const get = async (id: string): Promise<YouTubeResult> => {
+export const fetch = async (id: string): Promise<YouTubeResult> => {
 	const url = `${OEMBED_URL}?url=${encodeURIComponent(buildVideoUrl(id))}&format=json`
 
-	const response = await fetch(url).catch((error) => {
+	const response = await globalThis.fetch(url).catch((error) => {
 		throw new ProviderError("youtube", `Network error: ${error.message}`)
 	})
 
@@ -89,7 +89,7 @@ export const get = async (id: string): Promise<YouTubeResult> => {
 export const search = async (query: string): Promise<SearchResult[]> => {
 	const url = `${YOUTUBEI_URL}?key=${YOUTUBEI_KEY}`
 
-	const response = await fetch(url, {
+	const response = await globalThis.fetch(url, {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
@@ -142,7 +142,7 @@ export const search = async (query: string): Promise<SearchResult[]> => {
 	return results
 }
 
-export const youtube = { get, search }
+export const youtube = { fetch, search }
 
 /**
  * regex from yt-dlp: (?P<id>[0-9A-Za-z_-]{{11}})

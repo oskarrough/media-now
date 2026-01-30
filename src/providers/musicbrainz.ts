@@ -65,7 +65,7 @@ const waitForRateLimit = async (): Promise<void> => {
 const fetchMusicBrainz = async (endpoint: string): Promise<Response> => {
 	await waitForRateLimit()
 
-	const response = await fetch(`${API_BASE}${endpoint}`, {
+	const response = await globalThis.fetch(`${API_BASE}${endpoint}`, {
 		headers: {
 			"User-Agent": USER_AGENT,
 			Accept: "application/json",
@@ -152,10 +152,10 @@ export const search = async (title: string): Promise<MusicBrainzResult[]> => {
 }
 
 /**
- * Get a specific MusicBrainz recording by ID
+ * Fetch a specific MusicBrainz recording by ID
  * Includes release data
  */
-export const getRecording = async (id: string): Promise<MusicBrainzResult> => {
+export const fetchRecording = async (id: string): Promise<MusicBrainzResult> => {
 	const response = await fetchMusicBrainz(
 		`/recording/${id}?inc=releases&fmt=json`,
 	)
@@ -182,10 +182,10 @@ export interface MusicBrainzRelease {
 }
 
 /**
- * Get a specific MusicBrainz release by ID
+ * Fetch a specific MusicBrainz release by ID
  * Includes URL relationships (useful for finding Discogs links)
  */
-export const getRelease = async (id: string): Promise<MusicBrainzRelease> => {
+export const fetchRelease = async (id: string): Promise<MusicBrainzRelease> => {
 	const response = await fetchMusicBrainz(
 		`/release/${id}?inc=url-rels&fmt=json`,
 	)
@@ -208,4 +208,4 @@ export const getRelease = async (id: string): Promise<MusicBrainzRelease> => {
 	}
 }
 
-export const musicbrainz = { search, getRecording, getRelease }
+export const musicbrainz = { search, fetchRecording, fetchRelease }

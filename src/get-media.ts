@@ -16,12 +16,12 @@ const providers: Record<
 	Provider,
 	((id: string) => Promise<MediaResult>) | null
 > = {
-	youtube: youtube.get,
-	vimeo: vimeo.get,
-	spotify: spotify.get,
-	discogs: discogs.get,
+	youtube: youtube.fetch,
+	vimeo: vimeo.fetch,
+	spotify: spotify.fetch,
+	discogs: discogs.fetch,
 	musicbrainz: null, // MusicBrainz is lookup-only, not URL-based
-	soundcloud: soundcloud.get,
+	soundcloud: soundcloud.fetch,
 }
 
 /**

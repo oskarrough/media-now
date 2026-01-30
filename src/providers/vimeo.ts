@@ -30,10 +30,10 @@ const OEMBED_URL = "https://vimeo.com/api/oembed.json"
 const buildVideoUrl = (id: string): string => `https://vimeo.com/${id}`
 
 /** Fetch Vimeo video metadata via oEmbed */
-export const get = async (id: string): Promise<VimeoResult> => {
+export const fetch = async (id: string): Promise<VimeoResult> => {
 	const url = `${OEMBED_URL}?url=${encodeURIComponent(buildVideoUrl(id))}`
 
-	const response = await fetch(url).catch((error) => {
+	const response = await globalThis.fetch(url).catch((error) => {
 		throw new ProviderError("vimeo", `Network error: ${error.message}`)
 	})
 
@@ -62,4 +62,4 @@ export const get = async (id: string): Promise<VimeoResult> => {
 	}
 }
 
-export const vimeo = { get }
+export const vimeo = { fetch }

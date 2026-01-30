@@ -2,7 +2,7 @@
  * Discovery chain - discover Discogs URL for a track via MusicBrainz
  */
 
-import { getRecording, getRelease, search } from "./providers/musicbrainz"
+import { fetchRecording, fetchRelease, search } from "./providers/musicbrainz"
 
 /**
  * Discover a Discogs URL for a track title via MusicBrainz.
@@ -28,7 +28,7 @@ export const discoverDiscogsUrl = async (
 	const recording = recordings[0]
 
 	// 2. Get full recording data with releases
-	const fullRecording = await getRecording(recording.id)
+	const fullRecording = await fetchRecording(recording.id)
 
 	// Extract release IDs from payload (raw MB data has IDs)
 	const payload = fullRecording.payload as { releases?: { id: string }[] }
@@ -38,7 +38,7 @@ export const discoverDiscogsUrl = async (
 
 	// 3. For each release, fetch URL relationships and look for Discogs
 	for (const releaseId of releaseIds) {
-		const release = await getRelease(releaseId)
+		const release = await fetchRelease(releaseId)
 
 		// 4. Find first discogs.com URL in relations
 		const discogsRelation = release.relations.find((rel) =>

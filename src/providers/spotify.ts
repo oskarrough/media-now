@@ -37,11 +37,11 @@ const parseTitle = (
 }
 
 /** Fetch Spotify track metadata via oEmbed */
-export const get = async (id: string): Promise<SpotifyResult> => {
+export const fetch = async (id: string): Promise<SpotifyResult> => {
 	const trackUrl = buildTrackUrl(id)
 	const url = `${OEMBED_URL}?url=${encodeURIComponent(trackUrl)}`
 
-	const response = await fetch(url).catch((error) => {
+	const response = await globalThis.fetch(url).catch((error) => {
 		throw new ProviderError("spotify", `Network error: ${error.message}`)
 	})
 
@@ -72,4 +72,4 @@ export const get = async (id: string): Promise<SpotifyResult> => {
 	}
 }
 
-export const spotify = { get }
+export const spotify = { fetch }

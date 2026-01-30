@@ -81,7 +81,7 @@ export const parseUrl = (url: string): ParsedDiscogsUrl | null => {
 
 /** Make request to Discogs API with required headers */
 const fetchDiscogs = async (endpoint: string): Promise<Response> => {
-	const response = await fetch(`${API_BASE}${endpoint}`, {
+	const response = await globalThis.fetch(`${API_BASE}${endpoint}`, {
 		headers: {
 			"User-Agent": USER_AGENT,
 		},
@@ -118,7 +118,7 @@ const extractLabels = (labels?: { name: string }[]): string[] =>
 	labels?.map((l) => l.name) ?? []
 
 /** Fetch Discogs release metadata */
-export const get = async (id: string): Promise<DiscogsResult> => {
+export const fetch = async (id: string): Promise<DiscogsResult> => {
 	const response = await fetchDiscogs(`/releases/${id}`)
 	const payload = (await response.json()) as DiscogsReleaseResponse
 
@@ -137,7 +137,7 @@ export const get = async (id: string): Promise<DiscogsResult> => {
 }
 
 /** Fetch Discogs master release metadata */
-export const getMaster = async (id: string): Promise<DiscogsResult> => {
+export const fetchMaster = async (id: string): Promise<DiscogsResult> => {
 	const response = await fetchDiscogs(`/masters/${id}`)
 	const payload = (await response.json()) as DiscogsMasterResponse
 
@@ -155,4 +155,4 @@ export const getMaster = async (id: string): Promise<DiscogsResult> => {
 	}
 }
 
-export const discogs = { parseUrl, get, getMaster }
+export const discogs = { parseUrl, fetch, fetchMaster }

@@ -27,11 +27,11 @@ const OEMBED_URL = "https://soundcloud.com/oembed"
 const buildTrackUrl = (id: string): string => `https://soundcloud.com/${id}`
 
 /** Fetch SoundCloud track metadata via oEmbed */
-export const get = async (id: string): Promise<SoundCloudResult> => {
+export const fetch = async (id: string): Promise<SoundCloudResult> => {
 	const trackUrl = buildTrackUrl(id)
 	const url = `${OEMBED_URL}?url=${encodeURIComponent(trackUrl)}&format=json`
 
-	const response = await fetch(url).catch((error) => {
+	const response = await globalThis.fetch(url).catch((error) => {
 		throw new ProviderError("soundcloud", `Network error: ${error.message}`)
 	})
 
@@ -60,4 +60,4 @@ export const get = async (id: string): Promise<SoundCloudResult> => {
 	}
 }
 
-export const soundcloud = { get }
+export const soundcloud = { fetch }
