@@ -8,6 +8,7 @@
 
 - [ ] Create `src/get-media.ts`
 - [ ] `getMedia(url: string)` → `Promise<MediaResult>` - parse URL and fetch from appropriate provider
+- [ ] Create README.md with API overview (methods, args, return types)
 
 ## getMedia() Behavior
 
