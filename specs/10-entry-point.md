@@ -7,15 +7,17 @@
 ## Requirements
 
 - [ ] Create `src/get-media.ts`
-- [ ] `getMedia(url: string)` → `Promise<MediaResult>` - parse URL and fetch from appropriate provider
+- [ ] `getMedia(input: string | ParsedUrl)` → `Promise<MediaResult>` - accept URL or parsed ref
 - [ ] Create README.md with API overview (methods, args, return types)
 
 ## getMedia() Behavior
 
-1. Parse URL using `parseUrl()`
+1. If `input` is string, parse using `parseUrl()`
 2. If `null`, throw `ProviderError('unknown', 'Unrecognized URL')`
-3. Route to appropriate provider's `.get()` method
+3. Route to appropriate provider's `fetch()` function using `{ provider, id }`
 4. Return the result
+
+Supports composition: `getMedia(parseUrl(url))`
 
 ## Out of Scope
 

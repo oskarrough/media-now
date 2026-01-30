@@ -7,9 +7,9 @@
 ## Requirements
 
 - [ ] Create `src/providers/musicbrainz.ts`
-- [ ] `musicbrainz.search(title)` → `MusicBrainzResult[]` - search recordings
-- [ ] `musicbrainz.getRecording(id)` → `MusicBrainzResult` - get recording with releases
-- [ ] `musicbrainz.getRelease(id)` → release with URL relationships (for finding Discogs links)
+- [ ] `search(title)` → `MusicBrainzResult[]` - search recordings
+- [ ] `fetchRecording(id)` → `MusicBrainzResult` - get recording with releases
+- [ ] `fetchRelease(id)` → release with URL relationships (for finding Discogs links)
 
 ## API Endpoints
 

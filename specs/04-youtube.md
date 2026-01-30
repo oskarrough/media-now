@@ -7,12 +7,12 @@
 ## Requirements
 
 - [ ] Create `src/providers/youtube.ts`
-- [ ] `youtube.get(id)` → `YouTubeResult` - fetch video metadata via oEmbed
-- [ ] `youtube.search(query)` → `SearchResult[]` - search videos via youtubei endpoint
+- [ ] `fetch(id)` → `YouTubeResult` - fetch video metadata via oEmbed
+- [ ] `search(query)` → `SearchResult[]` - search videos via youtubei endpoint
 
 ## API Endpoints
 
-**get(id):** `GET https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v={id}&format=json`
+**fetch(id):** `GET https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v={id}&format=json`
 
 **search(query):** `POST https://www.youtube.com/youtubei/v1/search?key=AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8`
 - Body: `{ query, context: { client: { clientName: 'WEB', clientVersion: '2.20230101' } } }`

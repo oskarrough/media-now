@@ -8,7 +8,7 @@
 ## Requirements
 
 - [ ] Create `src/providers/spotify.ts` using oEmbed API only
-- [ ] `spotify.get(id)` → `SpotifyResult` - track metadata from oEmbed
+- [ ] `fetch(id)` → `SpotifyResult` - track metadata from oEmbed
 - [ ] Update `SpotifyResult` type: make `artist` and `duration` optional
 
 ## Implementation Notes

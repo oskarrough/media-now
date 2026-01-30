@@ -7,7 +7,7 @@
 ## Requirements
 
 - [x] Create `src/providers/soundcloud.ts`
-- [x] `soundcloud.get(id)` → `SoundCloudResult` - fetch track metadata via oEmbed
+- [x] `fetch(id)` → `SoundCloudResult` - fetch track metadata via oEmbed
 - [x] Add SoundCloud URL parsing tests to `parse-url.test.ts`
 
 ## URL Parsing Tests
