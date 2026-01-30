@@ -143,3 +143,20 @@ export const search = async (query: string): Promise<SearchResult[]> => {
 }
 
 export const youtube = { get, search }
+
+/**
+ * regex from yt-dlp: (?P<id>[0-9A-Za-z_-]{{11}})
+ * function from r4-sync-tests
+ *
+export function extractYouTubeId(url) {
+	const patterns = [
+		/(?:youtube\.com\/\S*(?:(?:\/e(?:mbed))?\/|watch\/?\?(?:\S*?&?v=))|youtu\.be\/)([a-zA-Z0-9_-]{6,11})/
+	]
+	for (const pattern of patterns) {
+		const match = url.match(pattern)
+		if (match) return match[1]
+	}
+	return null
+}
+*/
+

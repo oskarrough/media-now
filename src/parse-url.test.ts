@@ -13,10 +13,10 @@ describe("parseUrl", () => {
 
 		it("parses watch URLs with extra params", () => {
 			expect(
-				parseUrl("https://youtube.com/watch?v=abc123&t=42s&list=PL1234"),
+				parseUrl("https://youtube.com/watch?v=9bZkp7q19f0&t=42s&list=PL1234"),
 			).toEqual({
 				provider: "youtube",
-				id: "abc123",
+				id: "9bZkp7q19f0",
 			})
 		})
 
@@ -28,9 +28,9 @@ describe("parseUrl", () => {
 		})
 
 		it("parses youtu.be with query params", () => {
-			expect(parseUrl("https://youtu.be/abc123?t=42")).toEqual({
+			expect(parseUrl("https://youtu.be/kJQP7kiw5Fk?t=42")).toEqual({
 				provider: "youtube",
-				id: "abc123",
+				id: "kJQP7kiw5Fk",
 			})
 		})
 
@@ -42,33 +42,73 @@ describe("parseUrl", () => {
 		})
 
 		it("parses /shorts/ URLs", () => {
-			expect(parseUrl("https://youtube.com/shorts/abc123")).toEqual({
+			expect(parseUrl("https://youtube.com/shorts/ZbZSe6N_BXs")).toEqual({
 				provider: "youtube",
-				id: "abc123",
+				id: "ZbZSe6N_BXs",
+			})
+		})
+
+		it("parses /live/ URLs", () => {
+			expect(parseUrl("https://youtube.com/live/jfKfPfyJRdk")).toEqual({
+				provider: "youtube",
+				id: "jfKfPfyJRdk",
+			})
+		})
+
+		it("parses legacy /v/ URLs", () => {
+			expect(parseUrl("https://youtube.com/v/dQw4w9WgXcQ")).toEqual({
+				provider: "youtube",
+				id: "dQw4w9WgXcQ",
 			})
 		})
 
 		it("handles http URLs", () => {
-			expect(parseUrl("http://youtube.com/watch?v=test123")).toEqual({
+			expect(parseUrl("http://youtube.com/watch?v=LXb3EKWsInQ")).toEqual({
 				provider: "youtube",
-				id: "test123",
+				id: "LXb3EKWsInQ",
 			})
 		})
 
 		it("parses m.youtube.com (mobile) URLs", () => {
-			expect(parseUrl("https://m.youtube.com/watch?v=abc123")).toEqual({
+			expect(parseUrl("https://m.youtube.com/watch?v=fJ9rUzIMcZQ")).toEqual({
 				provider: "youtube",
-				id: "abc123",
+				id: "fJ9rUzIMcZQ",
 			})
 		})
 
 		it("parses music.youtube.com URLs", () => {
 			expect(
-				parseUrl("https://music.youtube.com/watch?v=xyz789&feature=share"),
+				parseUrl("https://music.youtube.com/watch?v=CevxZvSJLk8&feature=share"),
 			).toEqual({
 				provider: "youtube",
-				id: "xyz789",
+				id: "CevxZvSJLk8",
 			})
+		})
+
+		it("extracts ID from URLs with fragment timestamps", () => {
+			expect(
+				parseUrl("https://www.youtube.com/watch?v=9klnhyVe0ns#t=216"),
+			).toEqual({
+				provider: "youtube",
+				id: "9klnhyVe0ns",
+			})
+		})
+
+		it("rejects IDs that are too short", () => {
+			expect(parseUrl("https://youtube.com/watch?v=abc123")).toBeNull()
+			expect(parseUrl("https://youtube.com/watch?v=short")).toBeNull()
+		})
+
+		it("extracts first 11 chars from overly long IDs", () => {
+			// Handles malformed URLs by taking first 11 valid chars
+			expect(parseUrl("https://youtube.com/watch?v=toolongid12345")).toEqual({
+				provider: "youtube",
+				id: "toolongid12",
+			})
+		})
+
+		it("rejects invalid IDs (bad characters)", () => {
+			expect(parseUrl("https://youtube.com/watch?v=abc123!@#$%")).toBeNull()
 		})
 	})
 
@@ -182,6 +222,41 @@ describe("parseUrl", () => {
 		})
 	})
 
+	describe("SoundCloud", () => {
+		it("parses track URLs", () => {
+			expect(parseUrl("https://soundcloud.com/ghostculture/lucky")).toEqual({
+				provider: "soundcloud",
+				id: "ghostculture/lucky",
+			})
+		})
+
+		it("strips query params", () => {
+			expect(parseUrl("https://soundcloud.com/artist/track?si=abc")).toEqual({
+				provider: "soundcloud",
+				id: "artist/track",
+			})
+		})
+
+		it("handles www prefix", () => {
+			expect(parseUrl("https://www.soundcloud.com/artist/track")).toEqual({
+				provider: "soundcloud",
+				id: "artist/track",
+			})
+		})
+
+		it("rejects profile-only URLs", () => {
+			expect(parseUrl("https://soundcloud.com/artist")).toBeNull()
+		})
+
+		it("rejects playlist URLs", () => {
+			expect(parseUrl("https://soundcloud.com/artist/sets/playlist")).toBeNull()
+		})
+
+		it("rejects reserved paths", () => {
+			expect(parseUrl("https://soundcloud.com/discover/trending")).toBeNull()
+		})
+	})
+
 	describe("Edge cases", () => {
 		it("returns null for invalid URLs", () => {
 			expect(parseUrl("not a url")).toBeNull()
@@ -195,17 +270,13 @@ describe("parseUrl", () => {
 			expect(parseUrl("")).toBeNull()
 		})
 
-		it("handles URL-encoded characters", () => {
-			expect(parseUrl("https://youtube.com/watch?v=abc%20123")).toEqual({
-				provider: "youtube",
-				id: "abc 123",
-			})
+		it("returns null for YouTube URLs with invalid IDs", () => {
+			// URL-encoded space creates invalid ID
+			expect(parseUrl("https://youtube.com/watch?v=abc%20123456")).toBeNull()
 		})
 	})
 
 	describe("bulk validation", () => {
-		// 97% achievable with current providers (YouTube, Vimeo, Spotify, Discogs)
-		// SoundCloud (~2.2%) not implemented - would need new spec
 		it("parses 97% of track URLs to valid media IDs", () => {
 			const results = tracks.map((track) => {
 				const parsed = parseUrl(track.url)

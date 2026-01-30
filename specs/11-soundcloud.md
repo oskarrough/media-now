@@ -6,8 +6,18 @@
 
 ## Requirements
 
-- [ ] Create `src/providers/soundcloud.ts`
-- [ ] `soundcloud.get(id)` → `SoundCloudResult` - fetch track metadata via oEmbed
+- [x] Create `src/providers/soundcloud.ts`
+- [x] `soundcloud.get(id)` → `SoundCloudResult` - fetch track metadata via oEmbed
+- [x] Add SoundCloud URL parsing tests to `parse-url.test.ts`
+
+## URL Parsing Tests
+
+Add `describe("SoundCloud")` block with cases:
+- `soundcloud.com/artist/track` → `{ provider: "soundcloud", id: "artist/track" }`
+- `soundcloud.com/artist/track?query=param` → valid (strips query)
+- `soundcloud.com/artist` → `null` (profile, not track)
+- `soundcloud.com/artist/sets/playlist` → `null` (playlist rejected)
+- `soundcloud.com/discover/something` → `null` (reserved path)
 
 ## URL/ID Format
 

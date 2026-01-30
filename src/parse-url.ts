@@ -31,8 +31,18 @@ export const parseUrl = (url: string): ParsedUrl | null => {
 }
 
 /**
+ * YouTube video ID: exactly 11 chars from [0-9A-Za-z_-]
+ * Based on yt-dlp's well-tested regex pattern
+ */
+const YOUTUBE_ID_REGEX = /^[0-9A-Za-z_-]{11}$/
+const extractYouTubeId = (raw: string): string | null => {
+	const match = raw.match(/^([0-9A-Za-z_-]{11})/)
+	return match?.[1] && YOUTUBE_ID_REGEX.test(match[1]) ? match[1] : null
+}
+
+/**
  * Parse YouTube URLs
- * Patterns: watch?v=, youtu.be/, /embed/, /shorts/
+ * Patterns: watch?v=, youtu.be/, /embed/, /shorts/, /live/, /v/, /e/
  * Hosts: youtube.com, m.youtube.com, music.youtube.com, etc.
  */
 const parseYouTube = (url: URL): ParsedUrl | null => {
@@ -40,7 +50,8 @@ const parseYouTube = (url: URL): ParsedUrl | null => {
 
 	// youtu.be/{id}
 	if (host === "youtu.be") {
-		const id = url.pathname.slice(1).split("/")[0]
+		const raw = url.pathname.slice(1).split("/")[0]
+		const id = extractYouTubeId(raw)
 		return id ? { provider: "youtube", id } : null
 	}
 
@@ -49,12 +60,18 @@ const parseYouTube = (url: URL): ParsedUrl | null => {
 	if (!isYouTube) return null
 
 	// watch?v={id}
-	const watchId = url.searchParams.get("v")
-	if (watchId) return { provider: "youtube", id: watchId }
+	const watchParam = url.searchParams.get("v")
+	if (watchParam) {
+		const id = extractYouTubeId(watchParam)
+		return id ? { provider: "youtube", id } : null
+	}
 
-	// /embed/{id} or /shorts/{id}
-	const match = url.pathname.match(/^\/(embed|shorts)\/([^/?]+)/)
-	if (match?.[2]) return { provider: "youtube", id: match[2] }
+	// /embed/{id}, /shorts/{id}, /live/{id}, /v/{id}, /e/{id}
+	const match = url.pathname.match(/^\/(embed|shorts|live|v|e)\/([^/?]+)/)
+	if (match?.[2]) {
+		const id = extractYouTubeId(match[2])
+		return id ? { provider: "youtube", id } : null
+	}
 
 	return null
 }
