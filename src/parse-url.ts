@@ -32,6 +32,7 @@ export const parseUrl = (url: string): ParsedUrl | null => {
 /**
  * Parse YouTube URLs
  * Patterns: watch?v=, youtu.be/, /embed/, /shorts/
+ * Hosts: youtube.com, m.youtube.com, music.youtube.com, etc.
  */
 const parseYouTube = (url: URL): ParsedUrl | null => {
 	const host = url.hostname.replace(/^www\./, "")
@@ -42,8 +43,9 @@ const parseYouTube = (url: URL): ParsedUrl | null => {
 		return id ? { provider: "youtube", id } : null
 	}
 
-	// youtube.com patterns
-	if (host !== "youtube.com") return null
+	// youtube.com and subdomains (m.youtube.com, music.youtube.com, etc.)
+	const isYouTube = host === "youtube.com" || host.endsWith(".youtube.com")
+	if (!isYouTube) return null
 
 	// watch?v={id}
 	const watchId = url.searchParams.get("v")

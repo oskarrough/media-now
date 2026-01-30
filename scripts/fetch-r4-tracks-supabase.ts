@@ -12,7 +12,6 @@ const SUPABASE_ANON_KEY =
 	"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdmdW9wa3V2Zmhvbmtudq0gcGRvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDM2MDA0NTksImV4cCI6MjAxOTE3NjQ1OX0.loLkzR6sHlPK3PoC5aPPbrBP3oYoPsUL2OgsXOjUvIc"
 
 const PAGE_SIZE = 2000
-const TOTAL_PAGES = 10
 
 interface Track {
 	id: string
@@ -22,10 +21,9 @@ interface Track {
 }
 
 async function fetchPage(page: number): Promise<Track[]> {
-	const from = page * PAGE_SIZE
-	const to = from + PAGE_SIZE - 1
+	const offset = page * PAGE_SIZE
 
-	const url = `${SUPABASE_URL}/rest/v1/tracks?select=id,title,url,channel_id&order=created_at.desc&offset=${from}&limit=${PAGE_SIZE}`
+	const url = `${SUPABASE_URL}/rest/v1/tracks?select=id,title,url,channel_id&order=created_at.desc&offset=${offset}&limit=${PAGE_SIZE}`
 
 	const response = await fetch(url, {
 		headers: {
@@ -42,12 +40,13 @@ async function fetchPage(page: number): Promise<Track[]> {
 }
 
 async function main() {
-	console.log(`Fetching ${TOTAL_PAGES} pages of ${PAGE_SIZE} tracks each...`)
+	console.log(`Fetching all tracks in pages of ${PAGE_SIZE}...`)
 
 	const allTracks: Track[] = []
+	let page = 0
 
-	for (let page = 0; page < TOTAL_PAGES; page++) {
-		console.log(`Fetching page ${page + 1}/${TOTAL_PAGES}...`)
+	while (true) {
+		console.log(`Fetching page ${page + 1}... (${allTracks.length} tracks so far)`)
 		const tracks = await fetchPage(page)
 		allTracks.push(...tracks)
 
@@ -55,6 +54,7 @@ async function main() {
 			console.log(`Page ${page + 1} returned ${tracks.length} tracks (last page)`)
 			break
 		}
+		page++
 	}
 
 	const outputPath = "test-data/r4-tracks.json"
