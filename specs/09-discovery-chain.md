@@ -6,61 +6,68 @@
 
 ## Requirements
 
-- [ ] Create `src/discover.ts`
-- [ ] `discoverDiscogsUrl(title: string)` → `Promise<string | null>`
+- Create `src/discover.ts`
+- `discoverDiscogsUrl(title: string)` → `Promise<DiscoverResult>`
+
+### Return Type
+
+```typescript
+interface DiscoverResult {
+  url: string | null                // The Discogs URL, or null if not found
+  payload: {
+    searchedTitle: string           // Original title that was searched
+    parsedTitle?: ParsedTitle       // Result from parseTitle()
+    releaseGroup?: MBReleaseGroup   // Raw MusicBrainz release group response (minimal transform)
+  }
+}
+```
+
+**Payload principle:** Return raw API responses with minimal transformation. Don't cherry-pick fields - pass through the MusicBrainz data as-is so callers have full context for debugging.
 
 ## Data Flow
 
 ```
 title → parseTitle() → { artist, title }
-      → searchReleaseGroups(artist, title)
-      → filter: NOT secondarytype:compilation
-      → score by: primarytype (Single > Album), firstreleasedate (older = better)
-      → for top candidates: fetchReleaseGroup() with url-rels
-      → find discogs.com URL → return best match (or null)
+      → search recordings via musicbrainz.search(title)
+      → for each recording: fetchRecording() to get releases with metadata
+      → score releases by: artist match, primarytype, secondarytypes, date
+      → for top candidates: fetchRelease() with url-rels
+      → find discogs.com URL → return highest-scoring result
 ```
 
 ## MusicBrainz Search Strategy
 
-Use **Release Group** search (not Recording search) with Lucene query:
+Uses Recording search (via `musicbrainz.search()`) which tries queries in order:
+1. `artist:"X" AND recording:"Y"` (exact)
+2. `artist:X AND recording:Y` (fuzzy)
+3. `recording:"Y"` (title only, exact)
+4. `recording:Y` (title only, fuzzy)
 
-```
-artist:"{artist}" AND releasegroup:"{title}" AND NOT secondarytype:compilation
-```
-
-Release Groups represent "albums" in MusicBrainz terminology:
-- A Single release group for "Never Gonna Give You Up" contains the original 1987 single
-- Avoids DJ-mix/compilation recordings that pollute Recording search results
-
-### Search Fields (Release Group)
-
-| Field | Description |
-|-------|-------------|
-| `artist` | combined credited artist name |
-| `releasegroup` | the release group's title |
-| `primarytype` | Album, Single, EP, Broadcast, Other |
-| `secondarytype` | Compilation, Soundtrack, Live, Remix, DJ-mix, etc. |
-| `firstreleasedate` | earliest release date (e.g. "1987-07-27") |
+Then fetches each recording with `inc=releases+release-groups+artist-credits` to get release metadata for scoring.
 
 ### Scoring
 
-Prefer releases in this order:
-1. **Single** with matching title (highest confidence - it's THE release for that track)
-2. **Album** without secondary types (original studio album)
-3. **EP** without secondary types
-4. Earlier `firstreleasedate` (original releases came first)
+Score releases to prioritize originals over compilations:
 
-Reject:
-- Any release with `secondarytype:compilation`
-- "Various Artists" credited releases
+**Bonuses:**
+- Artist name matches expected: +100
+- Single or EP: +40
+- Album: +30
+- Earlier release date: up to +50 (older = better)
+- Discogs master URL: +10
+
+**Penalties:**
+- "Various Artists": -200
+- Compilation: -100
+- DJ-mix: -80
+- Remix: -50
 
 ## Implementation Notes
 
-- Search release-groups first, fall back to recordings if no match
-- Return `null` if no Discogs URL is found
+- Return `{ url: null, payload: {...} }` if no Discogs URL is found
 - Throw `ProviderError` on network/API errors
 - MusicBrainz rate limiting is handled by the provider
-- Release groups can have Discogs URLs directly via `url-rels`
+- Fetches only top candidates (positive scores, or top 5 if none)
 
 ## Out of Scope
 

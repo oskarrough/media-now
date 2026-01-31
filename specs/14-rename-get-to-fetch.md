@@ -23,16 +23,16 @@ Rename methods to match original spec:
 
 ## Implementation Checklist
 
-- [ ] Rename `get` → `fetch` in `src/providers/youtube.ts`
-- [ ] Rename `get` → `fetch` in `src/providers/vimeo.ts`
-- [ ] Rename `get` → `fetch` in `src/providers/spotify.ts`
-- [ ] Rename `get` → `fetch` in `src/providers/soundcloud.ts`
-- [ ] Rename `get` → `fetch`, `getMaster` → `fetchMaster` in `src/providers/discogs.ts`
-- [ ] Rename `getRecording` → `fetchRecording`, `getRelease` → `fetchRelease` in `src/providers/musicbrainz.ts`
-- [ ] Update all imports/usages in `src/get-media.ts`
-- [ ] Update all imports/usages in `src/discover.ts`
-- [ ] Update exported objects: `youtube = { fetch, search }`, etc.
-- [ ] Run `bun run build && bun test` to verify
+- Rename `get` → `fetch` in `src/providers/youtube.ts`
+- Rename `get` → `fetch` in `src/providers/vimeo.ts`
+- Rename `get` → `fetch` in `src/providers/spotify.ts`
+- Rename `get` → `fetch` in `src/providers/soundcloud.ts`
+- Rename `get` → `fetch`, `getMaster` → `fetchMaster` in `src/providers/discogs.ts`
+- Rename `getRecording` → `fetchRecording`, `getRelease` → `fetchRelease` in `src/providers/musicbrainz.ts`
+- Update all imports/usages in `src/get-media.ts`
+- Update all imports/usages in `src/discover.ts`
+- Update exported objects: `youtube = { fetch, search }`, etc.
+- Run `bun run build && bun test` to verify
 
 ## Out of Scope
 

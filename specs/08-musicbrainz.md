@@ -6,16 +6,16 @@
 
 ## Requirements
 
-- [ ] Create `src/providers/musicbrainz.ts`
-- [ ] `search(title)` → `MusicBrainzResult[]` - search recordings
-- [ ] `fetchRecording(id)` → `MusicBrainzResult` - get recording with releases
-- [ ] `fetchRelease(id)` → release with URL relationships (for finding Discogs links)
+- Create `src/providers/musicbrainz.ts`
+- `search(title)` → `MusicBrainzResult[]` - search recordings
+- `fetchRecording(id)` → `MusicBrainzResult` - get recording with releases
+- `fetchRelease(id)` → release with URL relationships (for finding Discogs links)
 
 ## API Endpoints
 
-- Search: `GET https://musicbrainz.org/ws/2/recording?query={query}&fmt=json&limit=5`
-- Recording: `GET https://musicbrainz.org/ws/2/recording/{id}?inc=releases&fmt=json`
-- Release: `GET https://musicbrainz.org/ws/2/release/{id}?inc=url-rels&fmt=json`
+- Search: `GET https://musicbrainz.org/ws/2/recording?query={query}&fmt=json&limit=10`
+- Recording: `GET https://musicbrainz.org/ws/2/recording/{id}?inc=releases+release-groups+artist-credits&fmt=json`
+- Release: `GET https://musicbrainz.org/ws/2/release/{id}?inc=url-rels+artist-credits+release-groups&fmt=json`
 
 Headers: User-Agent required (with contact info, e.g., `media-now/1.0.0`)
 

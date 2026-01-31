@@ -6,9 +6,9 @@
 
 ## Requirements
 
-- [ ] Create `src/providers/youtube.ts`
-- [ ] `fetch(id)` → `YouTubeResult` - fetch video metadata via oEmbed
-- [ ] `search(query)` → `SearchResult[]` - search videos via youtubei endpoint
+- Create `src/providers/youtube.ts`
+- `fetch(id)` → `YouTubeResult` - fetch video metadata via oEmbed
+- `search(query)` → `SearchResult[]` - search videos via youtubei endpoint
 
 ## API Endpoints
 
@@ -24,10 +24,6 @@
 - `MediaNotFoundError` for 404
 - `ProviderError` for network/rate limit errors
 - Empty array for no search results
-
-## Test Data
-
-- Get YouTube URLs via `r4 tracks --help`
 
 ## Out of Scope
 

@@ -89,23 +89,25 @@ export const fetch = async (id: string): Promise<YouTubeResult> => {
 export const search = async (query: string): Promise<SearchResult[]> => {
 	const url = `${YOUTUBEI_URL}?key=${YOUTUBEI_KEY}`
 
-	const response = await globalThis.fetch(url, {
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json",
-		},
-		body: JSON.stringify({
-			query,
-			context: {
-				client: {
-					clientName: "WEB",
-					clientVersion: "2.20230101",
-				},
+	const response = await globalThis
+		.fetch(url, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
 			},
-		}),
-	}).catch((error) => {
-		throw new ProviderError("youtube", `Network error: ${error.message}`)
-	})
+			body: JSON.stringify({
+				query,
+				context: {
+					client: {
+						clientName: "WEB",
+						clientVersion: "2.20230101",
+					},
+				},
+			}),
+		})
+		.catch((error) => {
+			throw new ProviderError("youtube", `Network error: ${error.message}`)
+		})
 
 	if (!response.ok) {
 		throw new ProviderError(
@@ -159,4 +161,3 @@ export function extractYouTubeId(url) {
 	return null
 }
 */
-

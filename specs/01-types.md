@@ -6,8 +6,8 @@
 
 ## Requirements
 
-- [ ] Create `src/types.ts` with `Provider`, `MediaResult`, and provider-specific result types
-- [ ] Create `src/errors.ts` with `MediaNotFoundError`, `ProviderError`
+- Create `src/types.ts` with `Provider`, `MediaResult`, and provider-specific result types
+- Create `src/errors.ts` with `MediaNotFoundError`, `ProviderError`
 
 ## Types to Define
 
@@ -18,7 +18,8 @@
 - `SpotifyResult` - extends MediaResult: thumbnail, artist, duration, album?, isrc?
 - `DiscogsResult` - extends MediaResult: year?, genres[], styles[], artists[], labels[]
 - `MusicBrainzResult` - extends MediaResult: artist, releases[]
-- `SoundCloudResult` - extends MediaResult: thumbnail, author
+- `MusicBrainzRelease` - id, title, url, relations[], payload
+- `SoundCloudResult` - extends MediaResult: thumbnail?, author, description?
 - `SearchResult` - provider, id, title, thumbnail?, url
 - `ParsedTitle` - artist (nullable), title, original
 - `ParsedUrl` - { provider: Provider, id: string }

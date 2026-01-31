@@ -21,8 +21,8 @@ Create an integration test script that:
 
 ## Implementation
 
-- [ ] Create `scripts/test-providers.ts` (or `test/integration.ts`)
-- [ ] Add test cases for each provider:
+- Create `scripts/test-providers.ts` (or `test/integration.ts`)
+- Add test cases for each provider:
   - `youtube.fetch("dQw4w9WgXcQ")` — Rick Astley
   - `vimeo.fetch("76979871")` — known video
   - `spotify.fetch("4cOdK2wGLETKBW3PvgPWqT")` — known track
@@ -31,8 +31,8 @@ Create an integration test script that:
   - `musicbrainz.search("Bohemian Rhapsody")`
   - `musicbrainz.fetchRecording("...")` — known UUID
   - `soundcloud.fetch("forss/flickermood")` — known track
-- [ ] Add npm script: `"test:integration": "bun run scripts/test-providers.ts"`
-- [ ] Log payload shapes for documentation
+- Add npm script: `"test:integration": "bun run scripts/test-providers.ts"`
+- Log payload shapes for documentation
 
 ## Future: Record/Replay (Optional)
 

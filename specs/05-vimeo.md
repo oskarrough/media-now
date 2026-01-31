@@ -6,8 +6,8 @@
 
 ## Requirements
 
-- [ ] Create `src/providers/vimeo.ts`
-- [ ] `fetch(id)` → `VimeoResult` - fetch video metadata via oEmbed
+- Create `src/providers/vimeo.ts`
+- `fetch(id)` → `VimeoResult` - fetch video metadata via oEmbed
 
 ## API Endpoint
 

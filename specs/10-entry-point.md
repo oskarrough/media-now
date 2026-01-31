@@ -6,9 +6,9 @@
 
 ## Requirements
 
-- [ ] Create `src/get-media.ts`
-- [ ] `getMedia(input: string | ParsedUrl)` → `Promise<MediaResult>` - accept URL or parsed ref
-- [ ] Create README.md with API overview (methods, args, return types)
+- Create `src/get-media.ts`
+- `getMedia(input: string | ParsedUrl)` → `Promise<MediaResult>` - accept URL or parsed ref
+- Create README.md with API overview (methods, args, return types)
 
 ## getMedia() Behavior
 

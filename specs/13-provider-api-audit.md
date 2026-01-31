@@ -157,47 +157,34 @@ Complex nested structure — `payload` not included in SearchResult.
 }
 ```
 
-## Issues to Address
-
-### 1. MusicBrainzRelease not in types.ts
-
-`MusicBrainzRelease` is defined locally in `musicbrainz.ts` but not exported from `types.ts`. This inconsistency should be fixed.
-
-### 2. Payload typed as `unknown`
-
-Consider exporting payload types so consumers can access raw API data with type safety. Options:
-- Export each provider's response interface from types.ts
-- Use generics: `MediaResult<TPayload = unknown>`
-- Keep as `unknown` if payload is considered internal
-
 ## Validation Tasks
 
 Run each provider method against real APIs and verify:
-- [ ] Response shape matches TypeScript interface
-- [ ] All required fields are present
-- [ ] Optional fields behave as expected
-- [ ] Error cases throw correct error types
-- [ ] **Payload shapes match documented interfaces above**
+- Response shape matches TypeScript interface
+- All required fields are present
+- Optional fields behave as expected
+- Error cases throw correct error types
+- **Payload shapes match documented interfaces above**
 
 ### Per-Provider Validation
 
-- [ ] **youtube.fetch** - Verify YouTubeResult + payload fields
-- [ ] **youtube.search** - Verify SearchResult[] fields
-- [ ] **vimeo.fetch** - Verify VimeoResult + payload fields
-- [ ] **spotify.fetch** - Verify SpotifyResult + payload fields
-- [ ] **discogs.fetch** - Verify DiscogsResult + payload fields (check for undocumented fields)
-- [ ] **discogs.fetchMaster** - Verify DiscogsResult + payload fields
-- [ ] **musicbrainz.search** - Verify MusicBrainzResult[] + payload fields
-- [ ] **musicbrainz.fetchRecording** - Verify MusicBrainzResult + payload fields
-- [ ] **musicbrainz.fetchRelease** - Verify MusicBrainzRelease + payload fields
-- [ ] **soundcloud.fetch** - Verify SoundCloudResult + payload fields
+- **youtube.fetch** - Verify YouTubeResult + payload fields
+- **youtube.search** - Verify SearchResult[] fields
+- **vimeo.fetch** - Verify VimeoResult + payload fields
+- **spotify.fetch** - Verify SpotifyResult + payload fields
+- **discogs.fetch** - Verify DiscogsResult + payload fields (check for undocumented fields)
+- **discogs.fetchMaster** - Verify DiscogsResult + payload fields
+- **musicbrainz.search** - Verify MusicBrainzResult[] + payload fields
+- **musicbrainz.fetchRecording** - Verify MusicBrainzResult + payload fields
+- **musicbrainz.fetchRelease** - Verify MusicBrainzRelease + payload fields
+- **soundcloud.fetch** - Verify SoundCloudResult + payload fields
 
 ### Payload Documentation Task
 
-- [ ] Create a validation script that logs raw payloads from each provider
-- [ ] Compare actual responses with documented shapes above
-- [ ] Note any additional fields returned by APIs (Discogs especially returns many more)
-- [ ] Decide: export payload types or keep as `unknown`?
+- Create a validation script that logs raw payloads from each provider
+- Compare actual responses with documented shapes above
+- Note any additional fields returned by APIs (Discogs especially returns many more)
+- Decide: export payload types or keep as `unknown`?
 
 ## Implementation Notes
 

@@ -81,13 +81,15 @@ export const parseUrl = (url: string): ParsedDiscogsUrl | null => {
 
 /** Make request to Discogs API with required headers */
 const fetchDiscogs = async (endpoint: string): Promise<Response> => {
-	const response = await globalThis.fetch(`${API_BASE}${endpoint}`, {
-		headers: {
-			"User-Agent": USER_AGENT,
-		},
-	}).catch((error) => {
-		throw new ProviderError("discogs", `Network error: ${error.message}`)
-	})
+	const response = await globalThis
+		.fetch(`${API_BASE}${endpoint}`, {
+			headers: {
+				"User-Agent": USER_AGENT,
+			},
+		})
+		.catch((error) => {
+			throw new ProviderError("discogs", `Network error: ${error.message}`)
+		})
 
 	if (response.status === 404) {
 		// Extract ID from endpoint for error

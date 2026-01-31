@@ -6,9 +6,9 @@
 
 ## Requirements
 
-- [x] Create `src/providers/soundcloud.ts`
-- [x] `fetch(id)` → `SoundCloudResult` - fetch track metadata via oEmbed
-- [x] Add SoundCloud URL parsing tests to `parse-url.test.ts`
+- Create `src/providers/soundcloud.ts`
+- `fetch(id)` → `SoundCloudResult` - fetch track metadata via oEmbed
+- Add SoundCloud URL parsing tests to `parse-url.test.ts`
 
 ## URL Parsing Tests
 
@@ -35,10 +35,6 @@ Returns: title, author_name, thumbnail_url, description.
 
 - `MediaNotFoundError` for 404
 - `ProviderError` for network errors
-
-## Test Data
-
-See `test-data/r4-tracks.json` - contains ~2.2% SoundCloud URLs.
 
 ## Out of Scope
 

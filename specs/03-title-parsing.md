@@ -6,8 +6,8 @@
 
 ## Requirements
 
-- [ ] `parseTitle(title)` → `{ artist: string | null, title: string, original: string }`
-- [ ] `cleanTitle(title)` → `string` (cleaned for search)
+- `parseTitle(title)` → `{ artist: string | null, title: string, original: string }`
+- `cleanTitle(title)` → `string` (cleaned for search)
 
 ## Separators (in precedence order)
 

@@ -109,7 +109,9 @@ describe("discoverDiscogsUrl", () => {
 			id: "rel-1",
 			title: "Test Album",
 			url: "https://musicbrainz.org/release/rel-1",
-			relations: [{ type: "discogs", url: "https://www.discogs.com/release/12345" }],
+			relations: [
+				{ type: "discogs", url: "https://www.discogs.com/release/12345" },
+			],
 			payload: {},
 		})
 
@@ -163,7 +165,9 @@ describe("discoverDiscogsUrl", () => {
 			id: "rel-2",
 			title: "Test Album",
 			url: "https://musicbrainz.org/release/rel-2",
-			relations: [{ type: "discogs", url: "https://www.discogs.com/release/67890" }],
+			relations: [
+				{ type: "discogs", url: "https://www.discogs.com/release/67890" },
+			],
 			payload: {},
 		})
 
@@ -198,7 +202,10 @@ describe("discoverDiscogsUrl", () => {
 						id: "rel-1",
 						title: "Compilation",
 						"artist-credit": [{ name: "Various Artists" }],
-						"release-group": { "primary-type": "Album", "secondary-types": ["Compilation"] },
+						"release-group": {
+							"primary-type": "Album",
+							"secondary-types": ["Compilation"],
+						},
 					},
 					{
 						id: "rel-2",
@@ -214,7 +221,9 @@ describe("discoverDiscogsUrl", () => {
 			id: "rel-2",
 			title: "Original Album",
 			url: "https://musicbrainz.org/release/rel-2",
-			relations: [{ type: "discogs", url: "https://www.discogs.com/release/original" }],
+			relations: [
+				{ type: "discogs", url: "https://www.discogs.com/release/original" },
+			],
 			payload: {
 				"artist-credit": [{ name: "Test Artist" }],
 				"release-group": { "primary-type": "Album", "secondary-types": [] },

@@ -52,8 +52,8 @@ After `00-project-setup`, coders can work on:
 
 ## How to Use This Directory
 
-- Each spec file defines WHAT to build
-- Checkboxes represent individual commits
+- Each spec file defines WHAT to build (requirements)
+- **No checkboxes** — specs are requirements, not progress trackers
 - Coders track progress in PROGRESS.md (not here)
 - Questions from coders go in QUESTIONS.md at project root
 

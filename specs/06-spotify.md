@@ -7,27 +7,25 @@
 
 ## Requirements
 
-- [ ] Create `src/providers/spotify.ts` using oEmbed API only
-- [ ] `fetch(id)` → `SpotifyResult` - track metadata from oEmbed
-- [ ] Update `SpotifyResult` type: make `artist` and `duration` optional
+- Create `src/providers/spotify.ts` using oEmbed API only
+- `fetch(id)` → `SpotifyResult` - track metadata from oEmbed
+- Update `SpotifyResult` type: make `artist` and `duration` optional
 
 ## Implementation Notes
 
 **Use oEmbed only** (`https://open.spotify.com/oembed?url=...`)
 
 oEmbed provides:
-- `title` (track name)
+- `title` (usually "Artist - Track Name" format)
 - `thumbnail_url`
 
-oEmbed does NOT provide (these become optional):
-- `artist` - not available without API credentials
-- `duration` - not available without API credentials
+Parse `artist` from the oEmbed title using dash separator. Falls back to `undefined` if no separator found.
 
-Do NOT use spotifly - it's broken (requires auth cookie now).
+`duration` is not available via oEmbed.
 
 ## Error Handling
 
-- `MediaNotFoundError` for invalid track/playlist ID
+- `MediaNotFoundError` for invalid track ID
 - `ProviderError` for network errors
 
 ## Out of Scope

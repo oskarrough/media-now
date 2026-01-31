@@ -56,7 +56,10 @@ const scoreRelease = (
 
 	if (isVariousArtists(artist)) {
 		score -= 200 // Strong penalty for compilations
-	} else if (expectedArtist && artist.toLowerCase().includes(expectedArtist.toLowerCase())) {
+	} else if (
+		expectedArtist &&
+		artist.toLowerCase().includes(expectedArtist.toLowerCase())
+	) {
 		score += 100 // Strong bonus for correct artist
 	}
 
@@ -120,7 +123,9 @@ export const discoverDiscogsUrl = async (
 	// 2. Iterate through recordings to collect releases
 	for (const recording of recordings) {
 		const fullRecording = await fetchRecording(recording.id)
-		const recPayload = fullRecording.payload as { releases?: RecordingRelease[] }
+		const recPayload = fullRecording.payload as {
+			releases?: RecordingRelease[]
+		}
 		const releases = recPayload.releases ?? []
 
 		for (const release of releases) {

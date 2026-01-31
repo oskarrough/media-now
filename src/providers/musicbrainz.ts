@@ -65,14 +65,16 @@ const waitForRateLimit = async (): Promise<void> => {
 const fetchMusicBrainz = async (endpoint: string): Promise<Response> => {
 	await waitForRateLimit()
 
-	const response = await globalThis.fetch(`${API_BASE}${endpoint}`, {
-		headers: {
-			"User-Agent": USER_AGENT,
-			Accept: "application/json",
-		},
-	}).catch((error) => {
-		throw new ProviderError("musicbrainz", `Network error: ${error.message}`)
-	})
+	const response = await globalThis
+		.fetch(`${API_BASE}${endpoint}`, {
+			headers: {
+				"User-Agent": USER_AGENT,
+				Accept: "application/json",
+			},
+		})
+		.catch((error) => {
+			throw new ProviderError("musicbrainz", `Network error: ${error.message}`)
+		})
 
 	if (response.status === 404) {
 		const idMatch = endpoint.match(/[a-f0-9-]{36}/i)
@@ -131,7 +133,7 @@ export const search = async (title: string): Promise<MusicBrainzResult[]> => {
 	for (const query of queries) {
 		const encoded = encodeURIComponent(query)
 		const response = await fetchMusicBrainz(
-			`/recording?query=${encoded}&fmt=json&limit=25`,
+			`/recording?query=${encoded}&fmt=json&limit=10`,
 		)
 		const data = (await response.json()) as MBSearchResponse
 
@@ -155,7 +157,9 @@ export const search = async (title: string): Promise<MusicBrainzResult[]> => {
  * Fetch a specific MusicBrainz recording by ID
  * Includes release data with release-groups and artist-credits for filtering
  */
-export const fetchRecording = async (id: string): Promise<MusicBrainzResult> => {
+export const fetchRecording = async (
+	id: string,
+): Promise<MusicBrainzResult> => {
 	const response = await fetchMusicBrainz(
 		`/recording/${id}?inc=releases+release-groups+artist-credits&fmt=json`,
 	)

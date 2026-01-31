@@ -6,10 +6,10 @@
 
 ## Requirements
 
-- [ ] Create `src/providers/discogs.ts`
-- [ ] `parseUrl(url)` → `{ type: 'release' | 'master', id: string } | null` (for type detection)
-- [ ] `fetch(id)` → `DiscogsResult` - release metadata
-- [ ] `fetchMaster(id)` → `DiscogsResult` - master release metadata
+- Create `src/providers/discogs.ts`
+- `parseUrl(url)` → `{ type: 'release' | 'master', id: string } | null` (for type detection)
+- `fetch(id)` → `DiscogsResult` - release metadata
+- `fetchMaster(id)` → `DiscogsResult` - master release metadata
 
 ## Relationship with Central URL Parsing
 

@@ -4,11 +4,11 @@
 
 ## Requirements
 
-- [ ] Create package.json with name `media-now`, type `module`, exports field
-- [ ] Create tsconfig.json targeting ES2022, ESM output, strict mode
-- [ ] Create vitest.config.ts
-- [ ] Create src/index.ts with placeholder export
-- [ ] Setup Biome for linting/formatting (no semicolons)
+- Create package.json with name `media-now`, type `module`, exports field
+- Create tsconfig.json targeting ES2022, ESM output, strict mode
+- Create vitest.config.ts
+- Create src/index.ts with placeholder export
+- Setup Biome for linting/formatting (no semicolons)
 
 ## Implementation Notes
 

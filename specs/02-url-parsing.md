@@ -6,12 +6,14 @@
 
 ## Requirements
 
-- [ ] Create `src/parse-url.ts` with `parseUrl(url)` returning `{ provider, id } | null`
-- [ ] YouTube URL patterns: `watch?v=`, `youtu.be/`, `/embed/`, `/shorts/`, with query params
-- [ ] Vimeo URL patterns: `vimeo.com/{id}`, `/video/{id}`, player embeds
-- [ ] Spotify URL patterns: `open.spotify.com/track/{id}` only (reject playlist/album URLs)
-- [ ] Discogs URL patterns: `discogs.com/release/{id}`, `discogs.com/master/{id}`, with or without slug/locale
-- [ ] SoundCloud URL patterns: `soundcloud.com/{user}/{track}` → ID is `{user}/{track}`
+- Create `src/parse-url.ts` with `parseUrl(url)` returning `{ provider, id } | null`
+- YouTube URL patterns: `watch?v=`, `youtu.be/`, `/embed/`, `/shorts/`, `/live/`, `/v/`, `/e/`, with query params
+- YouTube subdomains: `m.youtube.com`, `music.youtube.com`, etc.
+- Vimeo URL patterns: `vimeo.com/{id}`, `player.vimeo.com/{id}`, `/video/{id}`
+- Spotify URL patterns: `open.spotify.com/track/{id}` only (reject playlist/album URLs)
+- Spotify locale prefix: handles `/intl-{code}/track/{id}`
+- Discogs URL patterns: `discogs.com/release/{id}`, `discogs.com/master/{id}`, with or without slug/locale
+- SoundCloud URL patterns: `soundcloud.com/{user}/{track}` → ID is `{user}/{track}`
 
 ## Edge Cases to Handle
 
