@@ -1,0 +1,170 @@
+/* Steps Mono */
+@font-face {
+  font-family: 'Steps Mono';
+  src: url('./Steps-Mono.otf') format('opentype');
+}
+@font-face {
+  font-family: 'Steps Mono Thin';
+  src: url('./Steps-Mono-Thin.otf') format('opentype');
+}
+/* Director */
+@font-face {
+  font-family: 'Director';
+  src: url('./degheest-webfonts/Director-Regular.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Director Light';
+  src: url('./degheest-webfonts/Director-Light.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Director Bold';
+  src: url('./degheest-webfonts/Director-Bold.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Director Variable';
+  src: url('./degheest-webfonts/Director-Variable.woff2') format('woff2');
+}
+/* FT88 */
+@font-face {
+  font-family: 'FT88';
+  src: url('./degheest-webfonts/FT88-Regular.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'FT88 Bold';
+  src: url('./degheest-webfonts/FT88-Bold.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'FT88 Italic';
+  src: url('./degheest-webfonts/FT88-Italic.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'FT88 Expanded';
+  src: url('./degheest-webfonts/FT88-Expanded.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'FT88 Gothique';
+  src: url('./degheest-webfonts/FT88-Gothique.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'FT88 School';
+  src: url('./degheest-webfonts/FT88-School.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'FT88 Serif';
+  src: url('./degheest-webfonts/FT88-Serif.woff2') format('woff2');
+}
+/* Others */
+@font-face {
+  font-family: 'Abordage';
+  src: url('./degheest-webfonts/Abordage-Regular.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Equateur';
+  src: url('./degheest-webfonts/Equateur-Regular.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Latitude';
+  src: url('./degheest-webfonts/Latitude-Regular.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Louise';
+  src: url('./degheest-webfonts/Louise-Regular.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Basalte';
+  src: url('./degheest-webfonts/Basalte-Fond.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Basalte Volume';
+  src: url('./degheest-webfonts/Basalte-Volume.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Basalte Multicolor';
+  src: url('./degheest-webfonts/Basalte-Multicolor.woff2') format('woff2');
+}
+
+html {
+  /* font-family: 'Steps Mono'; */
+  /* font-family: 'Steps Mono Thin'; */
+  /* font-family: 'Director'; */
+  /* font-family: 'Director Light'; */
+  /* font-family: 'Director Bold'; */
+  /* font-family: 'FT88'; */
+  /* font-family: 'FT88 Bold'; */
+  /* font-family: 'FT88 Italic'; */
+  /* font-family: 'FT88 Expanded'; */
+  /* font-family: 'FT88 Gothique'; */
+  /* font-family: 'FT88 School'; */
+  /* font-family: 'FT88 Serif'; */
+  font-family: 'Abordage';
+  /* font-family: 'Equateur'; */
+  /* font-family: 'Latitude'; */
+  /* font-family: 'Louise'; */
+  /* font-family: 'Basalte'; */
+  /* font-family: 'Basalte Volume'; */
+  /* font-family: 'Basalte Multicolor'; */
+  /* font-family: 'Director Variable'; */
+  /* font-family: system-ui, sans-serif; */
+}
+
+body {
+  margin: 1rem;
+}
+
+input, button {
+  font-family: inherit;
+}
+
+pre, code {
+  font-family: Abordage, 'FT88', monospace;
+}
+
+section {
+  margin-top: 5vh;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+input[type="text"],
+input[type="url"] {
+  max-width: 100%;
+  width: 100%;
+  margin-bottom: 0.5rem;
+  padding: 0.4em;
+  border-color: black;
+  box-sizing: border-box;
+  min-height: 2rem;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+pre {
+  background: yellow;
+  box-sizing: border-box;
+  min-height: 2rem;
+  border: 1px solid;
+  padding: 1rem;
+  overflow-x: auto;
+  margin-top: 1rem;
+}
+
+.error {
+  color: #cc0000;
+}
+
+.loading {
+  font-style: italic;
+}
+
+.provider-btns {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  flex-wrap: wrap;
+}

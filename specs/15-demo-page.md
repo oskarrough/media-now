@@ -1,6 +1,6 @@
 # Interactive Demo Page
 
-> Standalone HTML page to test library functions in the browser
+> Standalone HTML page with HMR to learn and test the library
 
 ## Prerequisites
 
@@ -12,41 +12,71 @@ export { discoverDiscogsUrl } from "./discover"
 
 ## Requirements
 
-- Single `index.html` at project root
-- Loads library from `dist/index.js` (ESM import)
+### File Structure
+
+```
+demo/
+  index.html          # main demo page
+  Steps-Mono.otf      # fonts
+  degheest-webfonts/  # more fonts
+```
+
+### Dev Server (server.ts)
+
+Use Bun's fullstack dev server with HMR:
+
+```typescript
+import homepage from "./demo/index.html";
+
+Bun.serve({
+  port: 3000,
+  routes: {
+    "/": homepage,
+  },
+  development: true,
+});
+```
+
+Run with `bun run dev` (already in package.json).
+
+### Demo Page (demo/index.html)
+
+- Loads library from `../dist/media-now.js` (ESM import)
 - Semantic HTML, no external dependencies, minimal inline CSS
+- Organized to teach how functions relate
 
-### Sections
+#### URL Input
+Pre-populated: `https://www.youtube.com/watch?v=dQw4w9WgXcQ`
 
-Each section has: input field(s), button, `<pre><code>` output area.
+| Function | What it does | Returns |
+|----------|--------------|---------|
+| `parseUrl(url)` | Extract provider + id (sync) | `{ provider, id }` or `null` |
+| `getMedia(url)` | Fetch full metadata (async) | `{ provider, id, url, title, thumbnail, ... }` |
 
-| Function | Input | Notes |
-|----------|-------|-------|
-| `parseUrl(url)` | URL text | Sync, returns JSON or `null` |
-| `parseTitle(str)` | Title text | Sync, returns `{ artist, title, original }` |
-| `cleanTitle(str)` | Title text | Sync, returns cleaned string |
-| `getMedia(url)` | URL text | Async, show loading state |
-| `discoverDiscogsUrl(title)` | Title text | Async, show loading state |
+#### Title Input
+Pre-populated: `Rick Astley - Never Gonna Give You Up (Official Video)`
 
-### Pre-populated Examples
-
-- URL input: `https://www.youtube.com/watch?v=dQw4w9WgXcQ`
-- Title input: `Rick Astley - Never Gonna Give You Up (Official Video)`
+| Function | What it does | Returns |
+|----------|--------------|---------|
+| `parseTitle(str)` | Split artist/title (sync) | `{ artist, title, original }` |
+| `cleanTitle(str)` | Strip junk like "(Official Video)" (sync) | cleaned string |
+| `discoverDiscogsUrl(str)` | Search MusicBrainz → find Discogs link (async) | URL string or `null` |
 
 ### Output Display
 
-- Pretty-print JSON with 2-space indent
-- Errors shown in red text within same output area
-- Loading indicator while async functions run
+- `<pre><code>` for JSON, pretty-printed with 2-space indent
+- Errors in red text
+- "Loading..." while async functions run
 
 ## Implementation Notes
 
-- Use native ES modules: `<script type="module">`
-- Single import: `import { parseUrl, parseTitle, cleanTitle, getMedia, discoverDiscogsUrl } from './dist/index.js'`
-- Works when served locally (e.g., `bunx serve` or `python -m http.server`)
+- `<script type="module">`
+- Font paths relative to `demo/` folder (e.g., `./Steps-Mono.otf`)
+- HMR enabled via `development: true` in server
 
 ## Out of Scope
 
 - Styling beyond basic readability
 - Provider-specific methods (youtube.fetch, etc.)
-- Mobile-specific layout
+- Mobile layout
+- Multiple pages (structure supports MPA later)
