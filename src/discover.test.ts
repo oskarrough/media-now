@@ -172,7 +172,7 @@ describe("discoverDiscogsUrl", () => {
 		expect(mockFetchRecording).toHaveBeenCalledTimes(2)
 	})
 
-	it("stops at first Discogs URL found", async () => {
+	it("prefers album releases over compilations", async () => {
 		mockSearch.mockResolvedValue([
 			{
 				provider: "musicbrainz",
@@ -180,30 +180,49 @@ describe("discoverDiscogsUrl", () => {
 				url: "https://musicbrainz.org/recording/rec-1",
 				title: "Test Song",
 				artist: "Test Artist",
-				releases: ["Album 1", "Album 2"],
+				releases: ["Compilation", "Original Album"],
 				payload: {},
 			},
 		])
+		// Recording payload now includes full release metadata for pre-filtering
 		mockFetchRecording.mockResolvedValue({
 			provider: "musicbrainz",
 			id: "rec-1",
 			url: "https://musicbrainz.org/recording/rec-1",
 			title: "Test Song",
 			artist: "Test Artist",
-			releases: ["Album 1", "Album 2"],
-			payload: { releases: [{ id: "rel-1" }, { id: "rel-2" }] },
+			releases: ["Compilation", "Original Album"],
+			payload: {
+				releases: [
+					{
+						id: "rel-1",
+						title: "Compilation",
+						"artist-credit": [{ name: "Various Artists" }],
+						"release-group": { "primary-type": "Album", "secondary-types": ["Compilation"] },
+					},
+					{
+						id: "rel-2",
+						title: "Original Album",
+						"artist-credit": [{ name: "Test Artist" }],
+						"release-group": { "primary-type": "Album", "secondary-types": [] },
+					},
+				],
+			},
 		})
-		mockFetchRelease.mockResolvedValueOnce({
-			id: "rel-1",
-			title: "Album 1",
-			url: "https://musicbrainz.org/release/rel-1",
-			relations: [{ type: "discogs", url: "https://www.discogs.com/release/first" }],
-			payload: {},
+		// Now only the higher-scored release should be fetched
+		mockFetchRelease.mockResolvedValue({
+			id: "rel-2",
+			title: "Original Album",
+			url: "https://musicbrainz.org/release/rel-2",
+			relations: [{ type: "discogs", url: "https://www.discogs.com/release/original" }],
+			payload: {
+				"artist-credit": [{ name: "Test Artist" }],
+				"release-group": { "primary-type": "Album", "secondary-types": [] },
+			},
 		})
 
 		const result = await discoverDiscogsUrl("Test Artist - Test Song")
-		expect(result).toBe("https://www.discogs.com/release/first")
-		// Should only fetch the first release since it has a Discogs URL
-		expect(mockFetchRelease).toHaveBeenCalledTimes(1)
+		// Should prefer the original album over the compilation
+		expect(result).toBe("https://www.discogs.com/release/original")
 	})
 })

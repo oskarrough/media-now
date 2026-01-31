@@ -131,7 +131,7 @@ export const search = async (title: string): Promise<MusicBrainzResult[]> => {
 	for (const query of queries) {
 		const encoded = encodeURIComponent(query)
 		const response = await fetchMusicBrainz(
-			`/recording?query=${encoded}&fmt=json&limit=5`,
+			`/recording?query=${encoded}&fmt=json&limit=25`,
 		)
 		const data = (await response.json()) as MBSearchResponse
 
@@ -153,11 +153,11 @@ export const search = async (title: string): Promise<MusicBrainzResult[]> => {
 
 /**
  * Fetch a specific MusicBrainz recording by ID
- * Includes release data
+ * Includes release data with release-groups and artist-credits for filtering
  */
 export const fetchRecording = async (id: string): Promise<MusicBrainzResult> => {
 	const response = await fetchMusicBrainz(
-		`/recording/${id}?inc=releases&fmt=json`,
+		`/recording/${id}?inc=releases+release-groups+artist-credits&fmt=json`,
 	)
 	const payload = (await response.json()) as MBRecordingResponse
 
@@ -174,11 +174,11 @@ export const fetchRecording = async (id: string): Promise<MusicBrainzResult> => 
 
 /**
  * Fetch a specific MusicBrainz release by ID
- * Includes URL relationships (useful for finding Discogs links)
+ * Includes URL relationships, artist credits, and release group info
  */
 export const fetchRelease = async (id: string): Promise<MusicBrainzRelease> => {
 	const response = await fetchMusicBrainz(
-		`/release/${id}?inc=url-rels&fmt=json`,
+		`/release/${id}?inc=url-rels+artist-credits+release-groups&fmt=json`,
 	)
 	const payload = (await response.json()) as MBReleaseResponse
 
