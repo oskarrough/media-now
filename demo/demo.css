@@ -1,3 +1,8 @@
+:root {
+  --black: #26070b;
+  --lightblue: #cce0e9;
+}
+
 /* Steps Mono */
 @font-face {
   font-family: 'Steps Mono';
@@ -108,7 +113,16 @@ html {
 }
 
 body {
+  background-color: #fafafa;
   margin: 1rem;
+  max-width: 60ch;
+}
+
+h1 {
+  font-family: 'Basalte Multicolor';
+  font-size: calc(6rem + 2vw);
+  font-size: 7.4rem;
+  margin: 0;
 }
 
 input, button {
@@ -123,10 +137,12 @@ section {
   margin-top: 5vh;
 }
 
-label {
-  display: block;
-  margin-bottom: 0.5rem;
-  font-weight: 500;
+h2:has(label) {
+  font-size: 2rem;
+}
+
+button {
+  font-size: 100%;
 }
 
 input[type="text"],
@@ -145,7 +161,7 @@ button:disabled {
 }
 
 pre {
-  background: yellow;
+  background: var(--lightblue);
   box-sizing: border-box;
   min-height: 2rem;
   border: 1px solid;

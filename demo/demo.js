@@ -22,11 +22,23 @@ const runParseUrl = () => {
 }
 document.getElementById('parseurl-btn').addEventListener('click', runParseUrl)
 
-// Provider quick-fill buttons
-document.querySelectorAll('.provider-btns button').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.getElementById('parseurl-input').value = btn.dataset.url
-    runParseUrl()
+// Provider quick-fill buttons for parseUrl
+document.querySelectorAll('#parseurl-input').forEach(input => {
+  input.closest('section').querySelectorAll('.provider-btns button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      input.value = btn.dataset.url
+      runParseUrl()
+    })
+  })
+})
+
+// Provider quick-fill buttons for getMedia
+document.querySelectorAll('#getmedia-input').forEach(input => {
+  input.closest('section').querySelectorAll('.provider-btns button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      input.value = btn.dataset.url
+      document.getElementById('getmedia-btn').click()
+    })
   })
 })
 
