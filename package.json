@@ -9,7 +9,7 @@
     "./discover": "./dist/discover.js"
   },
   "scripts": {
-    "build": "tsgo",
+    "build": "tsgo && bun build ./src/index.ts --outfile ./dist/browser.js --format esm",
     "test": "vitest run",
     "test:integration": "bun run scripts/test-providers.ts",
     "lint": "biome check src/",
