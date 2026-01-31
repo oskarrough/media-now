@@ -2,9 +2,11 @@
 
 ## Current Work
 
-CLAIMED: 15-demo-page - 2026-01-31
+(none)
 
 ## Completed
+
+- 15-demo-page - 2026-01-31
 
 - 13-provider-api-audit (MusicBrainzRelease export) - 2026-01-31
 
