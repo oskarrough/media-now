@@ -1,22 +1,22 @@
 # Media Now
 
-Fetch media metadata from YouTube, Vimeo, Spotify, Discogs, MusicBrainz, and SoundCloud. No API keys.
-
 ![The Burning of the Library at Alexandria in 391 AD. Ambrose Dudley](http://i.imgur.com/2fvkbVem.jpg)
 
-```typescript
+```js
 import { getMedia, parseUrl } from 'media-now'
 
-const media = await getMedia('https://www.youtube.com/watch?v=dQw4w9WgXcQ')
-// { provider: 'youtube', id: '...', url: '...', title: '...', thumbnail: '...', author: '...', payload: {...} }
-
+// Parse URLs to extract the "provider" and their identifier. 
 parseUrl('https://vimeo.com/123456789')  // { provider: 'vimeo', id: '123456789' }
 parseUrl('https://example.com')          // null
+
+// Fetch metadata from YouTube, Vimeo, Spotify, Discogs, MusicBrainz, and SoundCloud. No API keys.
+const media = await getMedia('https://www.youtube.com/watch?v=dQw4w9WgXcQ')
+// { provider: 'youtube', id: '...', url: '...', title: '...', thumbnail: '...', author: '...', payload: {...} }
 ```
 
 ## API
 
-```typescript
+```js
 import { youtube, vimeo, spotify, discogs, musicbrainz, soundcloud } from 'media-now/providers'
 import { parseTitle, cleanTitle } from 'media-now/parse-title'
 import { discoverDiscogsUrl } from 'media-now/discover'
@@ -42,7 +42,7 @@ import { discoverDiscogsUrl } from 'media-now/discover'
 
 All results include `provider`, `id`, `url`, `title`, `payload`. `?` = optional, `[]` = array, `duration` in seconds.
 
-## Prior Work
+## Prior work
 
 - https://github.com/internet4000/media-now
 - https://github.com/radio4000/media-now-deno/

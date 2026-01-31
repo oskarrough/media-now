@@ -40,6 +40,7 @@ youtube vimeo spotify discogs musicbrainz soundcloud
 13. [12-provider-tests](./12-provider-tests.md) ← requires: all providers implemented
 14. [13-provider-api-audit](./13-provider-api-audit.md) ← requires: 14
 15. [14-rename-get-to-fetch](./14-rename-get-to-fetch.md) ← do this first (spec violation fix)
+16. [15-demo-page](./15-demo-page.md) ← standalone, requires: 10
 
 ## Parallel Work
 
