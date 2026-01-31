@@ -32,6 +32,27 @@ All specs have been implemented:
 
 ---
 
+### discoverDiscogsUrl Return Type (2026-01-31)
+
+**Current:** `discoverDiscogsUrl(title)` returns `Promise<string | null>` - just the Discogs URL or null.
+
+**User suggestion:** Return a richer payload even when no Discogs URL is found, so callers can see what was searched/found. For example:
+
+```typescript
+interface DiscoverResult {
+  discogsUrl: string | null
+  recording?: { id: string; title: string; artist: string }
+  release?: { id: string; title: string }
+  searchedTitle: string
+}
+```
+
+This would help with debugging and provide context about what MusicBrainz found even when no Discogs link exists.
+
+**Question:** Should we change the API to return richer data, or keep it simple (string | null)?
+
+---
+
 (No other open questions)
 
 ---

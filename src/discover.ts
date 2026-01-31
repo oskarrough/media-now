@@ -24,32 +24,30 @@ export const discoverDiscogsUrl = async (
 	const recordings = await search(title)
 	if (recordings.length === 0) return null
 
-	// Take first recording result
-	const recording = recordings[0]
+	// 2. Iterate through all recordings to find a Discogs URL
+	for (const recording of recordings) {
+		// 3. Get full recording data with releases
+		const fullRecording = await fetchRecording(recording.id)
 
-	// 2. Get full recording data with releases
-	const fullRecording = await fetchRecording(recording.id)
+		// Extract release IDs from payload (raw MB data has IDs)
+		const payload = fullRecording.payload as { releases?: { id: string }[] }
+		const releaseIds = payload.releases?.map((r) => r.id) ?? []
 
-	// Extract release IDs from payload (raw MB data has IDs)
-	const payload = fullRecording.payload as { releases?: { id: string }[] }
-	const releaseIds = payload.releases?.map((r) => r.id) ?? []
+		// 4. For each release, fetch URL relationships and look for Discogs
+		for (const releaseId of releaseIds) {
+			const release = await fetchRelease(releaseId)
 
-	if (releaseIds.length === 0) return null
+			// 5. Find first discogs.com URL in relations
+			const discogsRelation = release.relations.find((rel) =>
+				rel.url.includes("discogs.com"),
+			)
 
-	// 3. For each release, fetch URL relationships and look for Discogs
-	for (const releaseId of releaseIds) {
-		const release = await fetchRelease(releaseId)
-
-		// 4. Find first discogs.com URL in relations
-		const discogsRelation = release.relations.find((rel) =>
-			rel.url.includes("discogs.com"),
-		)
-
-		if (discogsRelation) {
-			return discogsRelation.url
+			if (discogsRelation) {
+				return discogsRelation.url
+			}
 		}
 	}
 
-	// No Discogs URL found after exhausting all releases
+	// No Discogs URL found after exhausting all recordings and releases
 	return null
 }
