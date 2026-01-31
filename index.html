@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>media-now Demo</title>
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+      line-height: 1.5;
+    }
+    section {
+      margin-bottom: 2rem;
+      padding: 1rem;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+    h2 {
+      margin-top: 0;
+    }
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 0.5rem;
+      margin-bottom: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    button {
+      padding: 0.5rem 1rem;
+      background: #0066cc;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #0055aa;
+    }
+    button:disabled {
+      background: #999;
+      cursor: not-allowed;
+    }
+    pre {
+      background: #f5f5f5;
+      padding: 1rem;
+      border-radius: 4px;
+      overflow-x: auto;
+      margin-top: 1rem;
+    }
+    .error {
+      color: #cc0000;
+    }
+    .loading {
+      color: #666;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <h1>media-now Demo</h1>
+  <p>Interactive demo for testing library functions. Run <code>bun run build</code> first.</p>
+
+  <section>
+    <h2>parseUrl(url)</h2>
+    <label for="parseurl-input">URL</label>
+    <input type="text" id="parseurl-input" value="https://www.youtube.com/watch?v=dQw4w9WgXcQ">
+    <button id="parseurl-btn">Parse</button>
+    <pre><code id="parseurl-output"></code></pre>
+  </section>
+
+  <section>
+    <h2>parseTitle(str)</h2>
+    <label for="parsetitle-input">Title</label>
+    <input type="text" id="parsetitle-input" value="Rick Astley - Never Gonna Give You Up (Official Video)">
+    <button id="parsetitle-btn">Parse</button>
+    <pre><code id="parsetitle-output"></code></pre>
+  </section>
+
+  <section>
+    <h2>cleanTitle(str)</h2>
+    <label for="cleantitle-input">Title</label>
+    <input type="text" id="cleantitle-input" value="Rick Astley - Never Gonna Give You Up (Official Video)">
+    <button id="cleantitle-btn">Clean</button>
+    <pre><code id="cleantitle-output"></code></pre>
+  </section>
+
+  <section>
+    <h2>getMedia(url)</h2>
+    <label for="getmedia-input">URL</label>
+    <input type="text" id="getmedia-input" value="https://www.youtube.com/watch?v=dQw4w9WgXcQ">
+    <button id="getmedia-btn">Fetch</button>
+    <pre><code id="getmedia-output"></code></pre>
+  </section>
+
+  <section>
+    <h2>discoverDiscogsUrl(title)</h2>
+    <label for="discover-input">Title</label>
+    <input type="text" id="discover-input" value="Rick Astley - Never Gonna Give You Up (Official Video)">
+    <button id="discover-btn">Discover</button>
+    <pre><code id="discover-output"></code></pre>
+  </section>
+
+  <script type="module">
+    import { parseUrl, parseTitle, cleanTitle, getMedia, discoverDiscogsUrl } from './dist/index.js'
+
+    const formatOutput = (data) => JSON.stringify(data, null, 2)
+
+    const setOutput = (id, content, isError = false) => {
+      const el = document.getElementById(id)
+      el.textContent = content
+      el.className = isError ? 'error' : ''
+    }
+
+    const setLoading = (id) => {
+      const el = document.getElementById(id)
+      el.textContent = 'Loading...'
+      el.className = 'loading'
+    }
+
+    // parseUrl - sync
+    document.getElementById('parseurl-btn').addEventListener('click', () => {
+      const input = document.getElementById('parseurl-input').value
+      const result = parseUrl(input)
+      setOutput('parseurl-output', result === null ? 'null' : formatOutput(result))
+    })
+
+    // parseTitle - sync
+    document.getElementById('parsetitle-btn').addEventListener('click', () => {
+      const input = document.getElementById('parsetitle-input').value
+      const result = parseTitle(input)
+      setOutput('parsetitle-output', formatOutput(result))
+    })
+
+    // cleanTitle - sync
+    document.getElementById('cleantitle-btn').addEventListener('click', () => {
+      const input = document.getElementById('cleantitle-input').value
+      const result = cleanTitle(input)
+      setOutput('cleantitle-output', formatOutput(result))
+    })
+
+    // getMedia - async
+    document.getElementById('getmedia-btn').addEventListener('click', async () => {
+      const input = document.getElementById('getmedia-input').value
+      const btn = document.getElementById('getmedia-btn')
+      btn.disabled = true
+      setLoading('getmedia-output')
+      try {
+        const result = await getMedia(input)
+        setOutput('getmedia-output', formatOutput(result))
+      } catch (err) {
+        setOutput('getmedia-output', err.message, true)
+      } finally {
+        btn.disabled = false
+      }
+    })
+
+    // discoverDiscogsUrl - async
+    document.getElementById('discover-btn').addEventListener('click', async () => {
+      const input = document.getElementById('discover-input').value
+      const btn = document.getElementById('discover-btn')
+      btn.disabled = true
+      setLoading('discover-output')
+      try {
+        const result = await discoverDiscogsUrl(input)
+        setOutput('discover-output', result === null ? 'null' : formatOutput(result))
+      } catch (err) {
+        setOutput('discover-output', err.message, true)
+      } finally {
+        btn.disabled = false
+      }
+    })
+  </script>
+</body>
+</html>
