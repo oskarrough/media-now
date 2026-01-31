@@ -2,14 +2,14 @@
   "name": "media-now",
   "type": "module",
   "exports": {
-    ".": "./dist/index.js",
+    ".": "./dist/media-now.js",
     "./providers": "./dist/providers/index.js",
     "./providers/*": "./dist/providers/*.js",
     "./parse-title": "./dist/parse-title.js",
     "./discover": "./dist/discover.js"
   },
   "scripts": {
-    "build": "tsgo && bun build ./src/index.ts --outfile ./dist/browser.js --format esm",
+    "build": "tsgo && bun build ./src/index.ts --outfile ./dist/media-now.js --format esm",
     "test": "vitest run",
     "test:integration": "bun run scripts/test-providers.ts",
     "lint": "biome check src/",
