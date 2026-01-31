@@ -11,17 +11,7 @@ interface DiscogsCandidate {
 	score: number
 }
 
-/** MusicBrainz release payload structure for scoring */
-interface ReleasePayload {
-	"artist-credit"?: { name: string }[]
-	"release-group"?: {
-		"primary-type"?: string
-		"secondary-types"?: string[]
-	}
-	date?: string
-}
-
-/** Release info from recording payload for pre-filtering */
+/** Release info from recording payload for pre-filtering and scoring */
 interface RecordingRelease {
 	id: string
 	title: string
@@ -46,7 +36,7 @@ const isVariousArtists = (artist: string): boolean => {
  * Higher score = better match.
  */
 const scoreRelease = (
-	release: RecordingRelease | ReleasePayload,
+	release: RecordingRelease,
 	expectedArtist: string | null,
 ): number => {
 	let score = 0
