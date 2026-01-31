@@ -1,15 +1,19 @@
 # Media Now
 
+Parse URLs to extract the provider and their identifier. 
+
+Fetch metadata from YouTube, Vimeo, Spotify, Discogs, MusicBrainz, and SoundCloud. No API keys.
+
 ![The Burning of the Library at Alexandria in 391 AD. Ambrose Dudley](http://i.imgur.com/2fvkbVem.jpg)
+
+## Usage
 
 ```js
 import { getMedia, parseUrl } from 'media-now'
 
-// Parse URLs to extract the "provider" and their identifier. 
 parseUrl('https://vimeo.com/123456789')  // { provider: 'vimeo', id: '123456789' }
 parseUrl('https://example.com')          // null
 
-// Fetch metadata from YouTube, Vimeo, Spotify, Discogs, MusicBrainz, and SoundCloud. No API keys.
 const media = await getMedia('https://www.youtube.com/watch?v=dQw4w9WgXcQ')
 // { provider: 'youtube', id: '...', url: '...', title: '...', thumbnail: '...', author: '...', payload: {...} }
 ```
@@ -17,15 +21,25 @@ const media = await getMedia('https://www.youtube.com/watch?v=dQw4w9WgXcQ')
 ## API
 
 ```js
+import { getMedia, parseUrl, parseTitle, cleanTitle, discoverDiscogsUrl } from 'media-now'
+```
+
+- `parseUrl(url)` extract `{ provider, id }` from URL
+- `parseTitle(str)` split `"Artist - Title"` → `{ artist, title, original }`
+- `cleanTitle(str)` strip `(Official Video)`, `[HD]`, `feat. X`
+- `getMedia(url)` fetch metadata from any supported URL 
+- `discoverDiscogsUrl(title)` finds Discogs URL via MusicBrainz
+
+All results include `provider`, `id`, `url`, `title`, `payload`. 
+
+You can also use these methods directly, if you prefer. 
+
+```js
 import { youtube, vimeo, spotify, discogs, musicbrainz, soundcloud } from 'media-now/providers'
-import { parseTitle, cleanTitle } from 'media-now/parse-title'
-import { discoverDiscogsUrl } from 'media-now/discover'
 ```
 
 | | |
 |-|-|
-| `getMedia(url)` | Fetch metadata from any supported URL |
-| `parseUrl(url)` | Extract `{ provider, id }` from URL |
 | `youtube.fetch(id)` | → `thumbnail` `author` `duration?` |
 | `youtube.search(query)` | Search videos |
 | `vimeo.fetch(id)` | → `thumbnail` `author` `duration` |
@@ -36,11 +50,6 @@ import { discoverDiscogsUrl } from 'media-now/discover'
 | `musicbrainz.fetchRecording(id)` | → `artist` `releases[]` |
 | `musicbrainz.fetchRelease(id)` | Fetch release details |
 | `soundcloud.fetch(id)` | → `thumbnail?` `author` `description?` (id = `user/track`) |
-| `parseTitle(str)` | Split `"Artist - Title"` → `{ artist, title, original }` |
-| `cleanTitle(str)` | Strip `(Official Video)`, `[HD]`, `feat. X` |
-| `discoverDiscogsUrl(title)` | Find Discogs URL via MusicBrainz |
-
-All results include `provider`, `id`, `url`, `title`, `payload`. `?` = optional, `[]` = array, `duration` in seconds.
 
 ## Prior work
 
