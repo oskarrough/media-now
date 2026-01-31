@@ -2,21 +2,28 @@
 
 Parse URLs to extract provider and identifier. Fetch metadata from YouTube, Vimeo, Spotify, Discogs, MusicBrainz, and SoundCloud. No API keys.
 
-![The Burning of the Library at Alexandria in 391 AD. Ambrose Dudley](http://i.imgur.com/2fvkbVem.jpg)
-
-## Usage
+All functions return at least `provider`, `id` and `payload` (the original response).
 
 ```js
-import { getMedia, parseUrl } from 'media-now'
+import { getMedia, parseUrl, parseTitle, cleanTitle, discoverDiscogsUrl } from 'media-now'
 
-parseUrl('https://vimeo.com/123456789')  // { provider: 'vimeo', id: '123456789' }
-parseUrl('https://example.com')          // null
+parseUrl('https://vimeo.com/123456789')
+// { provider: 'vimeo', id: '123456789' }
 
-const media = await getMedia('https://www.youtube.com/watch?v=dQw4w9WgXcQ')
+await getMedia('https://www.youtube.com/watch?v=dQw4w9WgXcQ')
 // { provider, id, url, title, thumbnail, author, payload }
+
+parseTitle('Nikolaj Nørlund - Hvid røg og tekno')
+// { artist: 'Nikolaj Nørlund', title: 'Hvid røg og tekno', original: '...' }
+
+cleanTitle('Bohemian Rhapsody (Official Video) [HD]')
+// 'Bohemian Rhapsody'
+
+await discoverDiscogsUrl('Massive Attack - Teardrop')
+// 'https://www.discogs.com/release/...'
 ```
 
-All results include `provider`, `id`, `url`, `title`, `payload`.
+![The Burning of the Library at Alexandria in 391 AD. Ambrose Dudley](http://i.imgur.com/2fvkbVem.jpg)
 
 ## Providers
 
@@ -35,25 +42,9 @@ musicbrainz.fetchRecording(id)
 musicbrainz.fetchRelease(id)
 ```
 
-## Utilities
-
-```js
-import { parseTitle, cleanTitle, discoverDiscogsUrl } from 'media-now'
-
-parseTitle('Nikolaj Nørlund - Hvid røg og tekno')
-// { artist: 'Nikolaj Nørlund', title: 'Hvid røg og tekno', original: '...' }
-
-cleanTitle('Bohemian Rhapsody (Official Video) [HD]')
-// 'Bohemian Rhapsody'
-
-await discoverDiscogsUrl('Massive Attack - Teardrop')
-// 'https://www.discogs.com/release/...'
-```
-
 ## History
 
-We wrote this kind of package several times in the past:
-
-- [media-now](https://github.com/internet4000/media-now)
-- [media-now-deno](https://github.com/radio4000/media-now-deno/)
-- [media-url-parser](https://github.com/internet4000/media-url-parser)
+We wrote this kind of package several times in the past: 
+[media-now](https://github.com/internet4000/media-now), 
+[media-now-deno](https://github.com/radio4000/media-now-deno/) & 
+[media-url-parser](https://github.com/internet4000/media-url-parser).
