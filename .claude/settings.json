@@ -1,9 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "Bash(bun:*)",
-      "Bash(jj:*)",
-      "Bash(rg:*)"
-    ]
-  }
-}
