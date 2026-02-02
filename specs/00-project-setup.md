@@ -37,6 +37,31 @@ Config (`biome.jsonc`):
 
 Add scripts: `"lint": "biome check src/"`, `"format": "biome format --write src/"`
 
+## Testing Strategy
+
+### Unit tests (100% coverage)
+
+- **Pure functions** (`parse-url.ts`, `parse-title.ts`) - Direct unit tests
+- Run with `bun test` and `bun test --coverage`
+
+### Integration tests (manual, not in CI)
+
+- **Provider modules** - Test against real APIs
+- **Entry points** (`get-media.ts`, `discover.ts`)
+- Create `scripts/test-providers.ts` with known IDs:
+  - `youtube.fetch("dQw4w9WgXcQ")`
+  - `vimeo.fetch("76979871")`
+  - `spotify.fetch("4cOdK2wGLETKBW3PvgPWqT")`
+  - `discogs.fetch("1")`
+  - `musicbrainz.search("Bohemian Rhapsody")`
+  - `soundcloud.fetch("forss/flickermood")`
+- Add script: `"test:integration": "bun run scripts/test-providers.ts"`
+
+### Exempt from coverage
+
+- **Type-only files** (`types.ts`, `errors.ts`) - No runtime logic
+- **Network code** (providers) - Covered by integration tests
+
 ## Out of Scope
 
 - Actual library code

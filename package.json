@@ -11,10 +11,9 @@
   "scripts": {
     "build": "tsgo && bun build ./src/index.ts --outfile ./dist/media-now.js --format esm",
     "dev": "bun run server.ts",
+    "check": "biome check src/ --write",
     "test": "vitest run",
-    "test:integration": "bun run scripts/test-providers.ts",
-    "lint": "biome check src/",
-    "format": "biome format --write src/"
+    "test:integration": "bun run scripts/test-providers.ts"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.3.13",

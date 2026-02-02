@@ -2,8 +2,8 @@
  * Discovery chain - discover Discogs URL for a track via MusicBrainz
  */
 
-import { fetchRecording, fetchRelease, search } from "./providers/musicbrainz"
 import { parseTitle } from "./parse-title"
+import { fetchRecording, fetchRelease, search } from "./providers/musicbrainz"
 
 /** Candidate Discogs URL with scoring metadata */
 interface DiscogsCandidate {

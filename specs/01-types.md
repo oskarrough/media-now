@@ -29,6 +29,69 @@
 - `MediaNotFoundError(provider, id)` - thrown for 404 / not found
 - `ProviderError(provider, message)` - thrown for rate limits, network errors
 
+## Payload Shapes
+
+The `payload` field contains raw API responses. Expected shapes:
+
+### oEmbed Responses (YouTube, Vimeo, Spotify, SoundCloud)
+
+```ts
+{
+  title: string
+  author_name: string
+  author_url: string
+  thumbnail_url: string
+  thumbnail_width: number
+  thumbnail_height: number
+  html: string           // embed iframe
+  width: number
+  height: number
+  version: string
+  provider_name: string
+  provider_url: string
+  type: string
+  // Vimeo adds: duration (seconds), video_id
+  // SoundCloud adds: description?
+}
+```
+
+### Discogs Release/Master
+
+```ts
+{
+  id: number
+  title: string
+  year?: number
+  genres?: string[]
+  styles?: string[]
+  artists?: { name: string }[]
+  labels?: { name: string }[]
+  uri: string
+  // ... many additional fields in full API response
+}
+```
+
+### MusicBrainz Recording
+
+```ts
+{
+  id: string             // UUID
+  title: string
+  "artist-credit"?: { name: string; artist: { id: string; name: string } }[]
+  releases?: { id: string; title: string }[]
+}
+```
+
+### MusicBrainz Release
+
+```ts
+{
+  id: string
+  title: string
+  relations?: { type: string; url?: { resource: string } }[]
+}
+```
+
 ## Implementation Notes
 
 - All types should be exported
@@ -39,3 +102,4 @@
 
 - Implementation of providers
 - Validation logic
+- Runtime type validation (Zod schemas)

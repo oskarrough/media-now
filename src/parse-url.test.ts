@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
-import { parseUrl } from "./parse-url"
 import tracks from "../test-data/tracks.json"
+import { parseUrl } from "./parse-url"
 
 describe("parseUrl", () => {
 	describe("YouTube", () => {

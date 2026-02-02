@@ -1,4 +1,4 @@
-import { describe, expect, it, vi, beforeEach, type Mock } from "vitest"
+import { beforeEach, describe, expect, it, type Mock, vi } from "vitest"
 import { discoverDiscogsUrl } from "./discover"
 import * as musicbrainz from "./providers/musicbrainz"
 

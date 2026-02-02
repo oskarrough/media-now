@@ -44,9 +44,19 @@ musicbrainz.fetchRecording(id)
 musicbrainz.fetchRelease(id)
 ```
 
+## Development
+
+To validate the project
+
+```sh
+bun run build
+bun test
+```
+
 ## History
 
 We wrote this kind of package several times in the past: 
 [media-now](https://github.com/internet4000/media-now), 
 [media-now-deno](https://github.com/radio4000/media-now-deno/) & 
 [media-url-parser](https://github.com/internet4000/media-url-parser).
+

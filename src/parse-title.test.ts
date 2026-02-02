@@ -1,8 +1,7 @@
 import { describe, expect, it } from "vitest"
-import { cleanTitle, parseTitle } from "./parse-title"
-
 // Load tracks for bulk testing
 import tracks from "../test-data/tracks.json"
+import { cleanTitle, parseTitle } from "./parse-title"
 
 describe("parseTitle", () => {
 	it("splits on hyphen with spaces", () => {
