@@ -29,6 +29,8 @@ await discoverDiscogsUrl('Massive Attack - Teardrop')
 
 ## Providers
 
+Note, the `getMedia()` methods automatically detects provider and calls these internally. But you can of course use them directly as well.
+
 ```js
 import { youtube, vimeo, spotify, discogs, musicbrainz, soundcloud } from 'media-now/providers'
 
