@@ -1,0 +1,9 @@
+{
+	"javascript": {
+		"formatter": {
+			"semicolons": "asNeeded"
+		}
+	},
+	"linter": { "enabled": true },
+	"formatter": { "enabled": true, "indentStyle": "tab" }
+}

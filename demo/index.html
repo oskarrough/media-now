@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Media Now</title>
+  <link rel="stylesheet" href="./demo.css">
+</head>
+<body>
+  <h1>media-now</h1>
+  <p>Interactive demo for testing the media now library.</p>
+
+  <section>
+    <h2><label for="parseurl-input">parseUrl(url)</label></h2>
+    <div class="provider-btns">
+      <button data-url="https://www.youtube.com/watch?v=dQw4w9WgXcQ">YouTube</button>
+      <button data-url="https://vimeo.com/306258963">Vimeo</button>
+      <button data-url="https://open.spotify.com/track/4cOdK2wGLETKBW3PvgPWqT">Spotify</button>
+      <button data-url="https://www.discogs.com/release/249504">Discogs</button>
+      <button data-url="https://soundcloud.com/rick-astley-official/never-gonna-give-you-up">SoundCloud</button>
+    </div>
+    <input type="url" id="parseurl-input" value="https://www.youtube.com/watch?v=dQw4w9WgXcQ">
+    <button id="parseurl-btn">Parse</button>
+    <pre><code id="parseurl-output"></code></pre>
+  </section>
+
+  <section>
+    <h2><label for="parsetitle-input">parseTitle(str)</label></h2>
+    <input type="text" id="parsetitle-input" value="Rick Astley - Never Gonna Give You Up (Official Video)">
+    <button id="parsetitle-btn">Parse</button>
+    <pre><code id="parsetitle-output"></code></pre>
+  </section>
+
+  <section>
+    <h2><label for="cleantitle-input">cleanTitle(str)</label></h2>
+    <input type="text" id="cleantitle-input" value="Rick Astley - Never Gonna Give You Up (Official Video)">
+    <button id="cleantitle-btn">Clean</button>
+    <pre><code id="cleantitle-output"></code></pre>
+  </section>
+
+  <section>
+    <h2><label for="getmedia-input">getMedia(url)</label></h2>
+    <div class="provider-btns">
+      <button data-url="https://www.youtube.com/watch?v=dQw4w9WgXcQ">YouTube</button>
+      <button data-url="https://vimeo.com/306258963">Vimeo</button>
+      <button data-url="https://open.spotify.com/track/4cOdK2wGLETKBW3PvgPWqT">Spotify</button>
+      <button data-url="https://www.discogs.com/release/249504">Discogs</button>
+      <button data-url="https://soundcloud.com/rick-astley-official/never-gonna-give-you-up">SoundCloud</button>
+    </div>
+    <input type="url" id="getmedia-input" value="https://www.youtube.com/watch?v=dQw4w9WgXcQ">
+    <button id="getmedia-btn">Fetch</button>
+    <pre><code id="getmedia-output"></code></pre>
+  </section>
+
+  <section>
+    <h2><label for="discover-input">discoverDiscogsUrl(title)</label></h2>
+    <input type="text" id="discover-input" value="Rick Astley - Never Gonna Give You Up (Official Video)">
+    <button id="discover-btn">Discover</button>
+    <pre><code id="discover-output"></code></pre>
+  </section>
+
+  <script type="module" src="./demo.js"></script>
+</body>
+</html>
