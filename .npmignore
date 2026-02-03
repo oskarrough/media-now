@@ -2,10 +2,3 @@
 scripts/
 test-data/
 demo/
-
-# Config
-*.config.js
-*.config.ts
-tsconfig.json
-biome.json
-.gitignore
