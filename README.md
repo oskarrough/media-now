@@ -60,6 +60,17 @@ bun run build
 bun test
 ```
 
+## Releasing
+
+Pushing a tag prefixed with `v` triggers the GitHub Actions workflow that publishes to npm.
+
+```sh
+# bump version in package.json
+git commit -am "2.1.0"
+git tag v2.1.0
+git push origin main v2.1.0
+```
+
 ## History
 
 We wrote this kind of package several times in the past: 
