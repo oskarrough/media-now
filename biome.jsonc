@@ -1,0 +1,30 @@
+{
+	"javascript": {
+		"formatter": {
+			"semicolons": "asNeeded",
+			"quoteStyle": "single"
+		}
+	},
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"performance": {
+				"noBarrelFile": "error"
+			}
+		}
+	},
+	"overrides": [
+		{
+			// Allow core.ts as intentional convenience export (small lib, no deps)
+			"includes": ["src/core.ts"],
+			"linter": {
+				"rules": {
+					"performance": {
+						"noBarrelFile": "off"
+					}
+				}
+			}
+		}
+	],
+	"formatter": { "enabled": true, "indentStyle": "tab" }
+}

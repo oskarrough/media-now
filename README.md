@@ -1,54 +1,75 @@
-# Media Now
-
-Get media information from YouTube and Vimeo videos, Spotify tracks and Discogs releases.
-
-Media Now is an API that proxies and unifies different providers.
-Creating new providers is straight forward ([example](https://github.com/internet4000/media-now/blob/master/src/serializer-discogs.js)).
-
-![](https://travis-ci.org/Internet4000/media-now.svg?branch=master)
-
 ![The Burning of the Library at Alexandria in 391 AD. Ambrose Dudley](http://i.imgur.com/2fvkbVem.jpg)
 
-## API
+# Media Now
 
-Here is a hopefully self-explanatory list of endpoints. Try them!
+Parse URLs to extract provider and identifier. Fetch metadata from YouTube, Vimeo, Spotify, Discogs, MusicBrainz, and SoundCloud. No API keys.
 
-- /youtube/YyI52_FEYgY
-- /vimeo/121814744
-- /discogs/1728315
-- /spotify/3S2R0EVwBSAVMd5UMgKTL0
-- /analyse/3S2R0EVwBSAVMd5UMgKTL0
-- /spotify-search/Michael%20Jackson%20-%20Thriller
+Meant to be useful for people dealing with music tracks in one shape or another (hello https://radio4000.com).
 
-The data returned will (mostly) be formatted like so:
+All functions return at least `provider`, `id` and `payload` (the original response).
 
 ```js
-{
-	"provider": "youtube",
-	"id": "YyI52_FEYgY",
-	"url": "https://www.youtube.com/watch?v=YyI52_FEYgY",
-	"title": "I Due Nemici",
-	"thumbnail": "https://i.ytimg.com/vi/YyI52_FEYgY/default.jpg",
-	"duration": 6300 // seconds,
-	"status" {} // privacy info, is it embeddable etc.
-}
+import { getMedia, parseUrl, parseTitle, cleanTitle, discoverDiscogsUrl } from 'media-now'
+
+cleanTitle('Bohemian Rhapsody (Official Video) [HD]')
+// 'Bohemian Rhapsody'
+
+parseTitle('Nikolaj Nørlund - Hvid røg og tekno')
+// { artist: 'Nikolaj Nørlund', title: 'Hvid røg og tekno', original: '...' }
+
+parseUrl('https://vimeo.com/123456789')
+// { provider: 'vimeo', id: '123456789' }
+
+await getMedia('https://www.youtube.com/watch?v=dQw4w9WgXcQ')
+// { provider, id, url, title, thumbnail, author, payload }
+
+await discoverDiscogsUrl('Massive Attack - Teardrop')
+// 'https://www.discogs.com/release/...'
 ```
 
-## Developing
+## Providers
 
-You'll need node.js and yarn (or npm) installed.
+Note, the `getMedia()` methods automatically detects provider and calls these internally. But you can of course use them directly as well.
 
-* git clone this repo and cd into it
-* `yarn install`
-* `yarn start`
+```js
+import { youtube } from 'media-now/providers/youtube'
+import { vimeo } from 'media-now/providers/vimeo'
+import { spotify } from 'media-now/providers/spotify'
+import { discogs } from 'media-now/providers/discogs'
+import { musicbrainz } from 'media-now/providers/musicbrainz'
+import { soundcloud } from 'media-now/providers/soundcloud'
 
-Some requests require authentication. Copy the `.env-example` file to `.env` and replace the keys with your own. You can register (free) here:
+youtube.fetch(id)
+youtube.search(query)
+vimeo.fetch(id)
+spotify.fetch(id)
+soundcloud.fetch(id) // id is 'user/track'
+discogs.fetch(id)
+discogs.fetchMaster(id)
+musicbrainz.search(query)
+musicbrainz.fetchRecording(id)
+musicbrainz.fetchRelease(id)
+```
+
+## Development
+
+To validate the project
+
+```sh
+bun run build
+bun test
+```
+
+## History
+
+We wrote this kind of package several times in the past: 
+[media-now](https://github.com/internet4000/media-now), 
+[media-now-deno](https://github.com/radio4000/media-now-deno/) & 
+[media-url-parser](https://github.com/internet4000/media-url-parser).
+
+## Links
 
 - https://console.developers.google.com/apis/api/youtube/overview
 - https://developer.vimeo.com/apps
 - https://developer.spotify.com/my-applications/
-
-## Deploying
-
-This used to be deployed to media.now.sh, but it no longer is. Deploying to Heroku works.
 

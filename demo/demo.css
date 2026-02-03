@@ -1,0 +1,94 @@
+:root {
+  --black: #26070b;
+  --lightblue: #cce0e9;
+}
+
+@font-face {
+  font-family: 'FT88';
+  src: url('./degheest-webfonts/FT88-Regular.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Abordage';
+  src: url('./degheest-webfonts/Abordage-Regular.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Basalte Multicolor';
+  src: url('./degheest-webfonts/Basalte-Multicolor.woff2') format('woff2');
+}
+
+html {
+  font-family: 'Abordage';
+}
+
+body {
+  background-color: #fafafa;
+  margin: 1rem;
+  max-width: 60ch;
+}
+
+h1 {
+  font-family: 'Basalte Multicolor';
+  font-size: calc(6rem + 2vw);
+  font-size: 7.4rem;
+  margin: 0;
+}
+
+input, button {
+  font-family: inherit;
+}
+
+pre, code {
+  font-family: Abordage, 'FT88', monospace;
+}
+
+section {
+  margin-top: 5vh;
+}
+
+h2:has(label) {
+  font-size: 2rem;
+}
+
+button {
+  font-size: 100%;
+}
+
+input[type="text"],
+input[type="url"] {
+  max-width: 100%;
+  width: 100%;
+  margin-bottom: 0.5rem;
+  padding: 0.4em;
+  border-color: black;
+  box-sizing: border-box;
+  min-height: 2rem;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+pre {
+  background: var(--lightblue);
+  box-sizing: border-box;
+  min-height: 2rem;
+  border: 1px solid;
+  padding: 1rem;
+  overflow-x: auto;
+  margin-top: 1rem;
+}
+
+.error {
+  color: #cc0000;
+}
+
+.loading {
+  font-style: italic;
+}
+
+.provider-btns {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  flex-wrap: wrap;
+}
