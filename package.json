@@ -5,6 +5,7 @@
   "license": "MIT",
   "type": "module",
   "exports": {
+    ".": "./dist/core.js",
     "./get-media": "./dist/get-media.js",
     "./parse-title": "./dist/parse-title.js",
     "./parse-url": "./dist/parse-url.js",

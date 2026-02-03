@@ -9,10 +9,7 @@ Meant to be useful for people dealing with music tracks in one shape or another 
 All functions return at least `provider`, `id` and `payload` (the original response).
 
 ```js
-import { getMedia } from 'media-now/get-media'
-import { parseUrl } from 'media-now/parse-url'
-import { parseTitle, cleanTitle } from 'media-now/parse-title'
-import { discoverDiscogsUrl } from 'media-now/discover'
+import { getMedia, parseUrl, parseTitle, cleanTitle, discoverDiscogsUrl } from 'media-now'
 
 cleanTitle('Bohemian Rhapsody (Official Video) [HD]')
 // 'Bohemian Rhapsody'
