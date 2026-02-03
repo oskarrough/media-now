@@ -85,6 +85,17 @@ describe('parseUrl', () => {
 			})
 		})
 
+		it('parses URLs without protocol', () => {
+			expect(parseUrl('youtube.com/watch?v=dQw4w9WgXcQ')).toEqual({
+				provider: 'youtube',
+				id: 'dQw4w9WgXcQ',
+			})
+			expect(parseUrl('www.youtube.com/watch?v=dQw4w9WgXcQ')).toEqual({
+				provider: 'youtube',
+				id: 'dQw4w9WgXcQ',
+			})
+		})
+
 		it('extracts ID from URLs with fragment timestamps', () => {
 			expect(
 				parseUrl('https://www.youtube.com/watch?v=9klnhyVe0ns#t=216'),
@@ -252,6 +263,13 @@ describe('parseUrl', () => {
 			expect(parseUrl('https://www.soundcloud.com/artist/track')).toEqual({
 				provider: 'soundcloud',
 				id: 'artist/track',
+			})
+		})
+
+		it('parses m.soundcloud.com (mobile) URLs', () => {
+			expect(parseUrl('https://m.soundcloud.com/yayoland/yayoland-la-guerre-economique')).toEqual({
+				provider: 'soundcloud',
+				id: 'yayoland/yayoland-la-guerre-economique',
 			})
 		})
 

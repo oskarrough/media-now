@@ -17,7 +17,8 @@ export interface ParsedUrl {
  */
 export const parseUrl = (url: string): ParsedUrl | null => {
 	try {
-		const parsed = new URL(url)
+		const normalized = /^https?:\/\//i.test(url) ? url : `https://${url}`
+		const parsed = new URL(normalized)
 		return (
 			parseYouTube(parsed) ??
 			parseVimeo(parsed) ??
@@ -141,8 +142,9 @@ const parseDiscogs = (url: URL): ParsedUrl | null => {
  */
 const parseSoundCloud = (url: URL): ParsedUrl | null => {
 	const host = url.hostname.replace(/^www\./, '')
+	const validHosts = ['soundcloud.com', 'm.soundcloud.com']
 
-	if (host !== 'soundcloud.com') return null
+	if (!validHosts.includes(host)) return null
 
 	// Split pathname: /{username}/{track-slug}
 	const segments = url.pathname.slice(1).split('/').filter(Boolean)
