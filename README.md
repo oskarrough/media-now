@@ -9,7 +9,10 @@ Meant to be useful for people dealing with music tracks in one shape or another 
 All functions return at least `provider`, `id` and `payload` (the original response).
 
 ```js
-import { getMedia, parseUrl, parseTitle, cleanTitle, discoverDiscogsUrl } from 'media-now'
+import { getMedia } from 'media-now/get-media'
+import { parseUrl } from 'media-now/parse-url'
+import { parseTitle, cleanTitle } from 'media-now/parse-title'
+import { discoverDiscogsUrl } from 'media-now/discover'
 
 cleanTitle('Bohemian Rhapsody (Official Video) [HD]')
 // 'Bohemian Rhapsody'
@@ -32,7 +35,12 @@ await discoverDiscogsUrl('Massive Attack - Teardrop')
 Note, the `getMedia()` methods automatically detects provider and calls these internally. But you can of course use them directly as well.
 
 ```js
-import { youtube, vimeo, spotify, discogs, musicbrainz, soundcloud } from 'media-now/providers'
+import { youtube } from 'media-now/providers/youtube'
+import { vimeo } from 'media-now/providers/vimeo'
+import { spotify } from 'media-now/providers/spotify'
+import { discogs } from 'media-now/providers/discogs'
+import { musicbrainz } from 'media-now/providers/musicbrainz'
+import { soundcloud } from 'media-now/providers/soundcloud'
 
 youtube.fetch(id)
 youtube.search(query)

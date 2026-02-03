@@ -1,6 +1,0 @@
-export { discogs } from "./discogs"
-export { musicbrainz } from "./musicbrainz"
-export { soundcloud } from "./soundcloud"
-export { spotify } from "./spotify"
-export { vimeo } from "./vimeo"
-export { youtube } from "./youtube"

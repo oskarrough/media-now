@@ -5,14 +5,16 @@
   "license": "MIT",
   "type": "module",
   "exports": {
-    ".": "./dist/media-now.js",
-    "./providers": "./dist/providers/index.js",
-    "./providers/*": "./dist/providers/*.js",
+    "./get-media": "./dist/get-media.js",
     "./parse-title": "./dist/parse-title.js",
-    "./discover": "./dist/discover.js"
+    "./parse-url": "./dist/parse-url.js",
+    "./discover": "./dist/discover.js",
+    "./errors": "./dist/errors.js",
+    "./types": "./dist/types.js",
+    "./providers/*": "./dist/providers/*.js"
   },
   "scripts": {
-    "build": "tsgo && bun build ./src/index.ts --outfile ./dist/media-now.js --format esm",
+    "build": "tsgo",
     "dev": "bun run server.ts",
     "check": "biome check src --write",
     "test": "vitest run",

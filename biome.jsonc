@@ -4,6 +4,12 @@
 			"semicolons": "asNeeded"
 		}
 	},
-	"linter": { "enabled": true },
+	"linter": { "enabled": true, 
+		"rules": {
+			"performance": {
+				"noBarrelFile": "error"
+			}
+		}
+	},
 	"formatter": { "enabled": true, "indentStyle": "tab" }
 }
