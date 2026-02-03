@@ -2,8 +2,8 @@
  * Discogs provider - fetch release metadata without API key
  */
 
-import { MediaNotFoundError, ProviderError } from "../errors"
-import type { DiscogsResult } from "../types"
+import { MediaNotFoundError, ProviderError } from '../errors'
+import type { DiscogsResult } from '../types'
 
 /** Discogs release API response */
 interface DiscogsReleaseResponse {
@@ -30,12 +30,12 @@ interface DiscogsMasterResponse {
 
 /** Parsed Discogs URL information */
 interface ParsedDiscogsUrl {
-	type: "release" | "master"
+	type: 'release' | 'master'
 	id: string
 }
 
-const API_BASE = "https://api.discogs.com"
-const USER_AGENT = "media-now/1.0"
+const API_BASE = 'https://api.discogs.com'
+const USER_AGENT = 'media-now/1.0'
 
 /** Build Discogs release URL from ID */
 const buildReleaseUrl = (id: string): string =>
@@ -57,20 +57,20 @@ const buildMasterUrl = (id: string): string =>
 export const parseUrl = (url: string): ParsedDiscogsUrl | null => {
 	try {
 		const parsed = new URL(url)
-		if (!parsed.hostname.includes("discogs.com")) return null
+		if (!parsed.hostname.includes('discogs.com')) return null
 
 		const path = parsed.pathname
 
 		// Match /release/{id} or /release/{id}-slug
 		const releaseMatch = path.match(/\/release\/(\d+)/)
 		if (releaseMatch) {
-			return { type: "release", id: releaseMatch[1] }
+			return { type: 'release', id: releaseMatch[1] }
 		}
 
 		// Match /master/{id} or /master/{id}-slug
 		const masterMatch = path.match(/\/master\/(\d+)/)
 		if (masterMatch) {
-			return { type: "master", id: masterMatch[1] }
+			return { type: 'master', id: masterMatch[1] }
 		}
 
 		return null
@@ -84,26 +84,26 @@ const fetchDiscogs = async (endpoint: string): Promise<Response> => {
 	const response = await globalThis
 		.fetch(`${API_BASE}${endpoint}`, {
 			headers: {
-				"User-Agent": USER_AGENT,
+				'User-Agent': USER_AGENT,
 			},
 		})
 		.catch((error) => {
-			throw new ProviderError("discogs", `Network error: ${error.message}`)
+			throw new ProviderError('discogs', `Network error: ${error.message}`)
 		})
 
 	if (response.status === 404) {
 		// Extract ID from endpoint for error
 		const idMatch = endpoint.match(/\d+/)
-		throw new MediaNotFoundError("discogs", idMatch?.[0] ?? "unknown")
+		throw new MediaNotFoundError('discogs', idMatch?.[0] ?? 'unknown')
 	}
 
 	if (response.status === 429) {
-		throw new ProviderError("discogs", "Rate limit exceeded")
+		throw new ProviderError('discogs', 'Rate limit exceeded')
 	}
 
 	if (!response.ok) {
 		throw new ProviderError(
-			"discogs",
+			'discogs',
 			`HTTP ${response.status}: ${response.statusText}`,
 		)
 	}
@@ -125,7 +125,7 @@ export const fetch = async (id: string): Promise<DiscogsResult> => {
 	const payload = (await response.json()) as DiscogsReleaseResponse
 
 	return {
-		provider: "discogs",
+		provider: 'discogs',
 		id,
 		url: buildReleaseUrl(id),
 		title: payload.title,
@@ -144,7 +144,7 @@ export const fetchMaster = async (id: string): Promise<DiscogsResult> => {
 	const payload = (await response.json()) as DiscogsMasterResponse
 
 	return {
-		provider: "discogs",
+		provider: 'discogs',
 		id,
 		url: buildMasterUrl(id),
 		title: payload.title,

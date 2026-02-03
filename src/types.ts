@@ -4,12 +4,12 @@
 
 /** Supported media providers */
 export type Provider =
-	| "youtube"
-	| "vimeo"
-	| "spotify"
-	| "discogs"
-	| "musicbrainz"
-	| "soundcloud"
+	| 'youtube'
+	| 'vimeo'
+	| 'spotify'
+	| 'discogs'
+	| 'musicbrainz'
+	| 'soundcloud'
 
 /** Base interface for all media results */
 export interface MediaResult {
@@ -23,7 +23,7 @@ export interface MediaResult {
 
 /** YouTube media result */
 export interface YouTubeResult extends MediaResult {
-	provider: "youtube"
+	provider: 'youtube'
 	thumbnail: string
 	author: string
 	duration?: number
@@ -31,7 +31,7 @@ export interface YouTubeResult extends MediaResult {
 
 /** Vimeo media result */
 export interface VimeoResult extends MediaResult {
-	provider: "vimeo"
+	provider: 'vimeo'
 	thumbnail: string
 	author: string
 	duration: number
@@ -39,7 +39,7 @@ export interface VimeoResult extends MediaResult {
 
 /** Spotify media result */
 export interface SpotifyResult extends MediaResult {
-	provider: "spotify"
+	provider: 'spotify'
 	thumbnail: string
 	artist?: string
 	duration?: number
@@ -49,7 +49,7 @@ export interface SpotifyResult extends MediaResult {
 
 /** Discogs media result */
 export interface DiscogsResult extends MediaResult {
-	provider: "discogs"
+	provider: 'discogs'
 	year?: number
 	genres: string[]
 	styles: string[]
@@ -59,7 +59,7 @@ export interface DiscogsResult extends MediaResult {
 
 /** MusicBrainz media result */
 export interface MusicBrainzResult extends MediaResult {
-	provider: "musicbrainz"
+	provider: 'musicbrainz'
 	artist: string
 	releases: string[]
 }
@@ -76,7 +76,7 @@ export interface MusicBrainzRelease {
 
 /** SoundCloud media result */
 export interface SoundCloudResult extends MediaResult {
-	provider: "soundcloud"
+	provider: 'soundcloud'
 	thumbnail?: string
 	author: string
 	description?: string

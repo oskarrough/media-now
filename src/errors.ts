@@ -2,7 +2,7 @@
  * Custom error classes for media-now
  */
 
-import type { Provider } from "./types"
+import type { Provider } from './types'
 
 /** Thrown when media is not found (404) */
 export class MediaNotFoundError extends Error {
@@ -11,7 +11,7 @@ export class MediaNotFoundError extends Error {
 
 	constructor(provider: Provider, id: string) {
 		super(`Media not found: ${provider}/${id}`)
-		this.name = "MediaNotFoundError"
+		this.name = 'MediaNotFoundError'
 		this.provider = provider
 		this.id = id
 	}
@@ -23,7 +23,7 @@ export class ProviderError extends Error {
 
 	constructor(provider: Provider, message: string) {
 		super(`${provider}: ${message}`)
-		this.name = "ProviderError"
+		this.name = 'ProviderError'
 		this.provider = provider
 	}
 }

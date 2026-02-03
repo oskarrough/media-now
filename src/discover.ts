@@ -2,8 +2,8 @@
  * Discovery chain - discover Discogs URL for a track via MusicBrainz
  */
 
-import { parseTitle } from "./parse-title"
-import { fetchRecording, fetchRelease, search } from "./providers/musicbrainz"
+import { parseTitle } from './parse-title'
+import { fetchRecording, fetchRelease, search } from './providers/musicbrainz'
 
 /** Candidate Discogs URL with scoring metadata */
 interface DiscogsCandidate {
@@ -16,10 +16,10 @@ interface RecordingRelease {
 	id: string
 	title: string
 	date?: string
-	"artist-credit"?: { name: string }[]
-	"release-group"?: {
-		"primary-type"?: string
-		"secondary-types"?: string[]
+	'artist-credit'?: { name: string }[]
+	'release-group'?: {
+		'primary-type'?: string
+		'secondary-types'?: string[]
 	}
 }
 
@@ -28,7 +28,7 @@ interface RecordingRelease {
  */
 const isVariousArtists = (artist: string): boolean => {
 	const lower = artist.toLowerCase()
-	return lower === "various artists" || lower === "various"
+	return lower === 'various artists' || lower === 'various'
 }
 
 /**
@@ -42,7 +42,7 @@ const scoreRelease = (
 	let score = 0
 
 	// Check artist - penalize "Various Artists" or artist mismatch
-	const artist = release["artist-credit"]?.[0]?.name ?? ""
+	const artist = release['artist-credit']?.[0]?.name ?? ''
 
 	if (isVariousArtists(artist)) {
 		score -= 200 // Strong penalty for compilations
@@ -54,20 +54,20 @@ const scoreRelease = (
 	}
 
 	// Check release group type
-	const primaryType = release["release-group"]?.["primary-type"] ?? ""
-	const secondaryTypes = release["release-group"]?.["secondary-types"] ?? []
+	const primaryType = release['release-group']?.['primary-type'] ?? ''
+	const secondaryTypes = release['release-group']?.['secondary-types'] ?? []
 
 	// Prefer albums and singles over other types
-	if (primaryType === "Album") score += 30
-	else if (primaryType === "Single" || primaryType === "EP") score += 40 // Singles often better for finding original
+	if (primaryType === 'Album') score += 30
+	else if (primaryType === 'Single' || primaryType === 'EP') score += 40 // Singles often better for finding original
 
 	// Penalize compilations, DJ-mixes, etc.
-	if (secondaryTypes.includes("Compilation")) score -= 100
-	if (secondaryTypes.includes("DJ-mix")) score -= 80
-	if (secondaryTypes.includes("Remix")) score -= 50
+	if (secondaryTypes.includes('Compilation')) score -= 100
+	if (secondaryTypes.includes('DJ-mix')) score -= 80
+	if (secondaryTypes.includes('Remix')) score -= 50
 
 	// Prefer earlier releases (originals come first)
-	const year = parseInt(release.date?.substring(0, 4) ?? "9999", 10)
+	const year = parseInt(release.date?.substring(0, 4) ?? '9999', 10)
 	if (year < 9999) {
 		// Bonus for older releases, max 50 points for pre-1980
 		score += Math.max(0, Math.min(50, (2000 - year) / 2))
@@ -80,7 +80,7 @@ const scoreRelease = (
  * Score a Discogs URL - prefer master releases over specific releases.
  */
 const scoreDiscogsUrl = (url: string): number => {
-	if (url.includes("/master/")) return 10
+	if (url.includes('/master/')) return 10
 	return 0
 }
 
@@ -141,7 +141,7 @@ export const discoverDiscogsUrl = async (
 		const fullRelease = await fetchRelease(release.id)
 
 		const discogsRelations = fullRelease.relations.filter((rel) =>
-			rel.url.includes("discogs.com"),
+			rel.url.includes('discogs.com'),
 		)
 
 		for (const relation of discogsRelations) {

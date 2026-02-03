@@ -2,8 +2,8 @@
  * Spotify provider - fetch track metadata without API key
  */
 
-import { MediaNotFoundError, ProviderError } from "../errors"
-import type { SpotifyResult } from "../types"
+import { MediaNotFoundError, ProviderError } from '../errors'
+import type { SpotifyResult } from '../types'
 
 /** Spotify oEmbed API response */
 interface OEmbedResponse {
@@ -20,7 +20,7 @@ interface OEmbedResponse {
 	type: string
 }
 
-const OEMBED_URL = "https://open.spotify.com/oembed"
+const OEMBED_URL = 'https://open.spotify.com/oembed'
 
 /** Build Spotify track URL from ID */
 const buildTrackUrl = (id: string): string =>
@@ -42,16 +42,16 @@ export const fetch = async (id: string): Promise<SpotifyResult> => {
 	const url = `${OEMBED_URL}?url=${encodeURIComponent(trackUrl)}`
 
 	const response = await globalThis.fetch(url).catch((error) => {
-		throw new ProviderError("spotify", `Network error: ${error.message}`)
+		throw new ProviderError('spotify', `Network error: ${error.message}`)
 	})
 
 	if (response.status === 404 || response.status === 400) {
-		throw new MediaNotFoundError("spotify", id)
+		throw new MediaNotFoundError('spotify', id)
 	}
 
 	if (!response.ok) {
 		throw new ProviderError(
-			"spotify",
+			'spotify',
 			`HTTP ${response.status}: ${response.statusText}`,
 		)
 	}
@@ -61,7 +61,7 @@ export const fetch = async (id: string): Promise<SpotifyResult> => {
 	const parsed = parseTitle(payload.title)
 
 	return {
-		provider: "spotify",
+		provider: 'spotify',
 		id,
 		url: trackUrl,
 		title: parsed.title,

@@ -2,8 +2,8 @@
  * Vimeo provider - fetch video metadata without API key
  */
 
-import { MediaNotFoundError, ProviderError } from "../errors"
-import type { VimeoResult } from "../types"
+import { MediaNotFoundError, ProviderError } from '../errors'
+import type { VimeoResult } from '../types'
 
 /** Vimeo oEmbed API response */
 interface OEmbedResponse {
@@ -24,7 +24,7 @@ interface OEmbedResponse {
 	video_id: number
 }
 
-const OEMBED_URL = "https://vimeo.com/api/oembed.json"
+const OEMBED_URL = 'https://vimeo.com/api/oembed.json'
 
 /** Build Vimeo video URL from ID */
 const buildVideoUrl = (id: string): string => `https://vimeo.com/${id}`
@@ -34,16 +34,16 @@ export const fetch = async (id: string): Promise<VimeoResult> => {
 	const url = `${OEMBED_URL}?url=${encodeURIComponent(buildVideoUrl(id))}`
 
 	const response = await globalThis.fetch(url).catch((error) => {
-		throw new ProviderError("vimeo", `Network error: ${error.message}`)
+		throw new ProviderError('vimeo', `Network error: ${error.message}`)
 	})
 
 	if (response.status === 404) {
-		throw new MediaNotFoundError("vimeo", id)
+		throw new MediaNotFoundError('vimeo', id)
 	}
 
 	if (!response.ok) {
 		throw new ProviderError(
-			"vimeo",
+			'vimeo',
 			`HTTP ${response.status}: ${response.statusText}`,
 		)
 	}
@@ -51,7 +51,7 @@ export const fetch = async (id: string): Promise<VimeoResult> => {
 	const payload = (await response.json()) as OEmbedResponse
 
 	return {
-		provider: "vimeo",
+		provider: 'vimeo',
 		id,
 		url: buildVideoUrl(id),
 		title: payload.title,

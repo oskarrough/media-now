@@ -2,14 +2,14 @@
  * Main entry point - route URLs to appropriate providers
  */
 
-import { ProviderError } from "./errors"
-import { type ParsedUrl, parseUrl } from "./parse-url"
-import { discogs } from "./providers/discogs"
-import { soundcloud } from "./providers/soundcloud"
-import { spotify } from "./providers/spotify"
-import { vimeo } from "./providers/vimeo"
-import { youtube } from "./providers/youtube"
-import type { MediaResult, Provider } from "./types"
+import { ProviderError } from './errors'
+import { type ParsedUrl, parseUrl } from './parse-url'
+import { discogs } from './providers/discogs'
+import { soundcloud } from './providers/soundcloud'
+import { spotify } from './providers/spotify'
+import { vimeo } from './providers/vimeo'
+import { youtube } from './providers/youtube'
+import type { MediaResult, Provider } from './types'
 
 /** Provider handlers mapped by name */
 const providers: Record<
@@ -34,10 +34,10 @@ const providers: Record<
 export const getMedia = async (
 	input: string | ParsedUrl,
 ): Promise<MediaResult> => {
-	const parsed = typeof input === "string" ? parseUrl(input) : input
+	const parsed = typeof input === 'string' ? parseUrl(input) : input
 
 	if (!parsed) {
-		throw new ProviderError("unknown" as Provider, "Unrecognized URL")
+		throw new ProviderError('unknown' as Provider, 'Unrecognized URL')
 	}
 
 	const handler = providers[parsed.provider]
@@ -45,7 +45,7 @@ export const getMedia = async (
 	if (!handler) {
 		throw new ProviderError(
 			parsed.provider,
-			"Provider does not support URL fetching",
+			'Provider does not support URL fetching',
 		)
 	}
 

@@ -2,15 +2,15 @@
  * MusicBrainz provider - search recordings and fetch release data
  */
 
-import { MediaNotFoundError, ProviderError } from "../errors"
-import { parseTitle } from "../parse-title"
-import type { MusicBrainzRelease, MusicBrainzResult } from "../types"
+import { MediaNotFoundError, ProviderError } from '../errors'
+import { parseTitle } from '../parse-title'
+import type { MusicBrainzRelease, MusicBrainzResult } from '../types'
 
 /** MusicBrainz recording search result */
 interface MBRecordingSearchResult {
 	id: string
 	title: string
-	"artist-credit"?: { name: string; artist: { id: string; name: string } }[]
+	'artist-credit'?: { name: string; artist: { id: string; name: string } }[]
 	releases?: { id: string; title: string }[]
 }
 
@@ -18,7 +18,7 @@ interface MBRecordingSearchResult {
 interface MBRecordingResponse {
 	id: string
 	title: string
-	"artist-credit"?: { name: string; artist: { id: string; name: string } }[]
+	'artist-credit'?: { name: string; artist: { id: string; name: string } }[]
 	releases?: { id: string; title: string }[]
 }
 
@@ -34,8 +34,8 @@ interface MBSearchResponse {
 	recordings: MBRecordingSearchResult[]
 }
 
-const API_BASE = "https://musicbrainz.org/ws/2"
-const USER_AGENT = "media-now/1.0.0 (https://github.com/radio4000/media-now)"
+const API_BASE = 'https://musicbrainz.org/ws/2'
+const USER_AGENT = 'media-now/1.0.0 (https://github.com/radio4000/media-now)'
 
 /** Track last request time for rate limiting */
 let lastRequestTime = 0
@@ -68,26 +68,26 @@ const fetchMusicBrainz = async (endpoint: string): Promise<Response> => {
 	const response = await globalThis
 		.fetch(`${API_BASE}${endpoint}`, {
 			headers: {
-				"User-Agent": USER_AGENT,
-				Accept: "application/json",
+				'User-Agent': USER_AGENT,
+				Accept: 'application/json',
 			},
 		})
 		.catch((error) => {
-			throw new ProviderError("musicbrainz", `Network error: ${error.message}`)
+			throw new ProviderError('musicbrainz', `Network error: ${error.message}`)
 		})
 
 	if (response.status === 404) {
 		const idMatch = endpoint.match(/[a-f0-9-]{36}/i)
-		throw new MediaNotFoundError("musicbrainz", idMatch?.[0] ?? "unknown")
+		throw new MediaNotFoundError('musicbrainz', idMatch?.[0] ?? 'unknown')
 	}
 
 	if (response.status === 503) {
-		throw new ProviderError("musicbrainz", "Rate limit exceeded")
+		throw new ProviderError('musicbrainz', 'Rate limit exceeded')
 	}
 
 	if (!response.ok) {
 		throw new ProviderError(
-			"musicbrainz",
+			'musicbrainz',
 			`HTTP ${response.status}: ${response.statusText}`,
 		)
 	}
@@ -97,7 +97,7 @@ const fetchMusicBrainz = async (endpoint: string): Promise<Response> => {
 
 /** Extract primary artist name from artist-credit */
 const extractArtist = (artistCredit?: { name: string }[]): string =>
-	artistCredit?.[0]?.name ?? ""
+	artistCredit?.[0]?.name ?? ''
 
 /** Extract release titles from releases array */
 const extractReleases = (releases?: { title: string }[]): string[] =>
@@ -139,11 +139,11 @@ export const search = async (title: string): Promise<MusicBrainzResult[]> => {
 
 		if (data.recordings && data.recordings.length > 0) {
 			return data.recordings.map((rec) => ({
-				provider: "musicbrainz" as const,
+				provider: 'musicbrainz' as const,
 				id: rec.id,
 				url: buildRecordingUrl(rec.id),
 				title: rec.title,
-				artist: extractArtist(rec["artist-credit"]),
+				artist: extractArtist(rec['artist-credit']),
 				releases: extractReleases(rec.releases),
 				payload: rec,
 			}))
@@ -166,11 +166,11 @@ export const fetchRecording = async (
 	const payload = (await response.json()) as MBRecordingResponse
 
 	return {
-		provider: "musicbrainz",
+		provider: 'musicbrainz',
 		id,
 		url: buildRecordingUrl(id),
 		title: payload.title,
-		artist: extractArtist(payload["artist-credit"]),
+		artist: extractArtist(payload['artist-credit']),
 		releases: extractReleases(payload.releases),
 		payload,
 	}
@@ -191,7 +191,7 @@ export const fetchRelease = async (id: string): Promise<MusicBrainzRelease> => {
 			?.filter((r) => r.url?.resource)
 			.map((r) => ({
 				type: r.type,
-				url: r.url?.resource ?? "",
+				url: r.url?.resource ?? '',
 			})) ?? []
 
 	return {

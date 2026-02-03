@@ -2,7 +2,7 @@
  * Pure functions to parse and clean track titles for search queries.
  */
 
-import type { ParsedTitle } from "./types"
+import type { ParsedTitle } from './types'
 
 /**
  * Primary separator pattern: spaces + dash-like chars + spaces
@@ -13,7 +13,7 @@ const PRIMARY_SEP = /\s+[-–—]+\s+/
 /**
  * Secondary separators (non-dash)
  */
-const SECONDARY_SEPARATORS = [": ", " | "]
+const SECONDARY_SEPARATORS = [': ', ' | ']
 
 /**
  * Lenient separator: dash with space on at least one side
@@ -155,7 +155,7 @@ const REMIX_PATTERN = /\s+(?:remix|edit|version|mix|dub)\s*$/gi
  * Used after splitting to clean metadata from title.
  */
 const truncateAtDoubleDash = (str: string): string => {
-	const idx = str.indexOf("--")
+	const idx = str.indexOf('--')
 	return idx !== -1 ? str.slice(0, idx).trim() : str
 }
 
@@ -167,7 +167,7 @@ export const cleanTitle = (title: string): string => {
 	let result = title
 
 	// 1. Remove everything after //, \\, ||
-	result = result.replace(TRUNCATION_PATTERN, "")
+	result = result.replace(TRUNCATION_PATTERN, '')
 
 	// 2. Truncate at -- (metadata marker)
 	result = truncateAtDoubleDash(result)
@@ -178,23 +178,23 @@ export const cleanTitle = (title: string): string => {
 	while (changed) {
 		changed = false
 		if (PARENTHETICAL_PATTERN.test(result)) {
-			result = result.replace(PARENTHETICAL_PATTERN, "")
+			result = result.replace(PARENTHETICAL_PATTERN, '')
 			changed = true
 		}
 		if (BRACKET_PATTERN.test(result)) {
-			result = result.replace(BRACKET_PATTERN, "")
+			result = result.replace(BRACKET_PATTERN, '')
 			changed = true
 		}
 	}
 
 	// 5. Remove feat/featuring info
-	result = result.replace(FEATURING_PATTERN, "")
+	result = result.replace(FEATURING_PATTERN, '')
 
 	// 6. Remove remix/edit suffixes
-	result = result.replace(REMIX_PATTERN, "")
+	result = result.replace(REMIX_PATTERN, '')
 
 	// 7. Trim whitespace and collapse multiple spaces
-	result = result.trim().replace(/\s+/g, " ")
+	result = result.trim().replace(/\s+/g, ' ')
 
 	return result
 }

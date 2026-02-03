@@ -2,8 +2,8 @@
  * SoundCloud provider - fetch track metadata without API key via oEmbed
  */
 
-import { MediaNotFoundError, ProviderError } from "../errors"
-import type { SoundCloudResult } from "../types"
+import { MediaNotFoundError, ProviderError } from '../errors'
+import type { SoundCloudResult } from '../types'
 
 /** SoundCloud oEmbed API response */
 interface OEmbedResponse {
@@ -21,7 +21,7 @@ interface OEmbedResponse {
 	type: string
 }
 
-const OEMBED_URL = "https://soundcloud.com/oembed"
+const OEMBED_URL = 'https://soundcloud.com/oembed'
 
 /** Build SoundCloud track URL from ID (username/track-slug) */
 const buildTrackUrl = (id: string): string => `https://soundcloud.com/${id}`
@@ -32,16 +32,16 @@ export const fetch = async (id: string): Promise<SoundCloudResult> => {
 	const url = `${OEMBED_URL}?url=${encodeURIComponent(trackUrl)}&format=json`
 
 	const response = await globalThis.fetch(url).catch((error) => {
-		throw new ProviderError("soundcloud", `Network error: ${error.message}`)
+		throw new ProviderError('soundcloud', `Network error: ${error.message}`)
 	})
 
 	if (response.status === 404) {
-		throw new MediaNotFoundError("soundcloud", id)
+		throw new MediaNotFoundError('soundcloud', id)
 	}
 
 	if (!response.ok) {
 		throw new ProviderError(
-			"soundcloud",
+			'soundcloud',
 			`HTTP ${response.status}: ${response.statusText}`,
 		)
 	}
@@ -49,7 +49,7 @@ export const fetch = async (id: string): Promise<SoundCloudResult> => {
 	const payload = (await response.json()) as OEmbedResponse
 
 	return {
-		provider: "soundcloud",
+		provider: 'soundcloud',
 		id,
 		url: trackUrl,
 		title: payload.title,
