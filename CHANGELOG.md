@@ -1,3 +1,8 @@
+## 2.0.1
+
+- Fix missing `provider` and `media_id` fields on v1 (firebase) tracks
+- Support m.soundcloud.com URLs
+
 ## 2.0.0
 
 Complete rewrite and revival. See the readme for the new API.
