@@ -2,6 +2,10 @@
   "name": "media-now",
   "version": "2.0.1",
   "description": "Fetch media information from YouTube, Vimeo, Spotify and Discogs",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/radio4000/media-now"
+  },
   "license": "MIT",
   "type": "module",
   "exports": {
