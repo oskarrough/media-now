@@ -27,6 +27,18 @@ export interface YouTubeResult extends MediaResult {
 	thumbnail: string
 	author: string
 	duration?: number
+	/** Song name from YouTube music card */
+	song?: string
+	/** Artist from YouTube music card */
+	artist?: string
+	/** Album from YouTube music card */
+	album?: string
+	/** Album cover art URL from YouTube music card */
+	thumbnailAlbum?: string
+	/** Uploader channel name from description header */
+	channel?: string
+	/** Upload date from description header */
+	publishDate?: string
 }
 
 /** Vimeo media result */
