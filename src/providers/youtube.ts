@@ -3,7 +3,11 @@
  */
 
 import { MediaNotFoundError, ProviderError } from '../errors'
-import type { SearchResult, YouTubeResult } from '../types'
+import type {
+	SearchResult,
+	YouTubeExtendedResult,
+	YouTubeResult,
+} from '../types'
 
 /** YouTube oEmbed API response */
 interface OEmbedResponse {
@@ -177,7 +181,9 @@ export const fetch = async (id: string): Promise<YouTubeResult> => {
 }
 
 /** Fetch YouTube video metadata via oEmbed + watch page enrichment (slower) */
-export const fetchExtended = async (id: string): Promise<YouTubeResult> => {
+export const fetchExtended = async (
+	id: string,
+): Promise<YouTubeExtendedResult> => {
 	const [base, watchData] = await Promise.all([fetch(id), fetchWatchPage(id)])
 
 	return { ...base, ...watchData }
