@@ -1,0 +1,155 @@
+[
+  {
+    "title": "Snoh Aalegra - Time",
+    "url": "https://www.youtube.com/watch?v=eNmVCcqLvH0&list=RDeNmVCcqLvH0&start_radio=1",
+    "description": "Nu Soul | Sweden via @nomads #am voice piano #ambiant #soul",
+    "discogs_url": null,
+    "tags": [
+      "am",
+      "ambiant",
+      "soul"
+    ],
+    "duration": null,
+    "playback_error": null,
+    "provider": "youtube",
+    "media_id": "eNmVCcqLvH0"
+  },
+  {
+    "title": "Switch Angel - Coding Trance Music from Scratch (Again )",
+    "url": "https://www.youtube.com/watch?v=iu5rnQkfO6M",
+    "description": "#am #pm #trance, code, teacher",
+    "discogs_url": null,
+    "tags": [
+      "am",
+      "pm",
+      "trance,"
+    ],
+    "duration": 302,
+    "playback_error": null,
+    "provider": "youtube",
+    "media_id": "iu5rnQkfO6M"
+  },
+  {
+    "title": "Stan Getz & Joao Gilberto - So Danco Samba",
+    "url": "https://youtu.be/POXvY53pJcQ?si=0kiiy2pBZoieHoUm",
+    "description": "#am #boss #latin #jazz ",
+    "discogs_url": "https://www.discogs.com/master/85178-Stan-Getz-Joao-Gilberto-Getz-Gilberto",
+    "tags": [
+      "am",
+      "boss",
+      "jazz",
+      "latin"
+    ],
+    "duration": 226,
+    "playback_error": "youtube_error_undefined",
+    "provider": "youtube",
+    "media_id": "POXvY53pJcQ"
+  },
+  {
+    "title": "Samurai Breaks - Casio Crew",
+    "url": "https://www.youtube.com/watch?v=Mjl20hza484",
+    "description": "#pm #jungle #breaks  #juke",
+    "discogs_url": "https://www.discogs.com/release/34276348-Samurai-Breaks-Cookin-With-Gas",
+    "tags": [
+      "breaks",
+      "juke",
+      "jungle",
+      "pm"
+    ],
+    "duration": 212,
+    "playback_error": null,
+    "provider": "youtube",
+    "media_id": "Mjl20hza484"
+  },
+  {
+    "title": "Joy Orbison - Hyph Mngo",
+    "url": "https://www.youtube.com/watch?v=2QZxRkPN14w",
+    "description": "#pm #uk-garage #dubstep",
+    "discogs_url": "https://www.discogs.com/master/188325-Joy-Orbison-Hyph-Mngo-Wet-Look",
+    "tags": [
+      "dubstep",
+      "pm",
+      "uk-garage"
+    ],
+    "duration": 338,
+    "playback_error": "youtube_error_undefined",
+    "provider": "youtube",
+    "media_id": "2QZxRkPN14w"
+  },
+  {
+    "title": "Boo Williams - Teckno Drome",
+    "url": "https://youtu.be/VZ94gQQcVRo",
+    "description": "#pm #techno #house #dubbed chords",
+    "discogs_url": "https://www.discogs.com/master/339811-Boo-Williams-Residual-EP",
+    "tags": [
+      "dubbed",
+      "house",
+      "pm",
+      "techno"
+    ],
+    "duration": 387,
+    "playback_error": "youtube_error_undefined",
+    "provider": "youtube",
+    "media_id": "VZ94gQQcVRo"
+  },
+  {
+    "title": "Moby - Next Is the E (Synthe Mix)",
+    "url": "https://www.youtube.com/watch?v=1VOVf13n38k",
+    "description": "#pm #house #breaks #ravey thx Dr. Rubinstein",
+    "discogs_url": "https://www.discogs.com/master/22494-Moby-Next-Is-The-E",
+    "tags": [
+      "breaks",
+      "house",
+      "pm",
+      "ravey"
+    ],
+    "duration": 420,
+    "playback_error": "youtube_error_undefined",
+    "provider": "youtube",
+    "media_id": "1VOVf13n38k"
+  },
+  {
+    "title": "Livin' Large - The Second Coming",
+    "url": "https://www.youtube.com/watch?v=NDdMveBbBUo",
+    "description": "#pm #dubbed #house thx Daisy Weweh (HÖR)",
+    "discogs_url": "https://www.discogs.com/release/42829-Livin-Large-Dub-Strike-EP",
+    "tags": [
+      "dubbed",
+      "house",
+      "pm"
+    ],
+    "duration": 421,
+    "playback_error": "youtube_error_undefined",
+    "provider": "youtube",
+    "media_id": "NDdMveBbBUo"
+  },
+  {
+    "title": "Mount Rushmore – I've Got The Music (EFX Mix)",
+    "url": "https://www.youtube.com/watch?v=oqzfbwcVqvc",
+    "description": "#pm #dubbed #house txh Eris Drew RA",
+    "discogs_url": "https://www.discogs.com/release/2470686-Mount-Rushmore-Ive-Got-The-Music",
+    "tags": [
+      "dubbed",
+      "house",
+      "pm"
+    ],
+    "duration": 335,
+    "playback_error": "youtube_error_undefined",
+    "provider": "youtube",
+    "media_id": "oqzfbwcVqvc"
+  },
+  {
+    "title": "Simon Foy - Inside Out (Freefall Mix)",
+    "url": "https://www.youtube.com/watch?v=KRcDbJQKpRo",
+    "description": "#pm #trance, thx DRIFT KYIV - Supergloss (HÖR)",
+    "discogs_url": "https://www.discogs.com/master/225666-Simon-Foy-Insideout",
+    "tags": [
+      "pm",
+      "trance,"
+    ],
+    "duration": 391,
+    "playback_error": "youtube_error_undefined",
+    "provider": "youtube",
+    "media_id": "KRcDbJQKpRo"
+  }
+]

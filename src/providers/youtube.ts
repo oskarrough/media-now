@@ -3,7 +3,7 @@
  */
 
 import { MediaNotFoundError, ProviderError } from '../errors'
-import type { SearchResult, YouTubeResult } from '../types'
+import type { YouTubeExtendedResult, YouTubeResult } from '../types'
 
 /** YouTube oEmbed API response */
 interface OEmbedResponse {
@@ -42,6 +42,87 @@ interface YouTubeiResponse {
 				}
 			}
 		}
+	}
+}
+
+/** Extract a JSON variable assignment from YouTube HTML via brace-counting */
+export function parseEmbeddedJson(
+	html: string,
+	varName: string,
+): unknown | null {
+	const prefix = `var ${varName} = `
+	const start = html.indexOf(prefix)
+	if (start === -1) return null
+	const jsonStart = start + prefix.length
+	let depth = 0
+	let i = jsonStart
+	for (; i < html.length; i++) {
+		if (html[i] === '{') depth++
+		else if (html[i] === '}') {
+			depth--
+			if (depth === 0) break
+		}
+	}
+	try {
+		return JSON.parse(html.slice(jsonStart, i + 1))
+	} catch {
+		return null
+	}
+}
+
+/** Extract watch page enrichment data from ytInitialData engagement panels */
+function extractWatchPageData(ytData: any) {
+	const data: Record<string, string | undefined> = {}
+	const panels = ytData?.engagementPanels ?? []
+	for (const panel of panels) {
+		const items =
+			panel?.engagementPanelSectionListRenderer?.content
+				?.structuredDescriptionContentRenderer?.items
+		if (!items) continue
+		for (const item of items) {
+			// Music card
+			const hcl = item.horizontalCardListRenderer
+			if (hcl) {
+				const header = hcl?.header?.richListHeaderRenderer?.title?.simpleText
+				if (header === 'Music') {
+					const vm = hcl?.cards?.[0]?.videoAttributeViewModel
+					if (vm?.title && vm?.subtitle) {
+						data.song = vm.title
+						data.artist = vm.subtitle
+						data.album = vm.secondarySubtitle?.content
+						data.thumbnailAlbum = vm.image?.sources?.[0]?.url
+					}
+				}
+			}
+			// Description header
+			const hdr = item.videoDescriptionHeaderRenderer
+			if (hdr) {
+				data.channel = hdr?.channel?.simpleText
+				data.publishDate = hdr?.publishDate?.simpleText
+			}
+		}
+	}
+	return data
+}
+
+/** Fetch and parse YouTube watch page for enrichment data */
+async function fetchWatchPage(id: string) {
+	try {
+		const response = await globalThis.fetch(buildVideoUrl(id), {
+			headers: {
+				'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36',
+				'Accept-Language': 'en-US,en;q=0.9',
+			},
+		})
+		if (!response.ok) return {}
+		const html = await response.text()
+
+		const ytData = parseEmbeddedJson(html, 'ytInitialData')
+		if (!ytData) return {}
+
+		return extractWatchPageData(ytData)
+	} catch {
+		return {}
 	}
 }
 
@@ -85,8 +166,17 @@ export const fetch = async (id: string): Promise<YouTubeResult> => {
 	}
 }
 
+/** Fetch YouTube video metadata via oEmbed + watch page enrichment (slower) */
+export const fetchExtended = async (
+	id: string,
+): Promise<YouTubeExtendedResult> => {
+	const [base, watchData] = await Promise.all([fetch(id), fetchWatchPage(id)])
+
+	return { ...base, ...watchData }
+}
+
 /** Search YouTube videos via youtubei endpoint */
-export const search = async (query: string): Promise<SearchResult[]> => {
+export const search = async (query: string): Promise<YouTubeResult[]> => {
 	const url = `${YOUTUBEI_URL}?key=${YOUTUBEI_KEY}`
 
 	const response = await globalThis
@@ -122,7 +212,7 @@ export const search = async (query: string): Promise<SearchResult[]> => {
 		payload.contents?.twoColumnSearchResultsRenderer?.primaryContents
 			?.sectionListRenderer?.contents ?? []
 
-	const results: SearchResult[] = contents
+	const results: YouTubeResult[] = contents
 		.flatMap((section) => section.itemSectionRenderer?.contents ?? [])
 		.filter(
 			(
@@ -138,13 +228,14 @@ export const search = async (query: string): Promise<SearchResult[]> => {
 				title: video.title.runs.map((r) => r.text).join(''),
 				thumbnail: video.thumbnail.thumbnails[0]?.url,
 				url: buildVideoUrl(video.videoId),
+				payload: item.videoRenderer,
 			}
 		})
 
 	return results
 }
 
-export const youtube = { fetch, search }
+export const youtube = { fetch, fetchExtended, search }
 
 /**
  * regex from yt-dlp: (?P<id>[0-9A-Za-z_-]{{11}})

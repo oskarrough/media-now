@@ -21,12 +21,28 @@ export interface MediaResult {
 	payload: unknown
 }
 
-/** YouTube media result */
+/** YouTube media result - basic fields from oEmbed */
 export interface YouTubeResult extends MediaResult {
 	provider: 'youtube'
 	thumbnail: string
-	author: string
+	author?: string
 	duration?: number
+}
+
+/** YouTube media result with enriched metadata from watch page */
+export interface YouTubeExtendedResult extends YouTubeResult {
+	/** Song name from YouTube music card */
+	song?: string
+	/** Artist from YouTube music card */
+	artist?: string
+	/** Album from YouTube music card */
+	album?: string
+	/** Album cover art URL from YouTube music card */
+	thumbnailAlbum?: string
+	/** Uploader channel name from description header */
+	channel?: string
+	/** Upload date from description header */
+	publishDate?: string
 }
 
 /** Vimeo media result */
@@ -80,15 +96,6 @@ export interface SoundCloudResult extends MediaResult {
 	thumbnail?: string
 	author: string
 	description?: string
-}
-
-/** Search result from any provider */
-export interface SearchResult {
-	provider: Provider
-	id: string
-	title: string
-	thumbnail?: string
-	url: string
 }
 
 /** Result of parsing an "Artist - Title" string */
