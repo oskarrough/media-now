@@ -3,11 +3,7 @@
  */
 
 import { MediaNotFoundError, ProviderError } from '../errors'
-import type {
-	SearchResult,
-	YouTubeExtendedResult,
-	YouTubeResult,
-} from '../types'
+import type { YouTubeExtendedResult, YouTubeResult } from '../types'
 
 /** YouTube oEmbed API response */
 interface OEmbedResponse {
@@ -190,7 +186,7 @@ export const fetchExtended = async (
 }
 
 /** Search YouTube videos via youtubei endpoint */
-export const search = async (query: string): Promise<SearchResult[]> => {
+export const search = async (query: string): Promise<YouTubeResult[]> => {
 	const url = `${YOUTUBEI_URL}?key=${YOUTUBEI_KEY}`
 
 	const response = await globalThis
@@ -226,7 +222,7 @@ export const search = async (query: string): Promise<SearchResult[]> => {
 		payload.contents?.twoColumnSearchResultsRenderer?.primaryContents
 			?.sectionListRenderer?.contents ?? []
 
-	const results: SearchResult[] = contents
+	const results: YouTubeResult[] = contents
 		.flatMap((section) => section.itemSectionRenderer?.contents ?? [])
 		.filter(
 			(
@@ -242,6 +238,7 @@ export const search = async (query: string): Promise<SearchResult[]> => {
 				title: video.title.runs.map((r) => r.text).join(''),
 				thumbnail: video.thumbnail.thumbnails[0]?.url,
 				url: buildVideoUrl(video.videoId),
+				payload: item.videoRenderer,
 			}
 		})
 
