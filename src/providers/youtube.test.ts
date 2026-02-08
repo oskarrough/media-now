@@ -1,6 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { parseEmbeddedJson, fetchExtended } from './youtube'
-import { youtube } from './youtube'
+import { fetchExtended, parseEmbeddedJson, youtube } from './youtube'
 
 describe('parseEmbeddedJson', () => {
 	it('extracts a JSON object from a var assignment', () => {

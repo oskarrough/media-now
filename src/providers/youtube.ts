@@ -80,8 +80,6 @@ export function parseEmbeddedJson(
 	}
 }
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 /** Extract watch page enrichment data from ytInitialData engagement panels */
 function extractWatchPageData(ytData: any): WatchPageData {
 	const data: WatchPageData = {}
@@ -95,8 +93,7 @@ function extractWatchPageData(ytData: any): WatchPageData {
 			// Music card
 			const hcl = item.horizontalCardListRenderer
 			if (hcl) {
-				const header =
-					hcl?.header?.richListHeaderRenderer?.title?.simpleText
+				const header = hcl?.header?.richListHeaderRenderer?.title?.simpleText
 				if (header === 'Music') {
 					const vm = hcl?.cards?.[0]?.videoAttributeViewModel
 					if (vm?.title && vm?.subtitle) {
@@ -123,8 +120,7 @@ async function fetchWatchPage(id: string): Promise<WatchPageData> {
 	try {
 		const response = await globalThis.fetch(buildVideoUrl(id), {
 			headers: {
-				'User-Agent':
-					'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36',
+				'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36',
 				'Accept-Language': 'en-US,en;q=0.9',
 			},
 		})
@@ -182,10 +178,7 @@ export const fetch = async (id: string): Promise<YouTubeResult> => {
 
 /** Fetch YouTube video metadata via oEmbed + watch page enrichment (slower) */
 export const fetchExtended = async (id: string): Promise<YouTubeResult> => {
-	const [base, watchData] = await Promise.all([
-		fetch(id),
-		fetchWatchPage(id),
-	])
+	const [base, watchData] = await Promise.all([fetch(id), fetchWatchPage(id)])
 
 	return { ...base, ...watchData }
 }
