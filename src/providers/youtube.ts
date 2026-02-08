@@ -45,16 +45,6 @@ interface YouTubeiResponse {
 	}
 }
 
-/** Watch page enrichment fields */
-interface WatchPageData {
-	song?: string
-	artist?: string
-	album?: string
-	thumbnailAlbum?: string
-	channel?: string
-	publishDate?: string
-}
-
 /** Extract a JSON variable assignment from YouTube HTML via brace-counting */
 export function parseEmbeddedJson(
 	html: string,
@@ -81,8 +71,8 @@ export function parseEmbeddedJson(
 }
 
 /** Extract watch page enrichment data from ytInitialData engagement panels */
-function extractWatchPageData(ytData: any): WatchPageData {
-	const data: WatchPageData = {}
+function extractWatchPageData(ytData: any) {
+	const data: Record<string, string | undefined> = {}
 	const panels = ytData?.engagementPanels ?? []
 	for (const panel of panels) {
 		const items =
@@ -116,7 +106,7 @@ function extractWatchPageData(ytData: any): WatchPageData {
 }
 
 /** Fetch and parse YouTube watch page for enrichment data */
-async function fetchWatchPage(id: string): Promise<WatchPageData> {
+async function fetchWatchPage(id: string) {
 	try {
 		const response = await globalThis.fetch(buildVideoUrl(id), {
 			headers: {
