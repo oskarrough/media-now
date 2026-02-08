@@ -83,7 +83,7 @@ export function parseEmbeddedJson(
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 /** Extract music card data from ytInitialData engagement panels */
-export function extractMusicCard(ytData: any): {
+function extractMusicCard(ytData: any): {
 	song: string
 	artist: string
 	album?: string
@@ -115,7 +115,7 @@ export function extractMusicCard(ytData: any): {
 }
 
 /** Extract description header (channel, publish date) from ytInitialData */
-export function extractDescHeader(ytData: any): {
+function extractDescHeader(ytData: any): {
 	channel?: string
 	publishDate?: string
 } | null {
