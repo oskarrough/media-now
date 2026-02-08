@@ -82,13 +82,9 @@ export function parseEmbeddedJson(
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-/** Extract music card data from ytInitialData engagement panels */
-function extractMusicCard(ytData: any): {
-	song: string
-	artist: string
-	album?: string
-	thumbnailAlbum?: string
-} | null {
+/** Extract watch page enrichment data from ytInitialData engagement panels */
+function extractWatchPageData(ytData: any): WatchPageData {
+	const data: WatchPageData = {}
 	const panels = ytData?.engagementPanels ?? []
 	for (const panel of panels) {
 		const items =
@@ -96,45 +92,30 @@ function extractMusicCard(ytData: any): {
 				?.structuredDescriptionContentRenderer?.items
 		if (!items) continue
 		for (const item of items) {
-			if (!item.horizontalCardListRenderer) continue
+			// Music card
 			const hcl = item.horizontalCardListRenderer
-			const header =
-				hcl?.header?.richListHeaderRenderer?.title?.simpleText
-			if (header !== 'Music') continue
-			const vm = hcl?.cards?.[0]?.videoAttributeViewModel
-			if (!vm?.title || !vm?.subtitle) return null
-			return {
-				song: vm.title,
-				artist: vm.subtitle,
-				album: vm.secondarySubtitle?.content,
-				thumbnailAlbum: vm.image?.sources?.[0]?.url,
+			if (hcl) {
+				const header =
+					hcl?.header?.richListHeaderRenderer?.title?.simpleText
+				if (header === 'Music') {
+					const vm = hcl?.cards?.[0]?.videoAttributeViewModel
+					if (vm?.title && vm?.subtitle) {
+						data.song = vm.title
+						data.artist = vm.subtitle
+						data.album = vm.secondarySubtitle?.content
+						data.thumbnailAlbum = vm.image?.sources?.[0]?.url
+					}
+				}
 			}
-		}
-	}
-	return null
-}
-
-/** Extract description header (channel, publish date) from ytInitialData */
-function extractDescHeader(ytData: any): {
-	channel?: string
-	publishDate?: string
-} | null {
-	const panels = ytData?.engagementPanels ?? []
-	for (const panel of panels) {
-		const items =
-			panel?.engagementPanelSectionListRenderer?.content
-				?.structuredDescriptionContentRenderer?.items
-		if (!items) continue
-		for (const item of items) {
-			if (!item.videoDescriptionHeaderRenderer) continue
+			// Description header
 			const hdr = item.videoDescriptionHeaderRenderer
-			return {
-				channel: hdr?.channel?.simpleText,
-				publishDate: hdr?.publishDate?.simpleText,
+			if (hdr) {
+				data.channel = hdr?.channel?.simpleText
+				data.publishDate = hdr?.publishDate?.simpleText
 			}
 		}
 	}
-	return null
+	return data
 }
 
 /** Fetch and parse YouTube watch page for enrichment data */
@@ -153,21 +134,7 @@ async function fetchWatchPage(id: string): Promise<WatchPageData> {
 		const ytData = parseEmbeddedJson(html, 'ytInitialData')
 		if (!ytData) return {}
 
-		const music = extractMusicCard(ytData)
-		const desc = extractDescHeader(ytData)
-
-		return {
-			...(music && {
-				song: music.song,
-				artist: music.artist,
-				album: music.album,
-				thumbnailAlbum: music.thumbnailAlbum,
-			}),
-			...(desc && {
-				channel: desc.channel,
-				publishDate: desc.publishDate,
-			}),
-		}
+		return extractWatchPageData(ytData)
 	} catch {
 		return {}
 	}
